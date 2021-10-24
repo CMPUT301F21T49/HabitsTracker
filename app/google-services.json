@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "115377297192",
+    "project_id": "habitstracker-6eb64",
+    "storage_bucket": "habitstracker-6eb64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115377297192:android:0a92f23e7776249dfc221d",
+        "android_client_info": {
+          "package_name": "com.cmput301f21t49.habitstracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115377297192-p9aq976aifv3hpsm48ibg34a42qi93fg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgi5LkwsDK_dJRpR9AXIi7M5ymZdTNX_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115377297192-p9aq976aifv3hpsm48ibg34a42qi93fg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
