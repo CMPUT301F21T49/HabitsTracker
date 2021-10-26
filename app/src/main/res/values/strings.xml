@@ -6,4 +6,9 @@
     <string name="don_t_have_an_account">DON\'T HAVE AN ACCOUNT?</string>
     <string name="sign_up">SIGN UP</string>
     <string name="confirm_password">Confirm Password</string>
+
+    <!--to toggle the open close button
+        of the navigation drawer-->
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>
