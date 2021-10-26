@@ -52,13 +52,13 @@ public class User implements Serializable {
      *      The index of Habit being accessed
      * @param newName
      *      New Name of the habit
-     * @param newStartDate
-     *      New Start date
+     * @param newDates
+     *      New dates
      */
-    public void editHabit(int index, String newName, Date newStartDate) {
+    public void editHabit(int index, String newName, ArrayList<Date> newDates) {
         Habit habit  = Habits.get(index);
         habit.setName(newName);
-        habit.setStartDate(newStartDate);
+        habit.setDates(newDates);
         Habits.set(index, habit);
     }
 
