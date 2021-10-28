@@ -9,7 +9,7 @@ public class Habit implements Serializable {
     private String name;
     private int Id;
     private ArrayList<Event> Events;
-    private Date startDate;
+    private ArrayList<Date> dates;
     private double pct;
 
     /**
@@ -18,16 +18,16 @@ public class Habit implements Serializable {
      *      Name of Habit
      * @param Id
      *      Unique habit ID
-     * @param startDate
-     *      Date the Habit was started
+     * @param dates
+     *      Dates the habit is meant to be done on
      */
-    public Habit(String name, int Id, Date startDate) {
+    public Habit(String name, int Id, ArrayList<Date> dates) {
         if (name.length() > 20) {
             name.substring(0, 20);
         }
         this.name = name;
         this.Id = Id;
-        this.startDate = startDate;
+        this.dates = dates;
         pct = 0;
         Events = new ArrayList<>();
     }
@@ -55,8 +55,8 @@ public class Habit implements Serializable {
      * @return
      *      Start date
      */
-    public Date getStartDate() {
-        return this.startDate;
+    public ArrayList<Date> getDates() {
+        return this.dates;
     }
 
     /**
@@ -102,11 +102,11 @@ public class Habit implements Serializable {
 
     /**
      * Set a new Start Date
-     * @param newStartDate
-     *      Updated new start date
+     * @param newDates
+     *      Updated new dates
      */
-    public void setStartDate(Date newStartDate) {
-        this.startDate = newStartDate;
+    public void setDates(ArrayList<Date> newDates) {
+        this.dates = newDates;
     }
 
     /**
