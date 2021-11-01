@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.following:
-
+                        startActivity(new Intent(MainActivity.this, UserActivity.class));
                         break;
                     case R.id.signout:
                         fAuth.signOut();
