@@ -9,7 +9,7 @@ public class Habit implements Serializable {
     private String name;
     private int Id;
     private ArrayList<Event> Events;
-    private ArrayList<Date> dates;
+    private ArrayList<String> days;
     private double pct;
 
     /**
@@ -18,16 +18,17 @@ public class Habit implements Serializable {
      *      Name of Habit
      * @param Id
      *      Unique habit ID
-     * @param dates
+     * @param days
      *      Dates the habit is meant to be done on
      */
-    public Habit(String name, int Id, ArrayList<Date> dates) {
+    public Habit(){}
+    public Habit(String name, int Id, ArrayList<String> days) {
         if (name.length() > 20) {
             name.substring(0, 20);
         }
         this.name = name;
         this.Id = Id;
-        this.dates = dates;
+        this.days = days;
         pct = 0;
         Events = new ArrayList<>();
     }
@@ -50,14 +51,6 @@ public class Habit implements Serializable {
         return this.Id;
     }
 
-    /**
-     * Get start date of habit
-     * @return
-     *      Start date
-     */
-    public ArrayList<Date> getDates() {
-        return this.dates;
-    }
 
     /**
      * Get specific event linked to Habit
@@ -100,14 +93,6 @@ public class Habit implements Serializable {
         this.name = newName;
     }
 
-    /**
-     * Set a new Start Date
-     * @param newDates
-     *      Updated new dates
-     */
-    public void setDates(ArrayList<Date> newDates) {
-        this.dates = newDates;
-    }
 
     /**
      * Add Event to relate to Habit
@@ -154,6 +139,27 @@ public class Habit implements Serializable {
     }
 
 
+    public void setId(int id) {
+        Id = id;
+    }
 
+    public ArrayList<Event> getEvents() {
+        return Events;
+    }
 
+    public void setEvents(ArrayList<Event> events) {
+        Events = events;
+    }
+
+    public ArrayList<String> getDays() {
+        return days;
+    }
+
+    public void setDays(ArrayList<String> days) {
+        this.days = days;
+    }
+
+    public void setPct(double pct) {
+        this.pct = pct;
+    }
 }

@@ -6,15 +6,16 @@ import java.util.Date;
 
 public class User implements Serializable {
 
-    int Id;
+    String Id;
     ArrayList<Habit> Habits;
 
+    public User(){}
     /**
      * Constructor for User
      * @param Id
      *      Unique user ID
      */
-    public User(int Id) {
+    public User(String Id) {
         this.Id = Id;
         Habits = new ArrayList<>();
     }
@@ -24,9 +25,10 @@ public class User implements Serializable {
      * @return
      *      User ID
      */
-    public int getId() {
+    public String getId() {
         return Id;
     }
+    public void setId(String Id){this.Id =Id;}
 
     /**
      * Getter method to return list of Habits for User
@@ -52,13 +54,13 @@ public class User implements Serializable {
      *      The index of Habit being accessed
      * @param newName
      *      New Name of the habit
-     * @param newDates
+     * @param Days
      *      New dates
      */
-    public void editHabit(int index, String newName, ArrayList<Date> newDates) {
+    public void editHabit(int index, String newName, ArrayList<String> Days) {
         Habit habit  = Habits.get(index);
         habit.setName(newName);
-        habit.setDates(newDates);
+        habit.setDays(Days);
         Habits.set(index, habit);
     }
 

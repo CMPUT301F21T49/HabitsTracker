@@ -28,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText passwordText;
     private TextView signUpText;
+    private ManageUser manageUser = ManageUser.getInstance();
+    private User currentUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,17 @@ public class LoginActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
+                                manageUser.get(fAuth.getCurrentUser().getUid(), new UserCallback() {
+                                    @Override
+                                    public void onCallback(User user) {
+                                        System.out.println(user.getId());
+                                        //Have access to the current user's object here
+                                        //Can pass this through activitities
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        finish();
+                                    }
+                                });
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -88,8 +99,18 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = fAuth.getCurrentUser();
         // If user is logged in, send to MainActivity
         if (currentUser != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+            manageUser.get(fAuth.getCurrentUser().getUid(), new UserCallback() {
+                @Override
+                public void onCallback(User user) {
+                    System.out.println(user.getId());
+                    //Have access to the current user's object here
+                    //Can pass this through activitities
+
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }
+            });
+
         }
     }
 
