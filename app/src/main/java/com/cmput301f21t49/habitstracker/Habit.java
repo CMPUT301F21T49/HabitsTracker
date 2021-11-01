@@ -3,6 +3,7 @@ package com.cmput301f21t49.habitstracker;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Habit implements Serializable {
 
@@ -10,6 +11,7 @@ public class Habit implements Serializable {
     private int Id;
     private ArrayList<Event> Events;
     private ArrayList<Date> dates;
+    private HashMap<String, Object> habitData = new HashMap<>();
     private double pct;
 
     /**
@@ -28,7 +30,10 @@ public class Habit implements Serializable {
         this.name = name;
         this.Id = Id;
         this.dates = dates;
+        habitData.put("ID", Id);
+        habitData.put("Dates", dates);
         pct = 0;
+        habitData.put("Percentage", pct);
         Events = new ArrayList<>();
     }
 
@@ -66,6 +71,14 @@ public class Habit implements Serializable {
      * @return
      *      Event selected
      */
+
+    /**
+     * Returns data for firebase
+     * @return
+     *      Habit Data
+     */
+    public HashMap<String, Object> getHabitData() {return habitData; }
+
     public Event getEvent(int index){
         return Events.get(index);
     }
@@ -107,6 +120,7 @@ public class Habit implements Serializable {
      */
     public void setDates(ArrayList<Date> newDates) {
         this.dates = newDates;
+        habitData.put("Dates", this.dates);
     }
 
     /**
@@ -122,11 +136,12 @@ public class Habit implements Serializable {
      * Update an Event
      * @param index
      *      Event index
-     * @param event
-     *      Event to be updated
      */
-    public void updateEvent(int index, Event event) {
-        Events.set(index, event);
+    public void updateEvent(int index, String newLocation, String newComment, String newName) {
+        Event event = Events.get(index);
+        event.setComment(newComment);
+        event.setLocation(newLocation);
+        event.setName(newName);
     }
 
     /**
@@ -151,6 +166,7 @@ public class Habit implements Serializable {
         }
         double newPct = completed/totalEvents;
         this.pct = newPct;
+        habitData.put("Percentage", pct);
     }
 
 

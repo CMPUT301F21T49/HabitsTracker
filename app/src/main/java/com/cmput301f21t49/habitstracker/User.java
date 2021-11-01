@@ -1,31 +1,43 @@
 package com.cmput301f21t49.habitstracker;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class User implements Serializable {
 
-    int Id;
+    FirebaseFirestore db;
     ArrayList<Habit> Habits;
+    HashMap<String, Object> userdata = new HashMap<>();
+    HashMap<Integer, Object> habitRefs = new HashMap<>();
+    DocumentReference userRef;
+    String email;
 
     /**
-     * Constructor for User
-     * @param Id
-     *      Unique user ID
+     * Constructor for User, Adds user to firebase
      */
-    public User(int Id) {
-        this.Id = Id;
+    public User(String email) {
+        this.email = email;
+        userdata.put("Email", email);
         Habits = new ArrayList<>();
-    }
-
-    /**
-     * Method to get User ID
-     * @return
-     *      User ID
-     */
-    public int getId() {
-        return Id;
+        db = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = db.collection("Users");
+        userRef = db.collection("Users").document();
+        userRef.set(userdata);
+        userRef.collection("Habits");
     }
 
     /**
@@ -44,6 +56,11 @@ public class User implements Serializable {
      */
     public void addHabit(Habit habit) {
         Habits.add(habit);
+        HashMap<String, Object> habitData = habit.getHabitData();
+        habitData.put("ID", habit.getId());
+        habitData.put("Dates", habit.getDates());
+        userRef.collection("Habits").document(habit.getName()).set(habitData);
+
     }
 
     /**
@@ -57,9 +74,20 @@ public class User implements Serializable {
      */
     public void editHabit(int index, String newName, ArrayList<Date> newDates) {
         Habit habit  = Habits.get(index);
+        String oldName = habit.getName();
         habit.setName(newName);
         habit.setDates(newDates);
+        HashMap<String, Object> habitData = habit.getHabitData();
         Habits.set(index, habit);
+        if (oldName == newName) {
+            userRef.collection("Habits").document(oldName).set(habitData);
+        }
+        else {
+            userRef.collection("Habits").document(oldName).delete();
+            userRef.collection("Habits").document(newName).set(habitData);
+        }
+        //data.put("Habits", Habits);
+        //userRef.set(data);
     }
 
     /**
@@ -72,6 +100,8 @@ public class User implements Serializable {
     public void addEvent(int index, Event event) {
         Habit habit = Habits.get(index);
         habit.addEvent(event);
+        HashMap<String, Object> eventData = event.getEventData();
+        userRef.collection("Habits").document(habit.getName()).collection("Events").document(event.getName()).set(eventData);
     }
 
     /**
@@ -85,14 +115,25 @@ public class User implements Serializable {
      * @param newStatus
      *      Updated Status of Event
      */
-    public void editEvent(int habitIndex, int eventIndex, String newName, String newStatus) {
+    public void editEvent(int habitIndex, int eventIndex, String newName, String newStatus, String newLocation, String newComment) {
         Habit habit = Habits.get(habitIndex);
         Event event = habit.getEvent(eventIndex);
+        String oldName = event.getName();
+        event.setName(newName);
+        event.setComment(newComment);
+        event.setLocation(newLocation);
         event.setName(newName);
         if (newStatus == "In Progress" || newStatus == "Completed") {
             event.setStatus(newStatus);
         }
-        habit.updateEvent(eventIndex, event);
+        HashMap<String, Object> eventData = event.getEventData();
+        if (oldName == newName) {
+            userRef.collection("Habits").document(habit.getName()).collection("Events").document(oldName).set(eventData);
+        }
+        else {
+            userRef.collection("Habits").document(habit.getName()).collection("Events").document(oldName).delete();
+            userRef.collection("Habits").document(habit.getName()).collection("Events").document(newName).set(eventData);
+        }
         habit.updateCompletion();
     }
 
@@ -102,6 +143,8 @@ public class User implements Serializable {
      *      Index of Habit
      */
     public void deleteHabit(int index) {
+        Habit habit = Habits.get(index);
+        userRef.collection("Habits").document(habit.getName()).delete();
         Habits.remove(index);
     }
 
@@ -114,7 +157,16 @@ public class User implements Serializable {
      */
     public void deleteEvent(int habitIndex, int eventIndex) {
         Habit habit = Habits.get(habitIndex);
+        Event event = habit.getEvent(eventIndex);
+        userRef.collection("Habits").document(habit.getName()).collection("Events").document(event.getName()).delete();
         habit.deleteEvent(eventIndex);
         habit.updateCompletion();
     }
+
+    /**
+     * User reference to get stuff from firebase
+     * @return
+     *      User ref
+     */
+    public DocumentReference getUserRef() {return userRef;}
 }

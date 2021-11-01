@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fAuth = FirebaseAuth.getInstance();
+        User user  = new User("TEST");
+        ArrayList<Date> dates = new ArrayList<>();
+        Date i = new Date();
+        dates.add(i);
+        user.addHabit(new Habit("Running", 1, dates));
+        user.addEvent(0, new Event("Marathon", "Outside", "POGOWOGO"));
+        user.editEvent(0, 0, "Edited", "Completed", "Home", "Edited Event");
+        user.addHabit(new Habit("Jogging", 2, dates));
+        user.editHabit(0, "Running", dates);
 
         fAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override

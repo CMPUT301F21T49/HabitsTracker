@@ -3,6 +3,7 @@ package com.cmput301f21t49.habitstracker;
 import android.media.Image;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Event implements Serializable {
 
@@ -11,18 +12,22 @@ public class Event implements Serializable {
     private String location;
     private String comment;
     private Image image;
+    private HashMap<String, Object> eventData = new HashMap<>();
 
     /**
      * Event constructor, on creation has a status of in progress
      * @param name
      *      Name of Event
      */
-    public Event(String name, String location, String comment, Image image) {
+    public Event(String name, String location, String comment) {
         this.name = name;
         this.location = location;
         this.comment = comment;
-        this.image = image;
+        //this.image = image;
         status = "In Progress";
+        eventData.put("Status", status);
+        eventData.put("Location", location);
+        eventData.put("Comment", comment);
     }
 
     /**
@@ -71,6 +76,12 @@ public class Event implements Serializable {
     }
 
     /**
+     * Return data for firebase
+     * @return
+     *      Event data
+     */
+    public HashMap<String, Object> getEventData() {return eventData;}
+    /**
      * Set new Name
      * @param newName
      *      New name of Event
@@ -86,6 +97,7 @@ public class Event implements Serializable {
      */
     public void setStatus(String newStatus) {
         this.status = newStatus;
+        eventData.put("Status", status);
     }
 
     /**
@@ -93,14 +105,20 @@ public class Event implements Serializable {
      * @param newLocation
      *      New Location
      */
-    public void setLocation(String newLocation) {this.location = newLocation;}
+    public void setLocation(String newLocation) {
+        this.location = newLocation;
+        eventData.put("Location", location);
+    }
 
     /**
      * Update Comment
      * @param newComment
      *      New Comment
      */
-    public void setComment(String newComment) {this.comment = newComment;}
+    public void setComment(String newComment) {
+        this.comment = newComment;
+        eventData.put("Comment", comment);
+    }
 
     /**
      * Set new Image
