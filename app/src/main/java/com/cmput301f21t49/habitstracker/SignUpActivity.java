@@ -17,6 +17,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -25,6 +31,9 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText passwordText;
     private EditText confirmPasswordText;
+    final String TAG = "New User";
+    ManageUser manageUser = ManageUser.getInstance();
+    User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +63,18 @@ public class SignUpActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                Intent i = new Intent(SignUpActivity.this, MainActivity.class);
-                                //Clear activity history
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(i);
+                                user.setId(fAuth.getUid());
+                                //Create a document of the use in the database
+                                manageUser.createOrUpdate(user, new VoidCallback() {
+                                    @Override
+                                    public void onCallback() {
+                                        Intent i = new Intent(SignUpActivity.this, MainActivity.class);
+                                        //Clear activity history
+                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(i);
+                                    }
+                                });
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
