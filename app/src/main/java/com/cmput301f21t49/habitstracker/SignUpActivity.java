@@ -17,10 +17,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;
+    private FirebaseFirestore fFirestore;
+
     private Button signUpButton;
     private EditText emailText;
     private EditText passwordText;
@@ -31,6 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         fAuth = FirebaseAuth.getInstance();
+        fFirestore = FirebaseFirestore.getInstance();
 
 
         emailText = findViewById(R.id.editTextEmailAddress);
