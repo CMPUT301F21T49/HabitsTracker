@@ -27,7 +27,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;
-
+    public User currentUser;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView nv;
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
+
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
         drawerLayout = findViewById(R.id.my_drawer_layout);
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case R.id.habits:
                         Intent intent = new Intent(MainActivity.this, MyHabitsActivity.class);
-                        //put things what you want to send to the activity
+                        intent.putExtra("CurrentUserObj",currentUser);
                         startActivity(intent);
                         break;
 

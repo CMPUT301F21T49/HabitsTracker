@@ -56,8 +56,10 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onCallback(User user) {
                                         System.out.println(user.getId());
                                         //Have access to the current user's object here
-                                        //Can pass this through activitities
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        //Can pass this through activities
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("CurrentUserObj", user);
+                                        startActivity(intent);
                                         finish();
                                     }
                                 });
@@ -102,12 +104,9 @@ public class LoginActivity extends AppCompatActivity {
             manageUser.get(fAuth.getCurrentUser().getUid(), new UserCallback() {
                 @Override
                 public void onCallback(User user) {
-                    System.out.println(user.getId());
-                    //Have access to the current user's object here
-                    //Can pass this through activitities
-
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("CurrentUserObj", user);
+                    startActivity(intent);
                 }
             });
 
