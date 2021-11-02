@@ -26,10 +26,20 @@ public class Event implements Serializable {
         this.image = image;
         status = "In Progress";
     }
+
+    /**
+     * Gets image url
+     * @return
+     *      The event image's url as a string
+     */
     public String getImage_url() {
         return image_url;
     }
 
+    /**
+     * Set the image url, leads to event image
+     * @param image_url
+     */
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
