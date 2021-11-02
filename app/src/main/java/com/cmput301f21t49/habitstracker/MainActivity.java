@@ -9,42 +9,28 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.common.net.InternetDomainName;
-import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;
-    public FirebaseUser user;
-    public User currentUser;
+
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView nv;
-    FirebaseFirestore db;
-    public String TAG = "Testing";
 
     FrameLayout simpleFrameLayout;
     TabLayout tabLayout;
@@ -55,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fAuth = FirebaseAuth.getInstance();
+        User user  = new User("TEST");
+        ArrayList<Date> dates = new ArrayList<>();
+        Date i = new Date();
+        dates.add(i);
+        user.addHabit(new Habit("Running", 1, dates));
+        user.addEvent(0, new Event("Marathon", "Outside", "POGOWOGO"));
+        user.editEvent(0, 0, "Edited", "Completed", "Home", "Edited Event");
+        user.addHabit(new Habit("Jogging", 2, dates));
+        user.editHabit(0, "Running", dates);
 
         fAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
