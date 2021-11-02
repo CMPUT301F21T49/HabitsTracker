@@ -3,15 +3,13 @@ package com.cmput301f21t49.habitstracker;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Habit implements Serializable {
 
     private String name;
     private int Id;
     private ArrayList<Event> Events;
-    private ArrayList<Date> dates;
-    private HashMap<String, Object> habitData = new HashMap<>();
+    private ArrayList<String> days;
     private double pct;
 
     /**
@@ -20,20 +18,18 @@ public class Habit implements Serializable {
      *      Name of Habit
      * @param Id
      *      Unique habit ID
-     * @param dates
+     * @param days
      *      Dates the habit is meant to be done on
      */
-    public Habit(String name, int Id, ArrayList<Date> dates) {
+    public Habit(){}
+    public Habit(String name, int Id, ArrayList<String> days) {
         if (name.length() > 20) {
             name.substring(0, 20);
         }
         this.name = name;
         this.Id = Id;
-        this.dates = dates;
-        habitData.put("ID", Id);
-        habitData.put("Dates", dates);
+        this.days = days;
         pct = 0;
-        habitData.put("Percentage", pct);
         Events = new ArrayList<>();
     }
 
@@ -55,14 +51,6 @@ public class Habit implements Serializable {
         return this.Id;
     }
 
-    /**
-     * Get start date of habit
-     * @return
-     *      Start date
-     */
-    public ArrayList<Date> getDates() {
-        return this.dates;
-    }
 
     /**
      * Get specific event linked to Habit
@@ -71,14 +59,6 @@ public class Habit implements Serializable {
      * @return
      *      Event selected
      */
-
-    /**
-     * Returns data for firebase
-     * @return
-     *      Habit Data
-     */
-    public HashMap<String, Object> getHabitData() {return habitData; }
-
     public Event getEvent(int index){
         return Events.get(index);
     }
@@ -113,15 +93,6 @@ public class Habit implements Serializable {
         this.name = newName;
     }
 
-    /**
-     * Set a new Start Date
-     * @param newDates
-     *      Updated new dates
-     */
-    public void setDates(ArrayList<Date> newDates) {
-        this.dates = newDates;
-        habitData.put("Dates", this.dates);
-    }
 
     /**
      * Add Event to relate to Habit
@@ -136,12 +107,11 @@ public class Habit implements Serializable {
      * Update an Event
      * @param index
      *      Event index
+     * @param event
+     *      Event to be updated
      */
-    public void updateEvent(int index, String newLocation, String newComment, String newName) {
-        Event event = Events.get(index);
-        event.setComment(newComment);
-        event.setLocation(newLocation);
-        event.setName(newName);
+    public void updateEvent(int index, Event event) {
+        Events.set(index, event);
     }
 
     /**
@@ -166,10 +136,30 @@ public class Habit implements Serializable {
         }
         double newPct = completed/totalEvents;
         this.pct = newPct;
-        habitData.put("Percentage", pct);
     }
 
 
+    public void setId(int id) {
+        Id = id;
+    }
 
+    public ArrayList<Event> getEvents() {
+        return Events;
+    }
 
+    public void setEvents(ArrayList<Event> events) {
+        Events = events;
+    }
+
+    public ArrayList<String> getDays() {
+        return days;
+    }
+
+    public void setDays(ArrayList<String> days) {
+        this.days = days;
+    }
+
+    public void setPct(double pct) {
+        this.pct = pct;
+    }
 }

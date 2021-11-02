@@ -41,15 +41,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fAuth = FirebaseAuth.getInstance();
-        User user  = new User("TEST");
-        ArrayList<Date> dates = new ArrayList<>();
-        Date i = new Date();
-        dates.add(i);
-        user.addHabit(new Habit("Running", 1, dates));
-        user.addEvent(0, new Event("Marathon", "Outside", "POGOWOGO"));
-        user.editEvent(0, 0, "Edited", "Completed", "Home", "Edited Event");
-        user.addHabit(new Habit("Jogging", 2, dates));
-        user.editHabit(0, "Running", dates);
 
         fAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
