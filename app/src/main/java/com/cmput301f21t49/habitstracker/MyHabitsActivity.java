@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MyHabitsActivity extends AppCompatActivity {
@@ -17,8 +18,8 @@ public class MyHabitsActivity extends AppCompatActivity {
     public User currentUser;
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
-    List<String> habitNameList;
-    ArrayList<Habit> habitArrayList;
+    List<String> habitNameList = new ArrayList<>();
+    ArrayList<Habit> habitArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +27,21 @@ public class MyHabitsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_myhabits);
 
         currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
-        for (Habit h : habitArrayList = currentUser.getHabits()) {
-            habitNameList.add(h.getName());
-        }
+        if (currentUser != null && currentUser.getHabits()!= null){
+            for (Habit h : habitArrayList = currentUser.getHabits()) {
+                habitNameList.add(h.getName());
+            }
 
+        }else{
+            System.out.println(currentUser.getId()); 
+            habitNameList.add("testing1");
+            habitNameList.add("testing2");
+            habitNameList.add("testing3");
+            habitNameList.add("testing4");
+            habitNameList.add("testing5");
+            habitNameList.add("testing6");
+
+        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerAdapter = new RecyclerAdapter(habitNameList);
@@ -39,11 +51,22 @@ public class MyHabitsActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback() {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN| ItemTouchHelper.START | ItemTouchHelper.END, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+
+            int fromPosition = viewHolder.getBindingAdapterPosition();
+            int toPosition = target.getBindingAdapterPosition();
+
+            Collections.swap(habitNameList,fromPosition,toPosition);
+
+            recyclerView.getAdapter().notifyItemMoved(fromPosition,toPosition);
+
             return false;
         }
 
