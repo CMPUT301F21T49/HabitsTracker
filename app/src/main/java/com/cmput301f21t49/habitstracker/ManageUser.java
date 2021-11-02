@@ -21,8 +21,6 @@ public class ManageUser {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final ManageUser instance = new ManageUser();
     private final String COLLECTION_NAME = "Users";
-    public static User user;
-    public FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private static final String TAG = "Sample";
 
 
@@ -35,6 +33,7 @@ public class ManageUser {
      * @return Return a instance of user dao
      */
     public static ManageUser getInstance() {
+
         return instance;
     }
 
@@ -59,13 +58,13 @@ public class ManageUser {
 
     /**
      * This queries for a user by the user's Id. A callback method will be called on success.
-     * This callback contains a user that can be worked with
+     * This callback contains a user that can be worked with in the caller class/activity
      *
      * @param userId  This is the Id of user that we want to get data from
      * @param onSuccess This is the function invoked when the user's data is obtained successfully
      */
     public void get(String userId, final UserCallback onSuccess) {
-        //Generally speaking, do not pass null values in. This is an exception, since we're overloading(?).
+        //Generally speaking, do not pass null values in. This is an exception.
         get(userId, onSuccess, null);
     }
 
