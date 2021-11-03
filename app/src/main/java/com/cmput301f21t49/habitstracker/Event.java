@@ -10,6 +10,7 @@ public class Event implements Serializable {
     private String status;
     private String location;
     private String comment;
+    private String image_url;
     private Image image;
 
     /**
@@ -17,6 +18,7 @@ public class Event implements Serializable {
      * @param name
      *      Name of Event
      */
+    public Event(){}
     public Event(String name, String location, String comment, Image image) {
         this.name = name;
         this.location = location;
@@ -25,6 +27,22 @@ public class Event implements Serializable {
         status = "In Progress";
     }
 
+    /**
+     * Gets image url
+     * @return
+     *      The event image's url as a string
+     */
+    public String getImage_url() {
+        return image_url;
+    }
+
+    /**
+     * Set the image url, leads to event image
+     * @param image_url
+     */
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
     /**
      * Get name of the Event
      * @return
