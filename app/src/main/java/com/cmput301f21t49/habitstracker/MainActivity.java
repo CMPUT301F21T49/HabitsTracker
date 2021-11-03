@@ -1,7 +1,6 @@
 package com.cmput301f21t49.habitstracker;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,7 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -53,9 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
 
-        System.out.println(currentUser.getId());
+        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -147,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     // override the onOptionsItemSelected()
     // function to implement
