@@ -72,6 +72,15 @@ public class MyHabitsActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            final int position = viewHolder.getAdapterPosition();
+            switch (direction) {
+                case ItemTouchHelper.LEFT:
+                    Habit selectedHabit = habitArrayList.get(position);
+                    Intent intent = new Intent(MyHabitsActivity.this, EditViewHabitEventActivity.class);
+                    intent.putExtra("CurrentHabitObj", selectedHabit);
+                    startActivity(intent);
+                    break;
+            }
 
         }
     };
