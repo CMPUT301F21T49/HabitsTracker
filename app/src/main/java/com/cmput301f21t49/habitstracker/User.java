@@ -7,7 +7,7 @@ import java.util.Date;
 public class User implements Serializable {
 
     String Id;
-    ArrayList<Habit> Habits;
+    ArrayList<Habit> Habits = new ArrayList<>();
 
     public User(){}
     /**
@@ -15,9 +15,8 @@ public class User implements Serializable {
      * @param Id
      *      Unique user ID
      */
-    public User(String Id) {
-        this.Id = Id;
-        Habits = new ArrayList<>();
+    public User(String id) {
+        this.Id = id;
     }
 
     /**

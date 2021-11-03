@@ -64,9 +64,9 @@ public class UserTest {
         user.addHabit(habit);
         event.setName("Hello");
         user.addEvent(0, event);
-        assertTrue(user.getHabits().get(0).getAllEvents().get(0).getName() =="PlaceHolder");
+        assertTrue(user.getHabits().get(0).getAllEvents().get(0).getName().equals("Hello"));
         user.editEvent(0,0,"NewName", "NewStatus");
-        assertFalse(user.getHabits().get(0).getAllEvents().get(0).getName() =="PlaceHolder");
+        assertFalse(user.getHabits().get(0).getAllEvents().get(0).getName().equals("PlaceHolder"));
     }
 
     // Test for deleting events

@@ -8,9 +8,9 @@ public class Habit implements Serializable {
 
     private String name;
     private int Id;
-    private ArrayList<Event> Events;
-    private ArrayList<String> days;
-    private double pct;
+    private ArrayList<Event> Events = new ArrayList<>();
+    private ArrayList<String> days = new ArrayList<>();
+    private double pct= 0;
 
     /**
      * Habit Constructor
@@ -30,7 +30,6 @@ public class Habit implements Serializable {
         this.Id = Id;
         this.days = days;
         pct = 0;
-        Events = new ArrayList<>();
     }
 
     /**
@@ -128,14 +127,16 @@ public class Habit implements Serializable {
      */
     public void updateCompletion() {
         int totalEvents = Events.size();
-        int completed = 0;
+        double completed = 0;
         for (int i = 0; i < totalEvents; i++) {
-            if (Events.get(i).getStatus() == "Completed") {
-                completed = completed + 1;
+            if (Events.get(i).getStatus().equals("Completed")) {
+                completed++;
             }
         }
-        double newPct = completed/totalEvents;
-        this.pct = newPct;
+        if (totalEvents != 0) {
+            double newPct = completed/totalEvents;
+            this.setPct(newPct);
+        }
     }
 
 
