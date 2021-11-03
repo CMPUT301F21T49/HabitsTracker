@@ -2,6 +2,7 @@ package com.cmput301f21t49.habitstracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,9 @@ public class MyHabitsActivity extends AppCompatActivity {
 
 
         currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
-        if (currentUser != null && currentUser.getHabits()!= null){
+        if (currentUser != null && currentUser.getHabits().size() > 0){
+            System.out.println("Retrieve Habits");
+            System.out.println(currentUser.getHabits().get(0));
             for (Habit h : habitArrayList = currentUser.getHabits()) {
                 habitNameList.add(h.getName());
             }
@@ -87,11 +90,17 @@ public class MyHabitsActivity extends AppCompatActivity {
         }
     };
 
-
+    /**
+     * https://stackoverflow.com/questions/6554317/savedinstancestate-is-always-null
+     * @param item menu item
+     * @return
+     */
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra("CurrentUserObj", currentUser);
-        setResult(RESULT_OK, intent);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId()== android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

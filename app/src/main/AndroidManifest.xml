@@ -13,9 +13,6 @@
             android:name=".UserActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".MyHabitsActivity"
@@ -24,9 +21,6 @@
             android:name=".SignUpActivity"
             android:exported="true"
             android:parentActivityName=".LoginActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -39,7 +33,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
