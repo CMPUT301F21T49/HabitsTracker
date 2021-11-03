@@ -72,16 +72,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+                Intent intent;
                 switch(id)
                 {
                     case R.id.habits:
-                        Intent intent = new Intent(MainActivity.this, MyHabitsActivity.class);
-                        intent.putExtra("CurrentUserObj",currentUser);
+                        intent = new Intent(MainActivity.this, MyHabitsActivity.class);
+                        intent.putExtra("CurrentUserObj", currentUser);
                         startActivity(intent);
                         break;
 
                     case R.id.following:
-
+                        intent = new Intent(MainActivity.this, UserActivity.class);
+                        intent.putExtra("CurrentUserObj", currentUser);
+                        startActivity(intent);
                         break;
                     case R.id.signout:
                         fAuth.signOut();

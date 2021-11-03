@@ -13,17 +13,16 @@ import android.widget.EditText;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * Activity responsible for signup actions
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;
@@ -31,9 +30,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText passwordText;
     private EditText confirmPasswordText;
-    final String TAG = "New User";
-    ManageUser manageUser = ManageUser.getInstance();
-    User user = new User();
+    private ManageUser manageUser = ManageUser.getInstance();
+    private User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,14 @@ public class SignUpActivity extends AppCompatActivity {
                 String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
                 String confirmPassword = confirmPasswordText.getText().toString();
-
+                if (email.equals("")) {
+                    emailText.setError("Email is Empty");
+                    return;
+                }
+                if (password.equals("")) {
+                    passwordText.setError("Password is Empty");
+                    return;
+                }
                 if (!password.equals(confirmPassword)) {
                     confirmPasswordText.setError("Does not match password.");
                     return;
@@ -80,19 +85,36 @@ public class SignUpActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.w("Authentication", e);
+                                Log.e("Authentication", e.toString());
+                                String error = "Authentication Failed";
                                 if (e instanceof FirebaseAuthInvalidUserException) {
                                     emailText.setError("No user exists");
                                     passwordText.setError("No user exists");
+                                    error = e.getMessage();
                                 } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                                    emailText.setError("Invalid Email Formatting");
+                                    emailText.setError("Invalid Credentials");
+                                    passwordText.setError("Invalid Credentials");
+                                    error = e.getMessage();
+                                } else if (e instanceof FirebaseAuthUserCollisionException){
+                                    emailText.setError("Email already in use.");
+                                    error = "User Already Exists.";
+                                } else if (e instanceof FirebaseTooManyRequestsException) {
+                                    error = "Too many requests have been made. Try again later.";
                                 }
-                                Snackbar snackbar = Snackbar
-                                        .make(findViewById(R.id.signUpActivity), "Authentication Failed", Snackbar.LENGTH_SHORT);
-                                snackbar.show();
+                                showFailedAuthentication(error);
                             }
                         });
             }
         });
+    }
+
+    /**
+     * Shows a Snackbar with a message
+     * @param message message to display
+     */
+    private void showFailedAuthentication(String message) {
+        Snackbar snackbar = Snackbar
+                .make(findViewById(R.id.signUpActivity), message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

@@ -25,7 +25,8 @@
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress"
+            android:autofillHints=" " />
 
         <EditText
             android:id="@+id/editTextEmailAddress"
@@ -35,6 +36,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
+            android:autofillHints=" "
             android:ems="10"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
