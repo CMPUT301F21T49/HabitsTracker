@@ -15,12 +15,17 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Activity responsible for logging in. Links to MainActivity and SignUpActivity. If a user is already
+ * signed in, user will automatically be sent to the MainActivity.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;
@@ -46,52 +51,62 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
-                //ensure not null
+                if (email.equals("")) {
+                    emailText.setError("Email is Empty");
+                    return;
+                }
+                if (password.equals("")) {
+                    passwordText.setError("Password is Empty");
+                    return;
+                }
                 fAuth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 manageUser.get(fAuth.getCurrentUser().getUid(), new UserCallback() {
                                     @Override
-                                    public void onCallback(User user) {
-                                        System.out.println(user.getId());
-                                        //Have access to the current user's object here
-                                        //Can pass this through activities
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.putExtra("CurrentUserObj", user);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                });
+                                        public void onCallback(User user) {
+                                            System.out.println(user.getId());
+                                            //Have access to the current user's object here
+                                            //Can pass this through activities
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.putExtra("CurrentUserObj", user);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
 
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("Authentication", e);
-                                if (e instanceof FirebaseAuthInvalidUserException) {
-                                    emailText.setError("No user exists");
-                                    passwordText.setError("No user exists");
-                                } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                                    emailText.setError("Invalid Email Formatting");
                                 }
-                                Snackbar snackbar = Snackbar
-                                        .make(findViewById(R.id.loginActivity), "Authentication Failed", Snackbar.LENGTH_SHORT);
-                                snackbar.show();
-                            }
-                        });
-            }
-        });
-
-        //On click "SIGN UP", start sign up activity
-        signUpText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-            }
-        });
-    }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("Authentication", e.toString());
+                                    String error = "Authentication Failed";
+                                    if (e instanceof FirebaseAuthInvalidUserException) {
+                                        emailText.setError("No user exists");
+                                        passwordText.setError("No user exists");
+                                        error = e.getMessage();
+                                    } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                                        emailText.setError("Invalid Credentials");
+                                        passwordText.setError("Invalid Credentials");
+                                        error = e.getMessage();
+                                    } else if (e instanceof FirebaseTooManyRequestsException) {
+                                        error = "Too many requests have been made. Try again later.";
+                                    }
+                                    showFailedAuthentication(error);
+                                }
+                            });
+                }
+            });
+            //On click "SIGN UP", start sign up activity
+            signUpText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                }
+            });
+        };
 
     @Override
     protected void onStart() {
@@ -111,5 +126,15 @@ public class LoginActivity extends AppCompatActivity {
             });
 
         }
+    }
+
+    /**
+     * Shows a Snackbar with a message
+     * @param message message to display
+     */
+    private void showFailedAuthentication(String message) {
+        Snackbar snackbar = Snackbar
+                .make(findViewById(R.id.loginActivity), message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

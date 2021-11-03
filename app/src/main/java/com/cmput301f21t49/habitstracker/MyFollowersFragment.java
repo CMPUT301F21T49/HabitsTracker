@@ -68,8 +68,8 @@ public class MyFollowersFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_my_followers, container, false);
         listView = v.findViewById(R.id.followers_list);
         ArrayList<User> tempList = new ArrayList<>();
-        tempList.add(new User(1));
-        tempList.add(new User(2));
+        tempList.add(new User("User 1"));
+        tempList.add(new User("User 2"));
         adapter = new FollowerAdapter(getContext(), tempList);
         adapter.setButtonToggle(true);
         listView.setAdapter(adapter);

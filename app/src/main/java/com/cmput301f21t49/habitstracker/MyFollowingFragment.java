@@ -71,8 +71,8 @@ public class MyFollowingFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_my_following, container, false);
         listView = v.findViewById(R.id.following_list);
         ArrayList<User> tempList = new ArrayList<>();
-        tempList.add(new User(1));
-        tempList.add(new User(2));
+        tempList.add(new User("User 3"));
+        tempList.add(new User("User 4"));
         arrayAdapter = new FollowerAdapter(getContext(), tempList);
         listView.setAdapter(arrayAdapter);
         return v;

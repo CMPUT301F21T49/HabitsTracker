@@ -18,6 +18,9 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
+/**
+ * Activity responsible for showing user information in addition to their followers/following.
+ */
 public class UserActivity extends AppCompatActivity {
     private ImageView userImageView;
     private TextView usernameTextView;
@@ -28,6 +31,7 @@ public class UserActivity extends AppCompatActivity {
     private Button sendButton;
 
     private ArrayList<User> tempList = new ArrayList<User>();
+    private User currentUser;
 
     private MyFollowersFragment followersFragment = MyFollowersFragment.newInstance(tempList);
     private MyFollowingFragment followingFragment = MyFollowingFragment.newInstance(tempList);
@@ -38,6 +42,8 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
+
         userImageView = findViewById(R.id.userImageView);
         usernameTextView = findViewById(R.id.username);
         uidTextView = findViewById(R.id.userid);
@@ -47,6 +53,8 @@ public class UserActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.sendButton);
 
         //TODO: Set username and uid
+        usernameTextView.setText(currentUser.getId());
+        uidTextView.setText("@special_uid_here");
 
         TabLayout.Tab followingTab = tabLayout.newTab();
         TabLayout.Tab followersTab = tabLayout.newTab();
@@ -94,6 +102,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        //Set initial fragment to MyFollowingFragment
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frame, followingFragment);
