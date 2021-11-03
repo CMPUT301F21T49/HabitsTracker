@@ -12,6 +12,7 @@ public class Event implements Serializable {
     private String comment;
     private String image_url;
     private Image image;
+    private LocalDate date;
 
     /**
      * Event constructor, on creation has a status of in progress
@@ -19,12 +20,31 @@ public class Event implements Serializable {
      *      Name of Event
      */
     public Event(){}
-    public Event(String name, String location, String comment, Image image) {
+    public Event(String name, String location, String comment, Image image, LocalDate date) {
         this.name = name;
         this.location = location;
         this.comment = comment;
         this.image = image;
+        this.date = date;
         status = "In Progress";
+    }
+
+    /**
+     * Get date
+     * @return
+     *      The event date as a LocalDate var
+     */
+    public LocalDate getDate(){
+        return date;
+    }
+
+    /**
+     * Set the new event date
+     * @param
+     *      date
+     */
+    public LocalDate setDate(LocalDate date) {
+        this.date = date;
     }
 
     /**
