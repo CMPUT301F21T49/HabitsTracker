@@ -1,5 +1,6 @@
 package com.cmput301f21t49.habitstracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,11 +25,16 @@ public class MyHabitsActivity extends AppCompatActivity {
     RecyclerAdapter recyclerAdapter;
     List<String> habitNameList = new ArrayList<>();
     ArrayList<Habit> habitArrayList = new ArrayList<>();
+    ManageUser manageUser = ManageUser.getInstance();
+    public FirebaseAuth fAuth;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myhabits);
+
 
         currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
         if (currentUser != null && currentUser.getHabits()!= null){
@@ -72,16 +82,16 @@ public class MyHabitsActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            final int position = viewHolder.getAdapterPosition();
-            switch (direction) {
-                case ItemTouchHelper.LEFT:
-                    Habit selectedHabit = habitArrayList.get(position);
-                    Intent intent = new Intent(MyHabitsActivity.this, EditViewHabitEventActivity.class);
-                    intent.putExtra("CurrentHabitObj", selectedHabit);
-                    startActivity(intent);
-                    break;
-            }
+
 
         }
     };
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("CurrentUserObj", currentUser);
+        setResult(RESULT_OK, intent);
+    }
 }

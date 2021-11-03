@@ -12,6 +12,7 @@ public class Habit implements Serializable {
     private ArrayList<String> days;
     private double pct;
 
+    public Habit(){}
     /**
      * Habit Constructor
      * @param name
@@ -21,7 +22,6 @@ public class Habit implements Serializable {
      * @param days
      *      Dates the habit is meant to be done on
      */
-    public Habit(){}
     public Habit(String name, int Id, ArrayList<String> days) {
         if (name.length() > 20) {
             name.substring(0, 20);
