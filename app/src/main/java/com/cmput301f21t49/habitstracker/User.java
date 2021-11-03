@@ -8,14 +8,12 @@ public class User implements Serializable {
 
     String Id;
     ArrayList<Habit> Habits = new ArrayList<>();
+    ArrayList<User> Following = new ArrayList<>();
+    ArrayList<User> Followers = new ArrayList<>();
     static final public String SERIALIZED= "USER_CLASS";
 
     public User(){}
-    /**
-     * Constructor for User
-     * @param Id
-     *      Unique user ID
-     */
+
     public User(String id) {
         this.Id = id;
     }
@@ -28,6 +26,12 @@ public class User implements Serializable {
     public String getId() {
         return Id;
     }
+
+    /**
+     * Method to set ID
+     * @param Id
+     *      User assigned ID
+     */
     public void setId(String Id){this.Id =Id;}
 
     /**
@@ -118,5 +122,21 @@ public class User implements Serializable {
         Habit habit = Habits.get(habitIndex);
         habit.deleteEvent(eventIndex);
         habit.updateCompletion();
+    }
+
+    public void addFollower(User user) {
+        Followers.add(user);
+    }
+
+    public ArrayList<User> getFollowers() {
+        return this.Followers;
+    }
+
+    public void addFollowing(User user) {
+        Following.add(user);
+    }
+
+    public ArrayList<User> getFollowing() {
+        return this.Following;
     }
 }

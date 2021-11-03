@@ -1,174 +1,264 @@
 [
-    {
-      "name": "User",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Add Habits",
-        "Edit Habit",
-        "Can Comment on habits (Own and others)",
-        "Add Events",
-        "Complete Habit Event",
-        "View Other Peoples Habits",
-        "Hold Habit IDs"
-      ],
-      "collaborators": [
-        "Habits",
-        "HabitTracker",
-        "MainActivity"
-      ]
-    },
-    {
-      "name": "Habits",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Represent a habit",
-        "Tracks status of Events",
-        "Has Unique ID"
-      ],
-      "collaborators": [
-        "HabitTracker",
-        "User",
-        "Events"
-      ]
-    },
-    {
-      "name": "HabitAdapter",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Holds Habits"
-      ],
-      "collaborators": [
-        "Habits",
-        "User"
-      ]
-    },
-    {
-      "name": "Events",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Relate to an already existing habit",
-        "Have status, which can be updated"
-      ],
-      "collaborators": [
-        "User",
-        "Habits"
-      ]
-    },
-    {
-      "name": "EventAdapter",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Hold Events"
-      ],
-      "collaborators": [
-        "User",
-        "Event"
-      ]
-    },
-    {
-      "name": "MainActivity",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Add Event Button",
-        "Edit Event Button",
-        "Display all Events",
-        "Change Event Status"
-      ],
-      "collaborators": [
-        "User",
-        "Edit Event Activity"
-      ]
-    },
-    {
-      "name": "Event_Create/Edit_Activity",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Add Event Details",
-        "Edit Existing Event Details",
-        "Create new Event"
-      ],
-      "collaborators": [
-        "MainActivity",
-        "User"
-      ]
-    },
-    {
-      "name": "UserProfileActivity",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Display User Habits ",
-        "Include button for users to follow",
-        "Display Followers",
-        "Display Following",
-        "Display/Add Profile Picture"
-      ],
-      "collaborators": [
-        "User ",
-        ""
-      ]
-    },
-    {
-      "name": "LoginActivity",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Enter Email",
-        "Enter Password",
-        "Option to sign Up With Google",
-        "Sign User in",
-        "Allow Creation of new account"
-      ],
-      "collaborators": [
-        "User"
-      ]
-    },
-    {
-      "name": "DsiplayHabitActivity",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Display Habits",
-        "Add Habit",
-        "Edit Habit ",
-        "Delete Habit",
-        "Display Percentage of events completed",
-        "Visual Indicator depending on event completion"
-      ],
-      "collaborators": [
-        "User"
-      ]
-    },
-    {
-      "name": "Habit_Create/Edit_Activity",
-      "superclasses": "",
-      "subclasses": "",
-      "type": 1,
-      "responsibilities": [
-        "Add Habit",
-        "Edit Existing habit",
-        ""
-      ],
-      "collaborators": [
-        "User",
-        "Display_Habit_Activity"
-      ]
-    }
-  ]
+  {
+    "name": "User",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Add Habits",
+      "Edit Habit",
+      "Add Events ",
+      "Edit Events",
+      "User data is loaded into class from the Firebase through ManageUser Class",
+      "Can Comment on habits (Own and others)",
+      "View Other Peoples Habits",
+      "Follow Other Users",
+      "Data displayed on UserActivity"
+    ],
+    "collaborators": [
+      "Habits",
+      "Events",
+      "UserActivity",
+      "ManageUser",
+      ""
+    ]
+  },
+  {
+    "name": "Habits",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Represent a habit",
+      "Tracks status of Events",
+      "Has Completion percentage based on status of Events",
+      "Has Unique ID",
+      "Held and displayed through Recycler Adapter",
+      "Displayed on MyHabitsActivity"
+    ],
+    "collaborators": [
+      "RecyclerAdapter",
+      "User",
+      "Events",
+      "MyHabitsActivity"
+    ]
+  },
+  {
+    "name": "RecyclerAdapter",
+    "superclasses": "RecyclerView.Adapter",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Holds and Displays Habits",
+      "Active on MyHabitsActivity"
+    ],
+    "collaborators": [
+      "Habits",
+      "MyHabitsActivity"
+    ]
+  },
+  {
+    "name": "Events",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Relate to an already existing habit",
+      "Have status, which can be updated",
+      "Held by EventAdapter",
+      "Displayed on EditViewHabitEventActivity"
+    ],
+    "collaborators": [
+      "Habits",
+      "EditViewHabitEventActivity",
+      ""
+    ]
+  },
+  {
+    "name": "EventAdapter",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Hold Events",
+      "Displayed on EditViewHabitEventActivity"
+    ],
+    "collaborators": [
+      "Event",
+      "EditViewHabitEventActivity"
+    ]
+  },
+  {
+    "name": "MainActivity",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Connects to Firebase to get Current User Data",
+      "Allows user to first Login, if not already",
+      "Has Navigation menu which links to other Activities",
+      "Link to MyHabitsActivity",
+      "Link to UserActivity",
+      "If Log out then pushed to LoginActivity"
+    ],
+    "collaborators": [
+      "User",
+      "LoginActivity",
+      "MyHabitsActivity",
+      "UserActivity",
+      "LoginActivity"
+    ]
+  },
+  {
+    "name": "EditViewHabitEventActivity",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Add Event Details",
+      "Edit Existing Event Details",
+      "Create new Event"
+    ],
+    "collaborators": [
+      "MainActivity",
+      "Event"
+    ]
+  },
+  {
+    "name": "UserActivity",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Display User Habits ",
+      "Include button for users to follow",
+      "Display Followers",
+      "Display Following",
+      "Display/Add Profile Picture"
+    ],
+    "collaborators": [
+      "User ",
+      "MyFollowersFragment",
+      "MyFollowingFragment"
+    ]
+  },
+  {
+    "name": "LoginActivity",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Enter Email",
+      "Enter Password",
+      "Sign User in",
+      "If User is already signed in pushes to MainActivity",
+      "Allow Creation of new account and send to Sign Up Activity",
+      "Invokes ManageUser to get access to firebase",
+      "Sends to MainActivity on success"
+    ],
+    "collaborators": [
+      "User",
+      "SignUpActivity",
+      "MainActivity"
+    ]
+  },
+  {
+    "name": "MyFollowersFragment",
+    "superclasses": "Fragment",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Displays Current Users Followers",
+      "Held by FollowerAdapter"
+    ],
+    "collaborators": [
+      "User",
+      "FollowerAdapter"
+    ]
+  },
+  {
+    "name": "MyFollowingFragment",
+    "superclasses": "Fragment",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Display All following users for current user",
+      "Held by FollowersAdapter"
+    ],
+    "collaborators": [
+      "User",
+      "FollowerAdapter"
+    ]
+  },
+  {
+    "name": "HabitCreate/EditActivity",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Add Habit",
+      "Edit Existing habit",
+      ""
+    ],
+    "collaborators": [
+      "User",
+      "Display_Habit_Activity"
+    ]
+  },
+  {
+    "name": "ManageUser",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Connects with Firebase ",
+      "Creates, updates and loads documents ",
+      "Loads in User Data"
+    ],
+    "collaborators": [
+      "User"
+    ]
+  },
+  {
+    "name": "FollowerAdapter",
+    "superclasses": "ArrayAdapter",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Hold Followers",
+      "Hold Following"
+    ],
+    "collaborators": [
+      "MyFollowersFragment",
+      "MyFollowingFragment",
+      "User"
+    ]
+  },
+  {
+    "name": "EventsTodayFragment",
+    "superclasses": "Fragment",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Displays Events to be done on the day"
+    ],
+    "collaborators": [
+      "Event"
+    ]
+  },
+  {
+    "name": "MyHistoryFragement",
+    "superclasses": "Fragment",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Hold all Events that the user has done or is currently doing",
+      ""
+    ],
+    "collaborators": [
+      "MainActivity",
+      "User",
+      "Event"
+    ]
+  }
+]
