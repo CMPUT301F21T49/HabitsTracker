@@ -38,7 +38,9 @@ public class MyHabitsActivity extends AppCompatActivity {
 
 
         currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
-        if (currentUser != null && currentUser.getHabits()!= null){
+        if (currentUser != null && currentUser.getHabits().size() > 0){
+            System.out.println("Retrieve Habits");
+            System.out.println(currentUser.getHabits().get(0));
             for (Habit h : habitArrayList = currentUser.getHabits()) {
                 habitNameList.add(h.getName());
             }
