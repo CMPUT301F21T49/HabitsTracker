@@ -8,6 +8,7 @@ public class User implements Serializable {
 
     String Id;
     ArrayList<Habit> Habits = new ArrayList<>();
+    static final public String SERIALIZED= "USER_CLASS";
 
     public User(){}
     /**

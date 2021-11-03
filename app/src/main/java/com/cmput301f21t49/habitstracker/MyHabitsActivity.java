@@ -2,6 +2,7 @@ package com.cmput301f21t49.habitstracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -85,4 +86,18 @@ public class MyHabitsActivity extends AppCompatActivity {
 
         }
     };
+
+    /**
+     * https://stackoverflow.com/questions/6554317/savedinstancestate-is-always-null
+     * @param item menu item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId()== android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
