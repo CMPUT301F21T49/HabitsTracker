@@ -5,25 +5,30 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EditViewHabitEventActivity extends AppCompatActivity {
 
     Button Save;
     Button Escape;
-    public Event currentEvent;
-
+    public Habit currentHabit;
+    List<String> eventNameList = new ArrayList<>();
+    ArrayList<Event> eventArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_view_event);
 
-        currentEvent = (Event) getIntent().getSerializableExtra("CurrentEventObj");
+        currentHabit = (Habit) getIntent().getSerializableExtra("CurrentHabitObj");
         if (currentHabit != null && currentHabit.getEvents()!= null){
-            
+            for (Event e : eventArrayList = currentHabit.getEvents()) {
+                eventNameList.add(e.getName());
+            }
 
         }
 
 
     }
 }
-
