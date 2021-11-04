@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 /*
-This test is not working right now. Gradle problems related to test.
-App is running though and Database tests for these functions ran fine.
+This test is not working right now. Gradle problems related to this test.
+App is running though and manual Database tests for these functions ran fine.
  */
 
 public class ManageUserTest {

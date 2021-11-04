@@ -24,6 +24,32 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Date;
 
+/*
+ *MainActivity
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+/**
+ * This is the Main Activity page that displays the user events and has a menu to traverse to other activities
+ * @author team 49
+ * @version 1.0
+ * @see User
+ * @see LoginActivity, SignUpActivity
+ * @since 1.0
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;

@@ -11,10 +11,31 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 /*
-A singleton class responsible for Managing the database. We can load, update, create user documents
-here and callBack methods ensure we can pass objects received from the firebase to calling methods
+ * ManageUser
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+/**
+ * A singleton class responsible for Managing the database. We can load, update, create user documents
+ * here and callBack methods ensure we can pass objects received from the firebase to calling methods
+ * @author Purvi S.
+ *  @version 1.0
+ * @see MainActivity
+ * @see LoginActivity
+ * @see SignUpActivity
+ * @since 1.0
  */
 
 public class ManageUser {
