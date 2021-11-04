@@ -79,6 +79,14 @@ public class Habit implements Serializable {
     public ArrayList<Event> getAllEvents() {
         return this.Events;
     }
+    /**
+     * Delete all events linked to this Habit
+     * @return Void
+
+     */
+    public void deleteAllEvents(){
+        this.Events = null;
+    }
 
     /**
      * Set new Habit name
