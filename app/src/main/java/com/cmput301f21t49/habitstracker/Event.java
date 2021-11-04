@@ -3,6 +3,7 @@ package com.cmput301f21t49.habitstracker;
 import android.media.Image;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class Event implements Serializable {
 
@@ -13,13 +14,13 @@ public class Event implements Serializable {
     private String image_url;
     private Image image;
     private LocalDate date;
-
+    public Event(){}
     /**
      * Event constructor, on creation has a status of in progress
      * @param name
      *      Name of Event
      */
-    public Event(){}
+
     public Event(String name, String location, String comment, Image image, LocalDate date) {
         this.name = name;
         this.location = location;
@@ -43,7 +44,7 @@ public class Event implements Serializable {
      * @param
      *      date
      */
-    public LocalDate setDate(LocalDate date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
