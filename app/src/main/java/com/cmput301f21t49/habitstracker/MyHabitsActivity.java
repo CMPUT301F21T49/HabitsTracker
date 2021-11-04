@@ -69,7 +69,7 @@ public class MyHabitsActivity extends AppCompatActivity {
 
     }
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN| ItemTouchHelper.START | ItemTouchHelper.END, 0) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN| ItemTouchHelper.LEFT | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
@@ -85,8 +85,21 @@ public class MyHabitsActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getBindingAdapterPosition();
+            habitNameList.remove(position);
+            if (currentUser != null && currentUser.getHabits().size() > 0){
+                currentUser.getHabits().get(position).deleteAllEvents(); //delete all events associated with this habit
+                currentUser.deleteHabit(position); //delete the habit
+            }
+            recyclerView.getAdapter().notifyItemRemoved(position);
 
 
+        }
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+            int swipeFlags = ItemTouchHelper.LEFT;
+            return makeMovementFlags(dragFlags, swipeFlags);
         }
     };
 
