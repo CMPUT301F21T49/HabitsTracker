@@ -48,7 +48,7 @@ public class UserActivity extends AppCompatActivity {
     private EditText editFollowName;
     private Button sendButton;
 
-    private ArrayList<User> tempList = new ArrayList<User>();
+    private ArrayList<User> tempList = new ArrayList<User>(); //temporary list of users
     private User currentUser;
 
     private MyFollowersFragment followersFragment = MyFollowersFragment.newInstance(tempList);
@@ -60,7 +60,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
+        currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
 
         userImageView = findViewById(R.id.userImageView);
         usernameTextView = findViewById(R.id.username);
@@ -126,7 +126,6 @@ public class UserActivity extends AppCompatActivity {
         ft.replace(R.id.frame, followingFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
-
     }
 
     /**

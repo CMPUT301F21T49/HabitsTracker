@@ -53,7 +53,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth fAuth;
+    public FirebaseAuth fAuth;
     public User currentUser;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
+        currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -105,14 +105,14 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.habits:
                         drawerLayout.closeDrawers();
                         intent = new Intent(MainActivity.this, MyHabitsActivity.class);
-                        intent.putExtra("CurrentUserObj", currentUser);
+                        intent.putExtra(User.SERIALIZED, currentUser);
                         startActivity(intent);
                         return true;
 
                     case R.id.following:
                         drawerLayout.closeDrawers();
                         intent = new Intent(MainActivity.this, UserActivity.class);
-                        intent.putExtra("CurrentUserObj", currentUser);
+                        intent.putExtra(User.SERIALIZED, currentUser);
                         startActivity(intent);
                         return true;
 
