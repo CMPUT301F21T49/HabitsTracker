@@ -27,14 +27,25 @@ import java.util.Date;
 
 public class User implements Serializable {
 
+    String email;
     String Id;
     ArrayList<Habit> Habits = new ArrayList<>();
     ArrayList<User> Following = new ArrayList<>();
     ArrayList<User> Followers = new ArrayList<>();
+    ArrayList<String> Requests = new ArrayList<>();
     static final public String SERIALIZED= "USER_CLASS";
 
+
+    /**
+     * Empty Constructor used to invoke User
+     */
     public User(){}
 
+    /**
+     * Temporary constructor with parameter
+     * @param id
+     *      Id of User
+     */
     public User(String id) {
         this.Id = id;
     }
@@ -48,6 +59,23 @@ public class User implements Serializable {
         return Id;
     }
 
+    /**
+     * Get User email
+     * @return
+     *      Email as String
+     */
+    public String getEmail() {
+        return this.email;
+    }
+
+    /**
+     * Set User email
+     * @param email
+     *      User email stored as string
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
     /**
      * Method to set ID
      * @param Id
@@ -145,19 +173,66 @@ public class User implements Serializable {
         habit.updateCompletion();
     }
 
+    /**
+     * Add a follower if follow request accepted
+     * @param user
+     *      User that is following current user
+     */
     public void addFollower(User user) {
         Followers.add(user);
     }
 
+    /**
+     * Get List of all followers
+     * @return
+     *      Followers ArrayList
+     */
     public ArrayList<User> getFollowers() {
         return this.Followers;
     }
 
+    /**
+     * Add following if a user accepts sent follow request
+     * @param user
+     *      User current user is following
+     */
     public void addFollowing(User user) {
         Following.add(user);
     }
 
+    /**
+     * List of Following users
+     * @return
+     *      ArrayList of users that current user is following
+     */
     public ArrayList<User> getFollowing() {
         return this.Following;
+    }
+
+    /**
+     * Method that adds a request if another user sends
+     * @param email
+     *      Email of user that sent the request
+     */
+    public void addRequest(String email) {
+        Requests.add(email);
+    }
+
+    /**
+     * Once request is answered, remove request from list
+     * @param index
+     *      Index of request to be removed
+     */
+    public void onRequestAnswered(int index) {
+        Requests.remove(index);
+    }
+
+    /**
+     * Overloaded method in case want to remove by email
+     * @param email
+     *      email of request removed
+     */
+    public void onRequestAnswered(String email) {
+        Requests.remove(email);
     }
 }
