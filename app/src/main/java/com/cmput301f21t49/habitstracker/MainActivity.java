@@ -46,7 +46,8 @@ import java.util.Date;
  * @author team 49
  * @version 1.0
  * @see User
- * @see LoginActivity, SignUpActivity
+ * @see LoginActivity
+ * @see SignUpActivity
  * @since 1.0
  */
 
