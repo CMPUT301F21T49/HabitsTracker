@@ -2,7 +2,6 @@ package com.cmput301f21t49.habitstracker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 /*
  * User
  *
