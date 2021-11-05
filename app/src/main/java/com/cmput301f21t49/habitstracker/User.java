@@ -135,7 +135,7 @@ public class User implements Serializable {
      * @param eventIndex
      *      Event index to access event from Habit
      * @param newName
-     *      Updated name of Eevent
+     *      Updated name of Event
      * @param newStatus
      *      Updated Status of Event
      */
