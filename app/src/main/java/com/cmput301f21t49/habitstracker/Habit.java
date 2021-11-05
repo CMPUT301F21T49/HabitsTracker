@@ -105,8 +105,6 @@ public class Habit implements Serializable {
     }
     /**
      * Delete all events linked to this Habit
-     * @return Void
-
      */
     public void deleteAllEvents(){
         this.Events = null;

@@ -2,7 +2,6 @@ package com.cmput301f21t49.habitstracker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 /*
  * User
  *
@@ -136,7 +135,7 @@ public class User implements Serializable {
      * @param eventIndex
      *      Event index to access event from Habit
      * @param newName
-     *      Updated name of Eevent
+     *      Updated name of Event
      * @param newStatus
      *      Updated Status of Event
      */

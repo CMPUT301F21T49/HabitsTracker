@@ -31,7 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * A singleton class responsible for Managing the database. We can load, update, create user documents
  * here and callBack methods ensure we can pass objects received from the firebase to calling methods
  * @author Purvi S.
- *  @version 1.0
+ * @version 1.0
  * @see MainActivity
  * @see LoginActivity
  * @see SignUpActivity

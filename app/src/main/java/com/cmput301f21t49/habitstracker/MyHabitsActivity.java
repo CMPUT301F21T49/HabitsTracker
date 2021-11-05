@@ -135,7 +135,7 @@ public class MyHabitsActivity extends AppCompatActivity {
     /**
      * https://stackoverflow.com/questions/6554317/savedinstancestate-is-always-null
      * @param item menu item
-     * @return
+     * @return boolean
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
