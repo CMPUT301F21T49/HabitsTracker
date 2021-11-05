@@ -11,7 +11,7 @@ import java.util.List;
 
 import android.content.Context;
 
-public class EventAdapter extends ArrayList<Event> {
+public class EventAdapter extends ArrayAdapter<Event> {
 
     ArrayList<Event> tempList;
 
