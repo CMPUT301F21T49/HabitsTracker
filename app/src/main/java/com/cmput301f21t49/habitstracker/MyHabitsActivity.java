@@ -60,7 +60,7 @@ public class MyHabitsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_myhabits);
 
 
-        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
+        currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
         if (currentUser != null && currentUser.getHabits().size() > 0){
             System.out.println("Retrieve Habits");
             System.out.println(currentUser.getHabits().get(0));

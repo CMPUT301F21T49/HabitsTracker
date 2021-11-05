@@ -32,7 +32,8 @@ public class User implements Serializable {
     ArrayList<User> Following = new ArrayList<>();
     ArrayList<User> Followers = new ArrayList<>();
     ArrayList<String> Requests = new ArrayList<>();
-    static final public String SERIALIZED= "USER_CLASS";
+
+    static final public String SERIALIZED= "USER_CLASS"; //Key for Serialized Users
 
 
     /**

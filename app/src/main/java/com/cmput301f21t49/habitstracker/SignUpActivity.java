@@ -94,6 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         Intent i = new Intent(SignUpActivity.this, MainActivity.class);
                                         //Clear activity history
                                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        i.putExtra(User.SERIALIZED, user);
                                         startActivity(i);
                                     }
                                 });
