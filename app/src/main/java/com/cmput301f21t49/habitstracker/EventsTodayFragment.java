@@ -13,6 +13,27 @@ import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+/*
+ * EventsTodayFragment
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+/**
+ * Events today fragment responsible for displaying events happened today
+ * @see MainActivity
+ */
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EventsTodayFragment extends Fragment {
@@ -32,6 +53,7 @@ public class EventsTodayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Load today's events into the arraylist
         if (getArguments() != null) {
             habitArrayList = currentUser.getHabits();
             for ( Habit h : habitArrayList) {
@@ -55,12 +77,21 @@ public class EventsTodayFragment extends Fragment {
         View v = inflater.inflate(R.layout.todays_events, container, false);
         listview = v.findViewById(R.id.today_events);
         ArrayList<Event> tempList = new ArrayList<Event>();
+        tempList.add(new Event());
         adapter = new EventAdapter(tempList, getContext());
         listview.setAdapter((ListAdapter) adapter);
         return v;
     }
 
+    /* This method is invoked once any item of the fragment's is clicked
+    listview.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+            //int position = getAdapter
+    }*/
+
     public ArrayList<Habit> getHabitArrayList() {
         return habitArrayList;
     }
 }
+
