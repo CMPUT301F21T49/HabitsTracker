@@ -11,17 +11,39 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/*
+ * FollwerAdapter
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+/**
+ * Follower Adapter, extends {@link ArrayAdapter} for Users
+ */
 public class FollowerAdapter extends ArrayAdapter<User> {
 
     private ArrayList<User> userList;
     private boolean buttonToggle = false;
 
+    /**
+     * Follower Adapter Constructor
+     * @param context Context of the adapter
+     * @param userList list of users
+     */
     public FollowerAdapter(Context context, ArrayList<User> userList) {
         super(context, 0, userList);
         this.userList = userList;
@@ -60,6 +82,10 @@ public class FollowerAdapter extends ArrayAdapter<User> {
         return v;
     }
 
+    /**
+     * Toggle buttons on views
+     * @param b state of button
+     */
     public void setButtonToggle(boolean b) {
         buttonToggle = b;
     }

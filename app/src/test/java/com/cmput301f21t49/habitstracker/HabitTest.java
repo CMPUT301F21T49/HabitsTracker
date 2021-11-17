@@ -21,11 +21,11 @@ public class HabitTest {
         event.setStatus("In progress");
         habit.addEvent(event);
         habit.updateCompletion();
-        assertEquals((long) habit.getPct(), 0);
+        assertEquals(0, (long) habit.getPct());
         Event event2 = new Event();
         event2.setStatus("Completed");
         habit.addEvent(event2);
         habit.updateCompletion();
-        assertEquals((long) habit.getPct(), 50);
+        assertEquals(0.5, habit.getPct(), 0);
     }
 }

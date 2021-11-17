@@ -21,10 +21,30 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
+/*
+ * LoginActivity
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
 /**
  * Activity responsible for logging in. Links to MainActivity and SignUpActivity. If a user is already
  * signed in, user will automatically be sent to the MainActivity.
+ * @see SignUpActivity
+ * @see MainActivity
  */
+
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;
@@ -50,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
+                //preprocess email and password
                 if (email.equals("")) {
                     emailText.setError("Email is Empty");
                     return;
@@ -58,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     passwordText.setError("Password is Empty");
                     return;
                 }
+
                 fAuth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
@@ -69,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                                             //Have access to the current user's object here
                                             //Can pass this through activities
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            intent.putExtra("CurrentUserObj", user);
+                                            intent.putExtra(User.SERIALIZED, user);
                                             startActivity(intent);
                                             finish();
                                         }
@@ -98,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                             });
                 }
             });
+
             //On click "SIGN UP", start sign up activity
             signUpText.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onCallback(User user) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("CurrentUserObj", user);
+                    intent.putExtra(User.SERIALIZED, user);
                     startActivity(intent);
                 }
             });

@@ -3,18 +3,42 @@ package com.cmput301f21t49.habitstracker;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+/*
+ * Habit
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+/**
+ * Base Habit Class
+ * @author team 49
+ */
 
 public class Habit implements Serializable {
 
     private String name;
     private int Id;
-    private ArrayList<Event> Events;
-    private ArrayList<String> days;
-    private double pct;
+    private ArrayList<Event> Events = new ArrayList<>();
+    private ArrayList<String> days = new ArrayList<>();
+    private double pct= 0;
 
+    /**
+     * Empty constructor used normally
+     */
     public Habit(){}
     /**
-     * Habit Constructor
+     * Habit Constructor with params for testing (temporary)
      * @param name
      *      Name of Habit
      * @param Id
@@ -30,7 +54,6 @@ public class Habit implements Serializable {
         this.Id = Id;
         this.days = days;
         pct = 0;
-        Events = new ArrayList<>();
     }
 
     /**
@@ -80,6 +103,12 @@ public class Habit implements Serializable {
     public ArrayList<Event> getAllEvents() {
         return this.Events;
     }
+    /**
+     * Delete all events linked to this Habit
+     */
+    public void deleteAllEvents(){
+        this.Events = null;
+    }
 
     /**
      * Set new Habit name
@@ -128,37 +157,68 @@ public class Habit implements Serializable {
      */
     public void updateCompletion() {
         int totalEvents = Events.size();
-        int completed = 0;
+        double completed = 0;
         for (int i = 0; i < totalEvents; i++) {
-            if (Events.get(i).getStatus() == "Completed") {
-                completed = completed + 1;
+            if (Events.get(i).getStatus().equals("Completed")) {
+                completed++;
             }
         }
-        double newPct = completed/totalEvents;
-        this.pct = newPct;
+        if (totalEvents != 0) {
+            double newPct = completed/totalEvents;
+            this.setPct(newPct);
+        }
     }
 
-
+    /**
+     * Set Id for Habit
+     * @param id
+     *      Id to be assigned to Habit
+     */
     public void setId(int id) {
         Id = id;
     }
 
+    /**
+     * Get all events related to the habit
+     * @return
+     *      ArrayList of Events
+     */
     public ArrayList<Event> getEvents() {
         return Events;
     }
 
+    /**
+     * Set Events for the habit
+     * @param events
+     *      ArrayList of Events
+     */
     public void setEvents(ArrayList<Event> events) {
         Events = events;
     }
 
+    /**
+     * Get days in which the habit is meant to be done
+     * @return
+     *      ArrayList of Days
+     */
     public ArrayList<String> getDays() {
         return days;
     }
 
+    /**
+     * Set the days habit is to be done
+     * @param days
+     *      ArrayList of Days
+     */
     public void setDays(ArrayList<String> days) {
         this.days = days;
     }
 
+    /**
+     * Set percentage of habit completed
+     * @param pct
+     *      Percentage
+     */
     public void setPct(double pct) {
         this.pct = pct;
     }

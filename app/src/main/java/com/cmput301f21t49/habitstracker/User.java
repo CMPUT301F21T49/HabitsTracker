@@ -2,22 +2,52 @@ package com.cmput301f21t49.habitstracker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+/*
+ * User
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+/**
+ * Base User Class
+ * @author team 49
+ */
 
 public class User implements Serializable {
 
+    String email;
     String Id;
-    ArrayList<Habit> Habits;
+    ArrayList<Habit> Habits = new ArrayList<>();
+    ArrayList<User> Following = new ArrayList<>();
+    ArrayList<User> Followers = new ArrayList<>();
+    ArrayList<String> Requests = new ArrayList<>();
 
-    public User(){}
+    static final public String SERIALIZED= "USER_CLASS"; //Key for Serialized Users
+
+
     /**
-     * Constructor for User
-     * @param Id
-     *      Unique user ID
+     * Empty Constructor used to invoke User
      */
-    public User(String Id) {
-        this.Id = Id;
-        Habits = new ArrayList<>();
+    public User(){}
+
+    /**
+     * Temporary constructor with parameter
+     * @param id
+     *      Id of User
+     */
+    public User(String id) {
+        this.Id = id;
     }
 
     /**
@@ -28,6 +58,29 @@ public class User implements Serializable {
     public String getId() {
         return Id;
     }
+
+    /**
+     * Get User email
+     * @return
+     *      Email as String
+     */
+    public String getEmail() {
+        return this.email;
+    }
+
+    /**
+     * Set User email
+     * @param email
+     *      User email stored as string
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    /**
+     * Method to set ID
+     * @param Id
+     *      User assigned ID
+     */
     public void setId(String Id){this.Id =Id;}
 
     /**
@@ -83,7 +136,7 @@ public class User implements Serializable {
      * @param eventIndex
      *      Event index to access event from Habit
      * @param newName
-     *      Updated name of Eevent
+     *      Updated name of Event
      * @param newStatus
      *      Updated Status of Event
      */
@@ -118,5 +171,68 @@ public class User implements Serializable {
         Habit habit = Habits.get(habitIndex);
         habit.deleteEvent(eventIndex);
         habit.updateCompletion();
+    }
+
+    /**
+     * Add a follower if follow request accepted
+     * @param user
+     *      User that is following current user
+     */
+    public void addFollower(User user) {
+        Followers.add(user);
+    }
+
+    /**
+     * Get List of all followers
+     * @return
+     *      Followers ArrayList
+     */
+    public ArrayList<User> getFollowers() {
+        return this.Followers;
+    }
+
+    /**
+     * Add following if a user accepts sent follow request
+     * @param user
+     *      User current user is following
+     */
+    public void addFollowing(User user) {
+        Following.add(user);
+    }
+
+    /**
+     * List of Following users
+     * @return
+     *      ArrayList of users that current user is following
+     */
+    public ArrayList<User> getFollowing() {
+        return this.Following;
+    }
+
+    /**
+     * Method that adds a request if another user sends
+     * @param email
+     *      Email of user that sent the request
+     */
+    public void addRequest(String email) {
+        Requests.add(email);
+    }
+
+    /**
+     * Once request is answered, remove request from list
+     * @param index
+     *      Index of request to be removed
+     */
+    public void onRequestAnswered(int index) {
+        Requests.remove(index);
+    }
+
+    /**
+     * Overloaded method in case want to remove by email
+     * @param email
+     *      email of request removed
+     */
+    public void onRequestAnswered(String email) {
+        Requests.remove(email);
     }
 }

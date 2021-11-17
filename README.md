@@ -5,3 +5,4 @@ You can find the official documentation on our [wiki](https://github.com/CMPUT30
 
 This is an app that keeps track of your habits. You can create habits, give them a schedule, delete them, edit them, follow other users and view their habits as well.
 
+**If any problems arise while running unit tests. Make a configuration to run them.**

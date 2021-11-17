@@ -1,12 +1,13 @@
 package com.cmput301f21t49.habitstracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +19,26 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+/*
+ * UserActivity
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
 /**
  * Activity responsible for showing user information in addition to their followers/following.
  */
+
 public class UserActivity extends AppCompatActivity {
     private ImageView userImageView;
     private TextView usernameTextView;
@@ -31,7 +48,7 @@ public class UserActivity extends AppCompatActivity {
     private EditText editFollowName;
     private Button sendButton;
 
-    private ArrayList<User> tempList = new ArrayList<User>();
+    private ArrayList<User> tempList = new ArrayList<User>(); //temporary list of users
     private User currentUser;
 
     private MyFollowersFragment followersFragment = MyFollowersFragment.newInstance(tempList);
@@ -43,7 +60,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
+        currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
 
         userImageView = findViewById(R.id.userImageView);
         usernameTextView = findViewById(R.id.username);
@@ -109,12 +126,19 @@ public class UserActivity extends AppCompatActivity {
         ft.replace(R.id.frame, followingFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
-
     }
+
+    /**
+     * https://stackoverflow.com/questions/6554317/savedinstancestate-is-always-null
+     * @param item menu item
+     * @return boolean
+     */
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra("CurrentUserObj", currentUser);
-        setResult(RESULT_OK, intent);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId()== android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

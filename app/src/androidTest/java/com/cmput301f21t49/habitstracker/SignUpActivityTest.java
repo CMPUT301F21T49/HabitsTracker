@@ -49,6 +49,7 @@ public class SignUpActivityTest {
         solo.waitForActivity(MainActivity.class, 2000);
         //Ensure firebase acknowledges login
         assertNotNull(fAuth.getCurrentUser());
+
         //Have to logout, firebase will remain logged in even when test ends
         FirebaseAuth.getInstance().getCurrentUser().delete()
                 .addOnFailureListener(new OnFailureListener() {

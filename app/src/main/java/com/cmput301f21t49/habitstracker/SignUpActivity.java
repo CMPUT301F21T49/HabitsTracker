@@ -19,10 +19,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+/*
+ * SignUpActivity
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
 /**
  * Activity responsible for signup actions
+ * @see LoginActivity
+ * @see MainActivity
  */
+
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;
@@ -76,6 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         Intent i = new Intent(SignUpActivity.this, MainActivity.class);
                                         //Clear activity history
                                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        i.putExtra(User.SERIALIZED, user);
                                         startActivity(i);
                                     }
                                 });

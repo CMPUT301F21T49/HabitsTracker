@@ -2,6 +2,7 @@ package com.cmput301f21t49.habitstracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +12,35 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+/*
+ * MyHabitsActivity
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+/**
+ * This is the My Habits activity responsible for displaying habits, handling reordering and deletion
+ * @author Purvi S.
+ * @version 1.0
+ * @see RecyclerAdapter
+ * @see MainActivity
+ * @since 1.0
+ */
 
 public class MyHabitsActivity extends AppCompatActivity {
 
@@ -36,8 +60,10 @@ public class MyHabitsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_myhabits);
 
 
-        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
-        if (currentUser != null && currentUser.getHabits()!= null){
+        currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
+        if (currentUser != null && currentUser.getHabits().size() > 0){
+            System.out.println("Retrieve Habits");
+            System.out.println(currentUser.getHabits().get(0));
             for (Habit h : habitArrayList = currentUser.getHabits()) {
                 habitNameList.add(h.getName());
             }
@@ -66,7 +92,13 @@ public class MyHabitsActivity extends AppCompatActivity {
 
     }
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN| ItemTouchHelper.START | ItemTouchHelper.END, 0) {
+    /**
+     * ItemTouch helper method with omMoved and onSwiped methods that handles these operations
+     * @param UP ItemTouchHelper
+     * @param DOWN ItemTouchHelper
+     * @param LEFT ItemTouchHelper
+     */
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN| ItemTouchHelper.LEFT | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
@@ -82,16 +114,35 @@ public class MyHabitsActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getBindingAdapterPosition();
+            habitNameList.remove(position);
+            if (currentUser != null && currentUser.getHabits().size() > 0){
+                currentUser.getHabits().get(position).deleteAllEvents(); //delete all events associated with this habit
+                currentUser.deleteHabit(position); //delete the habit
+            }
+            recyclerView.getAdapter().notifyItemRemoved(position);
 
 
         }
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+            int swipeFlags = ItemTouchHelper.LEFT;
+            return makeMovementFlags(dragFlags, swipeFlags);
+        }
     };
 
-
+    /**
+     * https://stackoverflow.com/questions/6554317/savedinstancestate-is-always-null
+     * @param item menu item
+     * @return boolean
+     */
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra("CurrentUserObj", currentUser);
-        setResult(RESULT_OK, intent);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId()== android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

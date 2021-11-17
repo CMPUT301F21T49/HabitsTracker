@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -25,9 +24,36 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Date;
 
+/*
+ *MainActivity
+ *
+ * version 1.0
+ *
+ * November 3, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+/**
+ * This is the Main Activity page that displays the user events and has a menu to traverse to other activities
+ * @author team 49
+ * @version 1.0
+ * @see User
+ * @see LoginActivity
+ * @see SignUpActivity
+ * @since 1.0
+ */
+
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth fAuth;
+    public FirebaseAuth fAuth;
     public User currentUser;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
@@ -53,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
+        currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -77,25 +103,25 @@ public class MainActivity extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.habits:
+                        drawerLayout.closeDrawers();
                         intent = new Intent(MainActivity.this, MyHabitsActivity.class);
-                        intent.putExtra("CurrentUserObj", currentUser);
+                        intent.putExtra(User.SERIALIZED, currentUser);
                         startActivity(intent);
-                        finish();
-                        break;
+                        return true;
 
                     case R.id.following:
+                        drawerLayout.closeDrawers();
                         intent = new Intent(MainActivity.this, UserActivity.class);
-                        intent.putExtra("CurrentUserObj", currentUser);
+                        intent.putExtra(User.SERIALIZED, currentUser);
                         startActivity(intent);
-                        finish();
-                        break;
+                        return true;
+
                     case R.id.signout:
                         fAuth.signOut();
 
                     default:
                         return true;
                 }
-                return true;
             }
         });
 
@@ -161,18 +187,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @SuppressLint("MissingSuperCall")
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                currentUser = (User) getIntent().getSerializableExtra("CurrentUserObj");
-            }
-        }
-    }
-
 
 
 }
