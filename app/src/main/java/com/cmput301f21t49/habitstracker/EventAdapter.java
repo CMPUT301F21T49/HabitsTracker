@@ -1,3 +1,5 @@
+package com.cmput301f21t49.habitstracker;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.widget.ArrayAdapter;
 
 public class EventAdapter extends ArrayAdapter<Event> {
 
@@ -21,12 +24,14 @@ public class EventAdapter extends ArrayAdapter<Event> {
         this.tempList = tempList;
     }
 
-    @Override
+
+
     @NonNull
-    public View getView(int position, @NonNull ViewGroup parent, @Nullable View convertView) {
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View v = convertView;
         if (v == null) {
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.todays_events, parent, false);
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item, parent, false);
         }
 
         return v;
@@ -34,6 +39,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
 
 }
+
 
 
 
