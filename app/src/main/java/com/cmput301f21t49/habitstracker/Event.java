@@ -2,6 +2,7 @@ package com.cmput301f21t49.habitstracker;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+
 /*
  * Event
  *
@@ -32,10 +33,11 @@ public class Event implements Serializable {
     private String comment;
     private String image_url;
     private LocalDate date;
-
+    public Event(){}
     /**
      * Empty constructor to invoke event
      */
+
     public Event(){}
 
     /**
