@@ -33,7 +33,7 @@ public class Event implements Serializable {
     private String comment;
     private String image_url;
     private LocalDate date;
-    public Event(){}
+
     /**
      * Empty constructor to invoke event
      */
