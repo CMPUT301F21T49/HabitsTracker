@@ -29,6 +29,8 @@ public class Habit implements Serializable {
 
     private String name;
     private int Id;
+    private Boolean privateHabit;
+    private Date StartDate;
     private ArrayList<Event> Events = new ArrayList<>();
     private ArrayList<String> days = new ArrayList<>();
     private double pct= 0;
@@ -54,6 +56,20 @@ public class Habit implements Serializable {
         this.Id = Id;
         this.days = days;
         pct = 0;
+    }
+
+    /**
+     * Habit Constructor to be called when new habit is created
+     * @param name
+     * @param privateHabit
+     * @param startDate
+     * @param days
+     */
+    public Habit(String name, Boolean privateHabit, Date startDate, ArrayList<String> days) {
+        this.name = name;
+        this.privateHabit = privateHabit;
+        StartDate = startDate;
+        this.days = days;
     }
 
     /**

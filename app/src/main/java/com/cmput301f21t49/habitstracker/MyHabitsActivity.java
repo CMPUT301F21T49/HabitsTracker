@@ -3,6 +3,8 @@ package com.cmput301f21t49.habitstracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -42,7 +45,7 @@ import java.util.List;
  * @since 1.0
  */
 
-public class MyHabitsActivity extends AppCompatActivity {
+public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragment.OnFragmentInteractionListener{
 
     public User currentUser;
     RecyclerView recyclerView;
@@ -51,6 +54,7 @@ public class MyHabitsActivity extends AppCompatActivity {
     ArrayList<Habit> habitArrayList = new ArrayList<>();
     ManageUser manageUser = ManageUser.getInstance();
     public FirebaseAuth fAuth;
+    Habit newHabit = new Habit();
 
 
 
@@ -89,6 +93,28 @@ public class MyHabitsActivity extends AppCompatActivity {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        //Button to add a new habit
+        final FloatingActionButton add_button = findViewById(R.id.floatingActionButton2);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //call the Fragment
+                newHabit = null; //make the med object that is clicked null
+                new AddHabitFragment().show(getSupportFragmentManager(),"ADD_Habit");
+
+            }
+        });
+
+    }
+    /** To add a new medicine in the list
+     * @param  newHabit
+     * */
+
+    @Override
+    public void onNewPressed(Habit newHabit){
+
+        habitArrayList.add(newHabit);
+        recyclerAdapter.notifyDataSetChanged();
 
     }
 
