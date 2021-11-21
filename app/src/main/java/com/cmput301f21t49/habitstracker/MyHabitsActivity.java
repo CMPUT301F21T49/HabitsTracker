@@ -3,6 +3,8 @@ package com.cmput301f21t49.habitstracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -40,7 +43,7 @@ import java.util.List;
  * @since 1.0
  */
 
-public class MyHabitsActivity extends AppCompatActivity {
+public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragment.OnFragmentInteractionListener{
 
     public User currentUser;
     RecyclerView recyclerView;
@@ -49,6 +52,7 @@ public class MyHabitsActivity extends AppCompatActivity {
     ArrayList<Habit> habitArrayList = new ArrayList<>();
     ManageUser manageUser = ManageUser.getInstance();
     public FirebaseAuth fAuth;
+    Habit newHabit = new Habit();
 
 
 
@@ -60,7 +64,7 @@ public class MyHabitsActivity extends AppCompatActivity {
 
         currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
         updateUser();
-        if (currentUser != null && currentUser.getHabits().size() > 0){
+        if (currentUser != null && currentUser.getHabits() != null && currentUser.getHabits().size() > 0){
             System.out.println("Retrieve Habits");
             System.out.println(currentUser.getHabits().size());
             for (Habit h : habitArrayList = currentUser.getHabits()) {
@@ -89,6 +93,31 @@ public class MyHabitsActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        //Button to add a new habit
+        final FloatingActionButton add_button = findViewById(R.id.floatingActionButton2);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //call the Fragment
+                newHabit = null; //make the med object that is clicked null
+                new AddHabitFragment().show(getSupportFragmentManager(),"ADD_Habit");
+
+            }
+        });
+
+    }
+    /** To add a new medicine in the list
+     * @param  newHabit
+     * */
+
+    @Override
+    public void onNewPressed(Habit newHabit){
+
+        habitArrayList.add(newHabit);
+        habitNameList.add(newHabit.getName());
+        currentUser.addHabit(newHabit);
+        updateDatabase();
+        recyclerAdapter.notifyDataSetChanged();
+
     }
 
     /**
@@ -115,7 +144,7 @@ public class MyHabitsActivity extends AppCompatActivity {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getBindingAdapterPosition();
             habitNameList.remove(position);
-            if (currentUser != null && currentUser.getHabits().size() > 0){
+            if (currentUser != null && currentUser.getHabits() != null && currentUser.getHabits().size() > 0){
                 System.out.println(currentUser.getHabits().get(position).getName());
                 currentUser.getHabits().get(position).deleteEvents(); //delete all events associated with this habit
                 currentUser.deleteHabit(position); //delete the habit
