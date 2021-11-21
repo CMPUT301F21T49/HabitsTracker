@@ -27,11 +27,9 @@ import java.util.List;
  * November 3, 2021
  *
  *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
-
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
-
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  */
@@ -65,15 +63,16 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
 
 
         currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
+        updateUser();
         if (currentUser != null && currentUser.getHabits().size() > 0){
             System.out.println("Retrieve Habits");
-            System.out.println(currentUser.getHabits().get(0));
+            System.out.println(currentUser.getHabits().size());
             for (Habit h : habitArrayList = currentUser.getHabits()) {
                 habitNameList.add(h.getName());
             }
 
         }else{
-            System.out.println(currentUser.getId()); 
+            System.out.println(currentUser.getId());
             habitNameList.add("testing1");
             habitNameList.add("testing2");
             habitNameList.add("testing3");
@@ -143,8 +142,11 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
             int position = viewHolder.getBindingAdapterPosition();
             habitNameList.remove(position);
             if (currentUser != null && currentUser.getHabits().size() > 0){
-                currentUser.getHabits().get(position).deleteAllEvents(); //delete all events associated with this habit
+                System.out.println(currentUser.getHabits().get(position).getName());
+                currentUser.getHabits().get(position).deleteEvents(); //delete all events associated with this habit
                 currentUser.deleteHabit(position); //delete the habit
+                updateDatabase();
+
             }
             recyclerView.getAdapter().notifyItemRemoved(position);
 
@@ -170,5 +172,23 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateDatabase() {
+        manageUser.createOrUpdate(currentUser, new VoidCallback() {
+            @Override
+            public void onCallback() {
+
+            }
+        });
+    }
+
+    public void updateUser() {
+        manageUser.get(currentUser.getId(), new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                currentUser = user;
+            }
+        });
     }
 }

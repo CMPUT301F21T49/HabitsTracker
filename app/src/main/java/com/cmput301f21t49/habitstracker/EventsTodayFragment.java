@@ -57,7 +57,7 @@ public class EventsTodayFragment extends Fragment {
         if (getArguments() != null) {
             habitArrayList = currentUser.getHabits();
             for ( Habit h : habitArrayList) {
-                ArrayList<Event> eventArrayList = h.getAllEvents();
+                ArrayList<Event> eventArrayList = h.getEvents();
                 for (Event e:
                         eventArrayList) {
                     if (e.getDate() == Today && !(todayEventList.contains(e))) {
