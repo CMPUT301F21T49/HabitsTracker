@@ -28,6 +28,7 @@ import java.util.Date;
 public class Habit implements Serializable {
 
     private String name;
+    private String reason;
     private Boolean privateHabit;
     private Date StartDate;
     private int id;
@@ -65,10 +66,11 @@ public class Habit implements Serializable {
      * @param startDate
      * @param days
      */
-    public Habit(String name, Boolean privateHabit, Date startDate, ArrayList<String> days) {
+    public Habit(String name, Boolean privateHabit, Date startDate, ArrayList<String> days, String reason) {
         this.name = name;
+        this.reason = reason;
         this.privateHabit = privateHabit;
-        StartDate = startDate;
+        this.StartDate = startDate;
         this.days = days;
     }
 
@@ -229,5 +231,29 @@ public class Habit implements Serializable {
      */
     public void setPct(double pct) {
         this.pct = pct;
+    }
+
+    public Date getStartDate() {
+        return StartDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        StartDate = startDate;
+    }
+
+    public Boolean getPrivateHabit() {
+        return privateHabit;
+    }
+
+    public void setPrivateHabit(Boolean privateHabit) {
+        this.privateHabit = privateHabit;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

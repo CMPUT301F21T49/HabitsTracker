@@ -98,7 +98,10 @@ public class User implements Serializable {
      *      Habit to add
      */
     public void addHabit(Habit habit) {
-        habits.add(habit);
+        if (this.habits == null){
+            this.habits = new ArrayList<Habit>();
+        }
+        this.habits.add(habit);
     }
 
     /**
@@ -111,10 +114,10 @@ public class User implements Serializable {
      *      New dates
      */
     public void editHabit(int index, String newName, ArrayList<String> Days) {
-        Habit habit  = habits.get(index);
+        Habit habit  = this.habits.get(index);
         habit.setName(newName);
         habit.setDays(Days);
-        habits.set(index, habit);
+        this.habits.set(index, habit);
     }
 
     /**
@@ -125,7 +128,7 @@ public class User implements Serializable {
      *      Event to be added
      */
     public void addEvent(int index, Event event) {
-        Habit habit = habits.get(index);
+        Habit habit = this.habits.get(index);
         habit.addEvent(event);
     }
 
@@ -141,7 +144,7 @@ public class User implements Serializable {
      *      Updated Status of Event
      */
     public void editEvent(int habitIndex, int eventIndex, String newName, String newStatus) {
-        Habit habit = habits.get(habitIndex);
+        Habit habit = this.habits.get(habitIndex);
         Event event = habit.getEvent(eventIndex);
         event.setName(newName);
         if (newStatus == "In Progress" || newStatus == "Completed") {
@@ -168,7 +171,7 @@ public class User implements Serializable {
      *      Event Index
      */
     public void deleteEvent(int habitIndex, int eventIndex) {
-        Habit habit = habits.get(habitIndex);
+        Habit habit = this.habits.get(habitIndex);
         habit.deleteEvent(eventIndex);
         habit.updateCompletion();
     }

@@ -64,7 +64,7 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
 
         currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
         updateUser();
-        if (currentUser != null && currentUser.getHabits().size() > 0){
+        if (currentUser != null && currentUser.getHabits() != null && currentUser.getHabits().size() > 0){
             System.out.println("Retrieve Habits");
             System.out.println(currentUser.getHabits().size());
             for (Habit h : habitArrayList = currentUser.getHabits()) {
@@ -113,6 +113,9 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
     public void onNewPressed(Habit newHabit){
 
         habitArrayList.add(newHabit);
+        habitNameList.add(newHabit.getName());
+        currentUser.addHabit(newHabit);
+        updateDatabase();
         recyclerAdapter.notifyDataSetChanged();
 
     }
@@ -141,7 +144,7 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getBindingAdapterPosition();
             habitNameList.remove(position);
-            if (currentUser != null && currentUser.getHabits().size() > 0){
+            if (currentUser != null && currentUser.getHabits() != null && currentUser.getHabits().size() > 0){
                 System.out.println(currentUser.getHabits().get(position).getName());
                 currentUser.getHabits().get(position).deleteEvents(); //delete all events associated with this habit
                 currentUser.deleteHabit(position); //delete the habit

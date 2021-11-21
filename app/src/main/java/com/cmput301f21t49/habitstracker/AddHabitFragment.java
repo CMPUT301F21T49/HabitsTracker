@@ -38,6 +38,7 @@ public class AddHabitFragment extends DialogFragment {
     private ToggleButton tSat;
 
 
+
     private OnFragmentInteractionListener listener;
     int index;
 
@@ -87,6 +88,13 @@ public class AddHabitFragment extends DialogFragment {
         tSat = view.findViewById(R.id.tSat);
 
         Bundle arg = getArguments();
+
+        privateC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         /*if (arg!=null){
             EditMedicine = (Medicine) arg.getSerializable("medicine");
             index = (int) arg.getSerializable("position");
@@ -158,10 +166,12 @@ public class AddHabitFragment extends DialogFragment {
                         }else {
                             listener.onNewPressed(new Medicine(date, name, dose_amount, dose_unit, dose_frequency));
                         }*/
-                        listener.onNewPressed(new Habit(title,privateHabit,date,days));
+                        System.out.println(title);
+                        listener.onNewPressed(new Habit(title,privateHabit,date,days,reason));
                     }
                 }).create();
     }
+
 
     //To resize the Dialog Fragment
     @Override

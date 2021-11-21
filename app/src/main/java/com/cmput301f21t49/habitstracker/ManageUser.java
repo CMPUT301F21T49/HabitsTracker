@@ -116,7 +116,9 @@ public class ManageUser {
                             // Assumes only one document will be returned
                             User current = doc.toObject(User.class);
                             System.out.println(current.getId());
-                            System.out.println(current.getHabits().size());
+                            if(current.getHabits() != null){
+                                System.out.println(current.getHabits().size());
+                            }
                             onSuccess.onCallback(current);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
