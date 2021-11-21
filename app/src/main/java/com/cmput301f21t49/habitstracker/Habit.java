@@ -28,8 +28,8 @@ import java.util.Date;
 public class Habit implements Serializable {
 
     private String name;
-    private int Id;
-    private ArrayList<Event> Events = new ArrayList<>();
+    private int id;
+    private ArrayList<Event> events = new ArrayList<>();
     private ArrayList<String> days = new ArrayList<>();
     private double pct= 0;
 
@@ -51,7 +51,7 @@ public class Habit implements Serializable {
             name.substring(0, 20);
         }
         this.name = name;
-        this.Id = Id;
+        this.id = Id;
         this.days = days;
         pct = 0;
     }
@@ -71,7 +71,7 @@ public class Habit implements Serializable {
      *      Habit ID
      */
     public int getId() {
-        return this.Id;
+        return this.id;
     }
 
 
@@ -83,7 +83,7 @@ public class Habit implements Serializable {
      *      Event selected
      */
     public Event getEvent(int index){
-        return Events.get(index);
+        return events.get(index);
     }
 
     /**
@@ -96,18 +96,10 @@ public class Habit implements Serializable {
     }
 
     /**
-     * Get all Events linked to habit
-     * @return
-     *      ArrayList of all events
-     */
-    public ArrayList<Event> getAllEvents() {
-        return this.Events;
-    }
-    /**
      * Delete all events linked to this Habit
      */
-    public void deleteAllEvents(){
-        this.Events = null;
+    public void deleteEvents(){
+        this.events = null;
     }
 
     /**
@@ -129,7 +121,7 @@ public class Habit implements Serializable {
      *      Event to add
      */
     public void addEvent(Event event) {
-        Events.add(event);
+        events.add(event);
     }
 
     /**
@@ -140,7 +132,7 @@ public class Habit implements Serializable {
      *      Event to be updated
      */
     public void updateEvent(int index, Event event) {
-        Events.set(index, event);
+        events.set(index, event);
     }
 
     /**
@@ -149,17 +141,17 @@ public class Habit implements Serializable {
      *      Event index
      */
     public void deleteEvent(int index) {
-        Events.remove(index);
+        events.remove(index);
     }
 
     /**
      * Calculates new completion rate after change in status
      */
     public void updateCompletion() {
-        int totalEvents = Events.size();
+        int totalEvents = events.size();
         double completed = 0;
         for (int i = 0; i < totalEvents; i++) {
-            if (Events.get(i).getStatus().equals("Completed")) {
+            if (events.get(i).getStatus().equals("Completed")) {
                 completed++;
             }
         }
@@ -175,7 +167,7 @@ public class Habit implements Serializable {
      *      Id to be assigned to Habit
      */
     public void setId(int id) {
-        Id = id;
+        id = id;
     }
 
     /**
@@ -184,7 +176,7 @@ public class Habit implements Serializable {
      *      ArrayList of Events
      */
     public ArrayList<Event> getEvents() {
-        return Events;
+        return events;
     }
 
     /**
@@ -193,7 +185,7 @@ public class Habit implements Serializable {
      *      ArrayList of Events
      */
     public void setEvents(ArrayList<Event> events) {
-        Events = events;
+        events = events;
     }
 
     /**

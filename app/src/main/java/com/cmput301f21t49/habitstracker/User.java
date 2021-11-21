@@ -27,11 +27,11 @@ import java.util.ArrayList;
 public class User implements Serializable {
 
     String email;
-    String Id;
-    ArrayList<Habit> Habits = new ArrayList<>();
-    ArrayList<User> Following = new ArrayList<>();
-    ArrayList<User> Followers = new ArrayList<>();
-    ArrayList<String> Requests = new ArrayList<>();
+    String id;
+    ArrayList<Habit> habits = new ArrayList<>();
+    ArrayList<User> following = new ArrayList<>();
+    ArrayList<User> followers = new ArrayList<>();
+    ArrayList<String> requests = new ArrayList<>();
 
     static final public String SERIALIZED= "USER_CLASS"; //Key for Serialized Users
 
@@ -47,7 +47,7 @@ public class User implements Serializable {
      *      Id of User
      */
     public User(String id) {
-        this.Id = id;
+        this.id = id;
     }
 
     /**
@@ -56,7 +56,7 @@ public class User implements Serializable {
      *      User ID
      */
     public String getId() {
-        return Id;
+        return id;
     }
 
     /**
@@ -81,7 +81,7 @@ public class User implements Serializable {
      * @param Id
      *      User assigned ID
      */
-    public void setId(String Id){this.Id =Id;}
+    public void setId(String Id){this.id =Id;}
 
     /**
      * Getter method to return list of Habits for User
@@ -89,7 +89,7 @@ public class User implements Serializable {
      *      Habits ArrayList
      */
     public ArrayList<Habit> getHabits() {
-        return Habits;
+        return habits;
     }
 
     /**
@@ -98,7 +98,7 @@ public class User implements Serializable {
      *      Habit to add
      */
     public void addHabit(Habit habit) {
-        Habits.add(habit);
+        habits.add(habit);
     }
 
     /**
@@ -111,10 +111,10 @@ public class User implements Serializable {
      *      New dates
      */
     public void editHabit(int index, String newName, ArrayList<String> Days) {
-        Habit habit  = Habits.get(index);
+        Habit habit  = habits.get(index);
         habit.setName(newName);
         habit.setDays(Days);
-        Habits.set(index, habit);
+        habits.set(index, habit);
     }
 
     /**
@@ -125,7 +125,7 @@ public class User implements Serializable {
      *      Event to be added
      */
     public void addEvent(int index, Event event) {
-        Habit habit = Habits.get(index);
+        Habit habit = habits.get(index);
         habit.addEvent(event);
     }
 
@@ -141,7 +141,7 @@ public class User implements Serializable {
      *      Updated Status of Event
      */
     public void editEvent(int habitIndex, int eventIndex, String newName, String newStatus) {
-        Habit habit = Habits.get(habitIndex);
+        Habit habit = habits.get(habitIndex);
         Event event = habit.getEvent(eventIndex);
         event.setName(newName);
         if (newStatus == "In Progress" || newStatus == "Completed") {
@@ -157,7 +157,7 @@ public class User implements Serializable {
      *      Index of Habit
      */
     public void deleteHabit(int index) {
-        Habits.remove(index);
+        habits.remove(index);
     }
 
     /**
@@ -168,7 +168,7 @@ public class User implements Serializable {
      *      Event Index
      */
     public void deleteEvent(int habitIndex, int eventIndex) {
-        Habit habit = Habits.get(habitIndex);
+        Habit habit = habits.get(habitIndex);
         habit.deleteEvent(eventIndex);
         habit.updateCompletion();
     }
@@ -179,7 +179,7 @@ public class User implements Serializable {
      *      User that is following current user
      */
     public void addFollower(User user) {
-        Followers.add(user);
+        followers.add(user);
     }
 
     /**
@@ -188,7 +188,7 @@ public class User implements Serializable {
      *      Followers ArrayList
      */
     public ArrayList<User> getFollowers() {
-        return this.Followers;
+        return this.followers;
     }
 
     /**
@@ -197,7 +197,7 @@ public class User implements Serializable {
      *      User current user is following
      */
     public void addFollowing(User user) {
-        Following.add(user);
+        following.add(user);
     }
 
     /**
@@ -206,7 +206,7 @@ public class User implements Serializable {
      *      ArrayList of users that current user is following
      */
     public ArrayList<User> getFollowing() {
-        return this.Following;
+        return this.following;
     }
 
     /**
@@ -215,7 +215,7 @@ public class User implements Serializable {
      *      Email of user that sent the request
      */
     public void addRequest(String email) {
-        Requests.add(email);
+        requests.add(email);
     }
 
     /**
@@ -224,7 +224,7 @@ public class User implements Serializable {
      *      Index of request to be removed
      */
     public void onRequestAnswered(int index) {
-        Requests.remove(index);
+        requests.remove(index);
     }
 
     /**
@@ -233,6 +233,6 @@ public class User implements Serializable {
      *      email of request removed
      */
     public void onRequestAnswered(String email) {
-        Requests.remove(email);
+        requests.remove(email);
     }
 }
