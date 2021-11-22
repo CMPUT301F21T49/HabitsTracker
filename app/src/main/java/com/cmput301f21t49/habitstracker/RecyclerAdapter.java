@@ -38,8 +38,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     List<String> habitNameList;
 
-    public RecyclerAdapter(List<String> habitNameList) {
+    final private ListItemClickListener mOnClickListener;
+
+    interface ListItemClickListener{
+        void onListItemClick(int position);
+    }
+
+
+    public RecyclerAdapter(List<String> habitNameList, ListItemClickListener mOnClickListener) {
         this.habitNameList = habitNameList;
+        this.mOnClickListener = mOnClickListener;
     }
 
     @NonNull
@@ -61,7 +69,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return habitNameList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textView;
 
@@ -72,20 +82,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
             itemView.setOnClickListener(this);
 
-            /*itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    habitNameList.remove(getAdapterPosition());
-                    notifyItemRemoved(getAdapterPosition());
-                    return true;
-                }
-            });*/
 
         }
 
         @Override
         public void onClick(View view) {
-
+            int position = getAdapterPosition();
+            mOnClickListener.onListItemClick(position);
         }
     }
 }

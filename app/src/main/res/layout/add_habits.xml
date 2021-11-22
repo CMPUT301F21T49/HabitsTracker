@@ -101,7 +101,7 @@
         android:layout_height="29dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="192dp"
-        android:text="Pick Days"
+        android:text="Days"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -112,7 +112,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="272dp"
-        android:text="Pick a Start Date"
+        android:text="Start Date"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

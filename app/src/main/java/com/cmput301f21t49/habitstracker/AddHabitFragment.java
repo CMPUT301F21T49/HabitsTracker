@@ -20,9 +20,13 @@ import androidx.fragment.app.DialogFragment;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
-//Fragment class
+/**
+ * Fragment class to add/edit/view habits
+ * @author  Purvi S.
+ */
 public class AddHabitFragment extends DialogFragment {
     private EditText habit_title;
     private EditText habit_reason;
@@ -36,15 +40,13 @@ public class AddHabitFragment extends DialogFragment {
     private ToggleButton tThu;
     private ToggleButton tFri;
     private ToggleButton tSat;
-
-
-
+    Habit EditHabit;
     private OnFragmentInteractionListener listener;
     int index;
 
     public interface OnFragmentInteractionListener {
         void onNewPressed(Habit newHabit);
-        //void onEditPressed(Habit editMedicine, int i);
+        void onEditPressed(Habit editMedicine, int i);
     }
 
     @Override
@@ -95,21 +97,54 @@ public class AddHabitFragment extends DialogFragment {
 
             }
         });
-        /*if (arg!=null){
-            EditMedicine = (Medicine) arg.getSerializable("medicine");
+        if (arg!=null){
+            EditHabit = (Habit) arg.getSerializable("habit");
             index = (int) arg.getSerializable("position");
-            med_date.setText(EditMedicine.getDate());
-            med_name.setText(EditMedicine.getName());
-            med_dose_amount.setText(Integer.toString(EditMedicine.getDose_amount()));
-            med_dose_unit.setText(EditMedicine.getDose_unit());
-            med_dose_frequency.setText(Integer.toString(EditMedicine.getDose_frequency()));
+            habit_title.setText(EditHabit.getName());
+            if (EditHabit.getReason()!=""){
+                habit_reason.setText(EditHabit.getReason());
+            }
 
-        }*/
+            if (EditHabit.getPrivateHabit() == Boolean.TRUE){
+                privateC.setChecked(true);
+            }
+            if (EditHabit.getDays().contains("Mon")){
+                tMon.setChecked(true);
+            }
+            if (EditHabit.getDays().contains("Tue")){
+                tTue.setChecked(true);
+            }
+            if (EditHabit.getDays().contains("Wed")){
+                tWed.setChecked(true);
+            }
+            if (EditHabit.getDays().contains("Thur")){
+                tThu.setChecked(true);
+            }
+            if (EditHabit.getDays().contains("Fri")){
+                tFri.setChecked(true);
+            }
+            if (EditHabit.getDays().contains("Sat")){
+                tSat.setChecked(true);
+            }
+            if (EditHabit.getDays().contains("Sun")){
+                tSun.setChecked(true);
+            }
+            if (EditHabit.getStartDate()!=null){
+                Calendar calendar = Calendar.getInstance();
+                System.out.println(EditHabit.getStartDate());
+                calendar.setTime(EditHabit.getStartDate());
+                picker.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+
+            }
+
+
+
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
-                .setTitle("Add Habit")
+                .setTitle("Add/Edit/View Habit")
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -156,18 +191,17 @@ public class AddHabitFragment extends DialogFragment {
                             e.printStackTrace();
                         }
 
-                        /*if (EditMedicine!=null){
-                            EditMedicine.setDate(date);
-                            EditMedicine.setName(name);
-                            EditMedicine.setDose_amount(dose_amount);
-                            EditMedicine.setDose_unit(dose_unit);
-                            EditMedicine.setDose_frequency(dose_frequency);
-                            listener.onEditPressed(EditMedicine, index);
+                        if (EditHabit!=null){
+                            EditHabit.setName(title);
+                            EditHabit.setReason(reason);
+                            EditHabit.setPrivateHabit(privateHabit);
+                            EditHabit.setDays(days);
+                            EditHabit.setStartDate(date);
+                            listener.onEditPressed(EditHabit, index);
                         }else {
-                            listener.onNewPressed(new Medicine(date, name, dose_amount, dose_unit, dose_frequency));
-                        }*/
-                        System.out.println(title);
-                        listener.onNewPressed(new Habit(title,privateHabit,date,days,reason));
+                            listener.onNewPressed(new Habit(title,privateHabit,date,days,reason));
+                        }
+
                     }
                 }).create();
     }
