@@ -1,10 +1,8 @@
 package com.cmput301f21t49.habitstracker;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +33,7 @@ import java.util.List;
  */
 
 /**
- * This is the My Habits activity responsible for displaying habits, handling reordering and deletion
+ * This is the My Habits activity responsible for displaying habits, handling reordering, deletion, editing, addition
  * @author Purvi S.
  * @version 1.0
  * @see RecyclerAdapter
@@ -43,7 +41,7 @@ import java.util.List;
  * @since 1.0
  */
 
-public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragment.OnFragmentInteractionListener{
+public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragment.OnFragmentInteractionListener,RecyclerAdapter.ListItemClickListener{
 
     public User currentUser;
     RecyclerView recyclerView;
@@ -53,6 +51,7 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
     ManageUser manageUser = ManageUser.getInstance();
     public FirebaseAuth fAuth;
     Habit newHabit = new Habit();
+    Habit editH = new Habit();
 
 
 
@@ -83,7 +82,7 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
         }
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerAdapter = new RecyclerAdapter(habitNameList);
+        recyclerAdapter = new RecyclerAdapter(habitNameList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerAdapter);
 
@@ -104,6 +103,7 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
             }
         });
 
+
     }
     /** To add a new medicine in the list
      * @param  newHabit
@@ -112,12 +112,26 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
     @Override
     public void onNewPressed(Habit newHabit){
 
-        habitArrayList.add(newHabit);
         habitNameList.add(newHabit.getName());
         currentUser.addHabit(newHabit);
         updateDatabase();
         recyclerAdapter.notifyDataSetChanged();
 
+    }
+    public void onEditPressed(Habit editHabit, int i){
+        /* To add an edited habit in the list
+         * Inputs: Habit object, position in the list
+         * Return: None
+         * */
+
+        habitNameList.set(i,editHabit.getName());
+        for(int j = 0; j < currentUser.getHabits().size(); j ++){
+            if (currentUser.getHabits().get(j).getName().equals(editHabit.getName())){
+                currentUser.editHabit(j,editHabit);
+            }
+        }
+        updateDatabase();
+        recyclerAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -193,5 +207,22 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
                 currentUser = user;
             }
         });
+    }
+
+    @Override
+    public void onListItemClick(int position) {
+        String hName = habitNameList.get(position);
+
+        for(Habit h: currentUser.getHabits()){
+            if (h.getName().equals(hName)){
+                editH = h;
+            }
+        }
+        System.out.println(editH.getName());
+        if(editH!=null) {
+            new AddHabitFragment().newInstance(editH, position).show(getSupportFragmentManager(), "EDIT_HABIT");
+            editH = null;
+        }
+
     }
 }

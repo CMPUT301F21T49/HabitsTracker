@@ -46,17 +46,6 @@ public class UserTest {
         assertEquals(user.getHabits().get(0).getAllEvents().size(), 1);
     }
 
-    // Testing ability to edit habits
-    @Test
-    public void editHabitTest() {
-        habit.setName("PlaceHolder");
-        user.addHabit(habit);
-        assertTrue(user.getHabits().get(0).getName() =="PlaceHolder");
-        ArrayList<String> days = new ArrayList<>();
-        days.add("Monday");
-        user.editHabit(0, "Edited", days);
-        assertFalse(user.getHabits().get(0).getName() =="PlaceHolder");
-    }
 
     // Test ability to edit Events
     @Test

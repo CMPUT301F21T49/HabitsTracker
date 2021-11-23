@@ -108,16 +108,10 @@ public class User implements Serializable {
      * Edit a Habit
      * @param index
      *      The index of Habit being accessed
-     * @param newName
-     *      New Name of the habit
-     * @param Days
-     *      New dates
+     * @param editedHabit
      */
-    public void editHabit(int index, String newName, ArrayList<String> Days) {
-        Habit habit  = this.habits.get(index);
-        habit.setName(newName);
-        habit.setDays(Days);
-        this.habits.set(index, habit);
+    public void editHabit(int index, Habit editedHabit) {
+        this.habits.set(index, editedHabit);
     }
 
     /**
