@@ -1,5 +1,7 @@
 package com.cmput301f21t49.habitstracker;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 /*
@@ -29,9 +31,10 @@ public class User implements Serializable {
     String email;
     String id;
     ArrayList<Habit> habits = new ArrayList<>();
-    ArrayList<User> following = new ArrayList<>();
-    ArrayList<User> followers = new ArrayList<>();
+    ArrayList<String> following = new ArrayList<>();
+    ArrayList<String> followers = new ArrayList<>();
     ArrayList<String> requests = new ArrayList<>();
+    ArrayList<String> allowPrivate = new ArrayList<>();
 
     static final public String SERIALIZED= "USER_CLASS"; //Key for Serialized Users
 
@@ -165,17 +168,25 @@ public class User implements Serializable {
      * @param user
      *      User that is following current user
      */
-    public void addFollower(User user) {
-        followers.add(user);
+    public void addFollower(String userEmail) {
+        followers.add(userEmail);
     }
+
+
+    /**
+     * Remove a follower
+     * @param user
+     *      Follower to remove
+     */
+    public void removeFollower(String userEmail) {followers.remove(userEmail);}
 
     /**
      * Get List of all followers
      * @return
      *      Followers ArrayList
      */
-    public ArrayList<User> getFollowers() {
-        return this.followers;
+    public ArrayList<String> getFollowers() {
+        return followers;
     }
 
     /**
@@ -183,8 +194,8 @@ public class User implements Serializable {
      * @param user
      *      User current user is following
      */
-    public void addFollowing(User user) {
-        following.add(user);
+    public void addFollowing(String userEmail) {
+        following.add(userEmail);
     }
 
     /**
@@ -192,34 +203,70 @@ public class User implements Serializable {
      * @return
      *      ArrayList of users that current user is following
      */
-    public ArrayList<User> getFollowing() {
+    public ArrayList<String> getFollowing() {
         return this.following;
     }
 
     /**
+     * Remove Following
+     * @param user User to unfollow
+     */
+    public void removeFollowing(String userEmail) {
+        following.remove(userEmail);
+    }
+    /**
      * Method that adds a request if another user sends
-     * @param email
-     *      Email of user that sent the request
+     * @param user
+     *      User that sent the request
      */
-    public void addRequest(String email) {
-        requests.add(email);
+    public void addRequest(String userEmail) {
+        requests.add(userEmail);
     }
 
     /**
-     * Once request is answered, remove request from list
-     * @param index
-     *      Index of request to be removed
+     * Method that removes a request
+     * @param user
+     *      User to be removed
      */
-    public void onRequestAnswered(int index) {
-        requests.remove(index);
+    public void removeRequest(String userEmail) {
+        requests.remove(userEmail);
     }
 
     /**
-     * Overloaded method in case want to remove by email
-     * @param email
-     *      email of request removed
+     * Method to return all requests
+     * @return
+     *      Users that have made a request
      */
-    public void onRequestAnswered(String email) {
-        requests.remove(email);
+    public ArrayList<String> getRequests() {
+        return requests;
+    }
+
+
+    public void addAllowPrivate(String userEmail) {
+        allowPrivate.add(userEmail);
+    }
+
+    public void removeAllowPrivate(String userEmail) {
+        allowPrivate.remove(userEmail);
+    }
+
+    public ArrayList<String> getAllowPrivate() {
+        return allowPrivate;
+    }
+
+    //Override equals
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof User)) {
+            return false;
+        }
+
+        User user = (User) obj;
+
+        return email.equals(user.getEmail()) && id.equals(user.getId());
     }
 }

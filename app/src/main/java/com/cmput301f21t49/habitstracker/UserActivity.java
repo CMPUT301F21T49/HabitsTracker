@@ -50,9 +50,12 @@ public class UserActivity extends AppCompatActivity {
 
     private ArrayList<User> tempList = new ArrayList<User>(); //temporary list of users
     private User currentUser;
+    private ManageUser manageUser = ManageUser.getInstance();
 
-    private MyFollowersFragment followersFragment = MyFollowersFragment.newInstance(tempList);
-    private MyFollowingFragment followingFragment = MyFollowingFragment.newInstance(tempList);
+    private Fragment currentFragment;
+    private MyFollowersFragment followersFragment;
+    private MyFollowingFragment followingFragment;
+    private MyRequestsFragment requestsFragment;
 
 
     @Override
@@ -71,33 +74,51 @@ public class UserActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.sendButton);
 
         //TODO: Set username and uid
-        usernameTextView.setText(currentUser.getId());
-        uidTextView.setText("@special_uid_here");
+        usernameTextView.setText(currentUser.getEmail());
+        uidTextView.setText(currentUser.getId());
+
+        followersFragment = MyFollowersFragment.newInstance(currentUser);
+        followingFragment = MyFollowingFragment.newInstance(currentUser);
+        requestsFragment = MyRequestsFragment.newInstance(currentUser);
 
         TabLayout.Tab followingTab = tabLayout.newTab();
         TabLayout.Tab followersTab = tabLayout.newTab();
+        TabLayout.Tab requestsTabs = tabLayout.newTab();
 
-        followingTab.setText("Following");
         followersTab.setText("Followers");
-        tabLayout.addTab(followingTab);
+        followingTab.setText("Following");
+        requestsTabs.setText("Requests");
         tabLayout.addTab(followersTab);
+        tabLayout.addTab(followingTab);
+        tabLayout.addTab(requestsTabs);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Fragment fragment = null;
-                switch (tab.getPosition()) {
-                    case 0:
-                        fragment = followingFragment;
-                        break;
-                    case 1:
-                        fragment = followersFragment;
-                }
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.frame, fragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
+                System.out.println("TAB SELECTED");
+                manageUser.get(currentUser.getId(), new UserCallback() {
+                    @Override
+                    public void onCallback(User user) {
+                        currentUser = user;
+                        switch (tab.getPosition()) {
+                            case 0:
+                                currentFragment = MyFollowersFragment.newInstance(currentUser);
+                                break;
+                            case 1:
+                                currentFragment = MyFollowingFragment.newInstance(currentUser);
+                                break;
+                            case 2:
+                                currentFragment = MyRequestsFragment.newInstance(currentUser);
+                                break;
+                        }
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ft.replace(R.id.frame, currentFragment);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft.commit();
+                    }
+                });
+
             }
 
             @Override
@@ -115,15 +136,35 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String followName = editFollowName.getText().toString();
-                Toast.makeText(getApplicationContext(), followName, Toast.LENGTH_SHORT).show();
+                if (followName.equals(currentUser.getEmail())) {
+                    Toast.makeText(getApplicationContext(), "Cannot follow self!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 editFollowName.setText("");
+                manageUser.getByEmail(followName, new UserCallback() {
+                    @Override
+                    public void onCallback(User user) {
+                        if (user.getFollowers().contains(user)) {
+                            Toast.makeText(getApplicationContext(), "Cannot follow someone you are already following!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        user.addRequest(currentUser.getEmail());
+                        manageUser.createOrUpdate(user, new VoidCallback() {
+                            @Override
+                            public void onCallback() {
+                                Toast.makeText(getApplicationContext(), "Request sent!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
             }
         });
 
-        //Set initial fragment to MyFollowingFragment
+        //Set initial fragment to MyFollowersFragment
+        currentFragment = followersFragment;
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.frame, followingFragment);
+        ft.replace(R.id.frame, currentFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
     }
