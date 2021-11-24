@@ -137,16 +137,6 @@ public class User implements Serializable {
      * @param newStatus
      *      Updated Status of Event
      */
-    public void editEvent(int habitIndex, int eventIndex, String newName, String newStatus) {
-        Habit habit = this.habits.get(habitIndex);
-        Event event = habit.getEvent(eventIndex);
-        event.setName(newName);
-        if (newStatus == "In Progress" || newStatus == "Completed") {
-            event.setStatus(newStatus);
-        }
-        habit.updateEvent(eventIndex, event);
-        habit.updateCompletion();
-    }
 
     /**
      * Method to remove a Habit
