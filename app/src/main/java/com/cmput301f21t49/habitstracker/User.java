@@ -34,6 +34,7 @@ public class User implements Serializable {
     ArrayList<String> following = new ArrayList<>();
     ArrayList<String> followers = new ArrayList<>();
     ArrayList<String> requests = new ArrayList<>();
+    ArrayList<String> allowPrivate = new ArrayList<>();
 
     static final public String SERIALIZED= "USER_CLASS"; //Key for Serialized Users
 
@@ -238,6 +239,19 @@ public class User implements Serializable {
      */
     public ArrayList<String> getRequests() {
         return requests;
+    }
+
+
+    public void addAllowPrivate(String userEmail) {
+        allowPrivate.add(userEmail);
+    }
+
+    public void removeAllowPrivate(String userEmail) {
+        allowPrivate.remove(userEmail);
+    }
+
+    public ArrayList<String> getAllowPrivate() {
+        return allowPrivate;
     }
 
     //Override equals

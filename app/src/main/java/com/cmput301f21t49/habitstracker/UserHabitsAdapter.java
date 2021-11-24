@@ -22,6 +22,7 @@ public class UserHabitsAdapter extends ArrayAdapter<Habit> {
     private TextView textViewDate;
     private TextView textViewReason;
     private TextView textViewPercentage;
+    private TextView textViewPrivate;
     private ProgressBar progressBar;
 
     public UserHabitsAdapter(@NonNull Context context, ArrayList<Habit> habitList) {
@@ -45,6 +46,7 @@ public class UserHabitsAdapter extends ArrayAdapter<Habit> {
         textViewDate = v.findViewById(R.id.habit_date);
         textViewReason = v.findViewById(R.id.habit_reason);
         textViewPercentage = v.findViewById(R.id.habit_pct);
+        textViewPrivate = v.findViewById(R.id.privateTextView);
         progressBar = v.findViewById(R.id.habit_progressBar);
 
         String date = "NaN";
@@ -57,6 +59,7 @@ public class UserHabitsAdapter extends ArrayAdapter<Habit> {
         textViewTitle.setText(habit.getName());
         textViewDate.setText(date);
         textViewReason.setText(habit.getReason());
+        textViewPrivate.setText(habit.getPrivateHabit() ? "(Private)" : "(Public)");
         textViewPercentage.setText(String.format("%.2f%%", habit.getPct()*100));
         progressBar.setProgress((int)(habit.getPct()*100));
 

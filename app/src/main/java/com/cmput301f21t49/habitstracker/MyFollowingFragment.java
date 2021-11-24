@@ -88,7 +88,7 @@ public class MyFollowingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_following, container, false);
         listView = v.findViewById(R.id.following_list);
-        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getFollowing());
+        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getFollowing(), FollowerAdapter.BUTTON);
         adapter.toggleButton2();
         adapter.setButton2Color(Color.RED);
         adapter.setButton2Text("Unfollow");
@@ -100,10 +100,12 @@ public class MyFollowingFragment extends Fragment {
                 adapter.remove(user.getEmail());
             }
         });
-        adapter.setOnItemClickListener(new FollowerAdapter.ItemOnClickListener() {
+        adapter.toggleButton1();
+        adapter.setButton1Text("VIEW");
+        adapter.setButton1OnClickListener(new FollowerAdapter.ItemButtonOnClickListener() {
             @Override
-            public void onClick(int position, ArrayList<String> userEmailList) {
-                UserHabitsFragment.newInstance(userEmailList.get(position)).show(getChildFragmentManager(), "FOLLOWING_HABITS");
+            public void onClick(User mainUser, User user) {
+                UserHabitsFragment.newInstance(mainUser.getEmail(), user.getEmail()).show(getChildFragmentManager(), "FOLLOWING_HABITS");
             }
         });
         listView.setAdapter(adapter);

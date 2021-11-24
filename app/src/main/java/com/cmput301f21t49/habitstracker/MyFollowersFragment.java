@@ -82,7 +82,7 @@ public class MyFollowersFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_followers, container, false);
         listView = v.findViewById(R.id.followers_list);
-        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getFollowers());
+        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getFollowers(), FollowerAdapter.SWITCH);
         listView.setAdapter(adapter);
         return v;
     }

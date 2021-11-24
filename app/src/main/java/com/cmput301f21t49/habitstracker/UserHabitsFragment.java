@@ -31,6 +31,7 @@ public class UserHabitsFragment extends DialogFragment {
 
     // TODO: Rename and change types of parameters
     private String userEmail;
+    private String currentUserEmail;
     private User user;
     private ManageUser manageUser = ManageUser.getInstance();
 
@@ -46,10 +47,11 @@ public class UserHabitsFragment extends DialogFragment {
      * @return A new instance of fragment UserHabitsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserHabitsFragment newInstance(String userEmail) {
+    public static UserHabitsFragment newInstance(String currentUserEmail, String userEmail) {
         UserHabitsFragment fragment = new UserHabitsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, userEmail);
+        args.putString(ARG_PARAM2, currentUserEmail);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +62,7 @@ public class UserHabitsFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
             userEmail = getArguments().getString(ARG_PARAM1);
+            currentUserEmail = getArguments().getString(ARG_PARAM2);
         }
 
         Dialog d = new Dialog(getContext());
@@ -82,8 +85,10 @@ public class UserHabitsFragment extends DialogFragment {
             @Override
             public void onCallback(User user) {
                 ArrayList<Habit> publicHabits = new ArrayList<>();
+                System.out.println(user.getAllowPrivate());
+                System.out.println(currentUserEmail);
                 for (Habit h : user.getHabits()) {
-                    if (!h.getPrivateHabit()) {
+                    if (!h.getPrivateHabit() || user.getAllowPrivate().contains(currentUserEmail)) {
                         publicHabits.add(h);
                     }
                 }

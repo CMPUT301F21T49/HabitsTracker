@@ -64,7 +64,7 @@ public class MyRequestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_requests, container, false);
         listView = v.findViewById(R.id.requests_list);
-        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getRequests());
+        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getRequests(), FollowerAdapter.BUTTON);
         adapter.toggleButtons();
         adapter.setButton1Text("Accept");
         adapter.setButton1Color(Color.BLUE);
