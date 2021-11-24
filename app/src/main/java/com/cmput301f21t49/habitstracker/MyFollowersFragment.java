@@ -43,8 +43,8 @@ public class MyFollowersFragment extends Fragment {
     private FollowerAdapter adapter;
 
     // TODO: Rename and change types of parameters
-    private ArrayList<User> mParam1;
-    private String mParam2;
+    private User user;
+    private ArrayList<String> userList;
 
     private ListView listView;
 
@@ -59,10 +59,10 @@ public class MyFollowersFragment extends Fragment {
      * @return A new instance of fragment MyFollowersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyFollowersFragment newInstance(ArrayList<User> userList) {
+    public static MyFollowersFragment newInstance(User user) {
         MyFollowersFragment fragment = new MyFollowersFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, userList);
+        args.putSerializable(ARG_PARAM2, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,22 +71,18 @@ public class MyFollowersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = (ArrayList<User>) getArguments().getSerializable(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            user = (User)getArguments().getSerializable(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //mParam2.addFollower(new User("TEST"));
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_followers, container, false);
         listView = v.findViewById(R.id.followers_list);
-        ArrayList<User> tempList = new ArrayList<>();
-        tempList.add(new User("User 1"));
-        tempList.add(new User("User 2"));
-        adapter = new FollowerAdapter(getContext(), tempList);
-        adapter.setButtonToggle(true);
+        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getFollowers());
         listView.setAdapter(adapter);
         return v;
     }

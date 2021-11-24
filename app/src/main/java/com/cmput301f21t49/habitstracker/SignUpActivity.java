@@ -87,6 +87,7 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 user.setId(fAuth.getUid());
+                                user.setEmail(email);
                                 Habit habit = new Habit();
                                 habit.setName("Test");
                                 Habit habit2 = new Habit();

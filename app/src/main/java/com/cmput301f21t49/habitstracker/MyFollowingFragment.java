@@ -1,5 +1,7 @@
 package com.cmput301f21t49.habitstracker;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 /*
  * SignUpActivity
@@ -43,11 +46,11 @@ public class MyFollowingFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private ArrayList<User> mParam1;
-    private String mParam2;
+    private User user;
+    private ArrayList<String> userList;
 
     private ListView listView;
-    private ArrayAdapter<User> arrayAdapter;
+    private FollowerAdapter adapter;
     //Temporary List for prototype
 
     public MyFollowingFragment() {
@@ -61,11 +64,11 @@ public class MyFollowingFragment extends Fragment {
      * @return A new instance of fragment MyFollowingFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyFollowingFragment newInstance(ArrayList<User> userList) {
+    public static MyFollowingFragment newInstance(User user) {
         MyFollowingFragment fragment = new MyFollowingFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, userList);
+        args.putSerializable(ARG_PARAM2, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,8 +77,8 @@ public class MyFollowingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = (ArrayList<User>)getArguments().getSerializable(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            user = (User)getArguments().getSerializable(ARG_PARAM2);
+            userList = user.getFollowing();
         }
     }
 
@@ -85,11 +88,25 @@ public class MyFollowingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_following, container, false);
         listView = v.findViewById(R.id.following_list);
-        ArrayList<User> tempList = new ArrayList<>();
-        tempList.add(new User("User 3"));
-        tempList.add(new User("User 4"));
-        arrayAdapter = new FollowerAdapter(getContext(), tempList);
-        listView.setAdapter(arrayAdapter);
+        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getFollowing());
+        adapter.toggleButton2();
+        adapter.setButton2Color(Color.RED);
+        adapter.setButton2Text("Unfollow");
+        adapter.setButton2OnClickListener(new FollowerAdapter.ItemButtonOnClickListener() {
+            @Override
+            public void onClick(User mainUser, User user) {
+                mainUser.removeFollowing(user.getEmail());
+                user.removeFollower(mainUser.getEmail());
+                adapter.remove(user.getEmail());
+            }
+        });
+        adapter.setOnItemClickListener(new FollowerAdapter.ItemOnClickListener() {
+            @Override
+            public void onClick(int position, ArrayList<String> userEmailList) {
+                UserHabitsFragment.newInstance(userEmailList.get(position)).show(getChildFragmentManager(), "FOLLOWING_HABITS");
+            }
+        });
+        listView.setAdapter(adapter);
         return v;
     }
 }
