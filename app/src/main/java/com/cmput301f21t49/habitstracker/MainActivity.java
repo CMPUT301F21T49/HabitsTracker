@@ -152,7 +152,10 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
+                        Bundle etoday = new Bundle();
+                        etoday.putSerializable("UserObj", currentUser);
                         fragment = new EventsTodayFragment();
+                        fragment.setArguments(etoday);
                         break;
                     case 1:
                         Bundle bundle = new Bundle();
