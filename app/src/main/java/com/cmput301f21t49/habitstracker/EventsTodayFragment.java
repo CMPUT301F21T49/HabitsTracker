@@ -2,9 +2,11 @@ package com.cmput301f21t49.habitstracker;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 /*
  * EventsTodayFragment
  *
@@ -49,6 +52,8 @@ public class EventsTodayFragment extends Fragment {
     private Calendar eventDay;
     private Calendar today;
     private ArrayAdapter<String> adapter;
+    private ArrayList<Pair<Integer, Integer>> indices = new ArrayList<>();
+    private ManageUser manageUser = ManageUser.getInstance();
 
 
 
@@ -78,13 +83,18 @@ public class EventsTodayFragment extends Fragment {
         today = Calendar.getInstance();
         if (getArguments() != null) {
             currentUser = (User) getArguments().getSerializable("UserObj");
-            //Event event = new Event();
-            //event.setName("It works");
-            //event.setCompletionDate(new Date());
-            //currentUser.addEvent(0, event);
+//            Event test = new Event();
+//            test.setName("Testing");
+//            test.setStatus(false);
+//            test.setCompletionDate(new Date());
+//            currentUser.addEvent(0, test);
+//            System.out.println(currentUser.getHabits().get(0).getEvents().get(0).getName());
+//            System.out.println(currentUser.getHabits().get(0).getEvents().get(0).getStatus());
             habitArrayList = currentUser.getHabits();
+            int hIndex = 0;
             for ( Habit h : habitArrayList) {
                 ArrayList<Event> eventArrayList = h.getEvents();
+                int eIndex = 0;
                 for (Event e: eventArrayList) {
                     // Using Calendar to compare days, month, year
                     eventDay.setTime(e.getCompletionDate());
@@ -93,21 +103,69 @@ public class EventsTodayFragment extends Fragment {
                             eventDay.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
                             eventDay.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)) {
                         todayEventList.add(e);
-                        displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName());
-                        adapter.notifyDataSetChanged();
+                        Pair pair = new Pair(hIndex, eIndex);
+                        indices.add(pair);
+                        if (e.getStatus() == false) {
+                            displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName() + "\t Status: In Progress");
+                            adapter.notifyDataSetChanged();
+                        }
+                        else {
+                            displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName() + "\t Status: Completed");
+                            adapter.notifyDataSetChanged();
+                        }
+                        eIndex++;
                     }
                 }
+                hIndex++;
             }
         }
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int hIndex = indices.get(i).first;
+                int eIndex = indices.get(i).second;
+                if (currentUser.getHabits().get(hIndex).getEvents().get(eIndex).getStatus() == false) {
+                    currentUser.getHabits().get(hIndex).getEvents().get(eIndex).setStatus(true);
+                    Habit h = currentUser.getHabits().get(hIndex);
+                    Event e = currentUser.getHabits().get(hIndex).getEvents().get(eIndex);
+                    displays.set(i, e.getName() + "\n" + "Associated Habit: " + h.getName() + "\t Status: Completed");
+                    updateDatabase();
+                    adapter.notifyDataSetChanged();
+                }
+                else if (currentUser.getHabits().get(hIndex).getEvents().get(eIndex).getStatus() == true) {
+                    currentUser.getHabits().get(hIndex).getEvents().get(eIndex).setStatus(false);
+                    Habit h = currentUser.getHabits().get(hIndex);
+                    Event e = currentUser.getHabits().get(hIndex).getEvents().get(eIndex);
+                    displays.set(i, e.getName() + "\n" + "Associated Habit: " + h.getName() + "\t Status: In Progress");
+                    updateDatabase();
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
         return v;
     }
 
-    /* This method is invoked once any item of the fragment's is clicked
-    listview.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View view) {
-            //int position = getAdapter
-    }*/
+    public void updateDatabase() {
+        manageUser.createOrUpdate(currentUser, new VoidCallback() {
+            @Override
+            public void onCallback() {
+
+            }
+        });
+    }
+
+    public void updateUser() {
+        manageUser.get(currentUser.getId(), new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                currentUser = user;
+            }
+        });
+    }
+
+
+
 
 }
 
