@@ -1,6 +1,7 @@
 package com.cmput301f21t49.habitstracker;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -143,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         // perform setOnTabSelectedListener event on TabLayout
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
             // get the current selected tab's position and replace the fragment accordingly
@@ -152,7 +155,11 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new EventsTodayFragment();
                         break;
                     case 1:
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("UserObj", currentUser);
+                        // Set Fragmentclass Arguments
                         fragment = new MyHistoryFragment();
+                        fragment.setArguments(bundle);
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();

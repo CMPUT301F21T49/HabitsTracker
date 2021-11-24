@@ -6,10 +6,15 @@
         <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/drawable/shape_oval.xml" value="0.39791666666666664" />
         <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/drawable/toggle_bg.xml" value="0.39791666666666664" />
         <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/drawable/toggle_text_color.xml" value="0.39791666666666664" />
+        <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/activity_main.xml" value="0.4041666666666667" />
         <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/activity_myhabits.xml" value="0.4" />
         <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/add_habits.xml" value="0.4" />
         <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/day_picker.xml" value="0.38177083333333334" />
+        <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/my_history_events.xml" value="0.4041666666666667" />
+        <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/my_history_item.xml" value="0.4041666666666667" />
         <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/test.xml" value="0.38177083333333334" />
+        <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/todays_events.xml" value="0.4041666666666667" />
+        <entry key="..\:/Users/purvi/.ssh/HabitTracker/HabitsTracker/app/src/main/res/layout/user_item.xml" value="0.4041666666666667" />
       </map>
     </option>
   </component>

@@ -2,6 +2,7 @@ package com.cmput301f21t49.habitstracker;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 /*
  * Event
@@ -28,17 +29,18 @@ import java.time.LocalDate;
 public class Event implements Serializable {
 
     private String name;
-    private String status;
+    private Boolean status;
     private String location;
     private String comment;
     private String image_url;
-    private LocalDate date;
+    private Date completionDate;
 
     /**
      * Empty constructor to invoke event
      */
 
-    public Event(){}
+    public Event(){
+    }
 
     /**
      * Event constructor, on creation has a status of in progress (temporary)
@@ -48,33 +50,33 @@ public class Event implements Serializable {
      *      Location of Event
      * @param comment
      *      Comment under event
-     * @param date
+     * @param completionDate
      *      Date at which event is meant to occur
      */
-    public Event(String name, String location, String comment, LocalDate date) {
+    public Event(String name, Boolean status, String location, String comment, String image_url, Date completionDate) {
         this.name = name;
+        this.status = status;
         this.location = location;
         this.comment = comment;
-        this.date = date;
-        status = "In Progress";
+        this.image_url = image_url;
+        this.completionDate = completionDate;
     }
-
     /**
      * Get date
      * @return
-     *      The event date as a LocalDate var
+     *      The event completionDate
      */
-    public LocalDate getDate(){
-        return date;
+    public Date getCompletionDate() {
+        return completionDate;
     }
+
 
     /**
      * Set the new event date
-     * @param
-     *      date
+     * @param completionDate
      */
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
     }
 
     /**
@@ -123,7 +125,7 @@ public class Event implements Serializable {
      * @return
      *      Status of Event
      */
-    public String getStatus() {
+    public Boolean getStatus() {
         return this.status;
     }
 
@@ -141,7 +143,7 @@ public class Event implements Serializable {
      * @param newStatus
      *      Either Completed or In progress
      */
-    public void setStatus(String newStatus) {
+    public void setStatus(Boolean newStatus) {
         this.status = newStatus;
     }
 

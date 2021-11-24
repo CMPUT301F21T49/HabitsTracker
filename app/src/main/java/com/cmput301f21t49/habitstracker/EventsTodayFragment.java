@@ -42,7 +42,7 @@ public class EventsTodayFragment extends Fragment {
     public ArrayList<Event> todayEventList = new ArrayList<Event>();
     private LocalDate Today = LocalDate.now();
     private ListView listview;
-    private EventAdapter adapter;
+
 
 
     public EventsTodayFragment() {
@@ -54,7 +54,7 @@ public class EventsTodayFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Load today's events into the arraylist
-        if (getArguments() != null) {
+        /*if (getArguments() != null) {
             habitArrayList = currentUser.getHabits();
             for ( Habit h : habitArrayList) {
                 ArrayList<Event> eventArrayList = h.getEvents();
@@ -65,7 +65,7 @@ public class EventsTodayFragment extends Fragment {
                     }
                 }
             }
-        }
+        }*/
 
 
     }
@@ -76,10 +76,7 @@ public class EventsTodayFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.todays_events, container, false);
         listview = v.findViewById(R.id.today_events);
-        ArrayList<Event> tempList = new ArrayList<Event>();
-        tempList.add(new Event());
-        adapter = new EventAdapter(tempList, getContext());
-        listview.setAdapter((ListAdapter) adapter);
+
         return v;
     }
 
