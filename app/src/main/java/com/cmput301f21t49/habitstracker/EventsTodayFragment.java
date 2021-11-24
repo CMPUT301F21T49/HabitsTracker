@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -13,6 +14,8 @@ import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 /*
  * EventsTodayFragment
  *
@@ -39,9 +42,13 @@ import java.util.ArrayList;
 public class EventsTodayFragment extends Fragment {
     private User currentUser;
     private ArrayList<Habit> habitArrayList;
-    public ArrayList<Event> todayEventList = new ArrayList<Event>();
-    private LocalDate Today = LocalDate.now();
+    private ArrayList<Event> todayEventList = new ArrayList<>();
+    private ArrayList<String> displays;
+    private Date todayDate = new Date();
     private ListView listview;
+    private Calendar eventDay;
+    private Calendar today;
+    private ArrayAdapter<String> adapter;
 
 
 
@@ -53,19 +60,6 @@ public class EventsTodayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Load today's events into the arraylist
-        /*if (getArguments() != null) {
-            habitArrayList = currentUser.getHabits();
-            for ( Habit h : habitArrayList) {
-                ArrayList<Event> eventArrayList = h.getEvents();
-                for (Event e:
-                        eventArrayList) {
-                    if (e.getDate() == Today && !(todayEventList.contains(e))) {
-                        todayEventList.add(e);
-                    }
-                }
-            }
-        }*/
 
 
     }
@@ -76,7 +70,35 @@ public class EventsTodayFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.todays_events, container, false);
         listview = v.findViewById(R.id.today_events);
-
+        displays = new ArrayList<>();
+        adapter = new ArrayAdapter<>(getActivity(), R.layout.today_events_item, R.id.todayEventText, displays);
+        listview.setAdapter(adapter);
+        // Load today's events into the arraylist
+        eventDay = Calendar.getInstance();
+        today = Calendar.getInstance();
+        if (getArguments() != null) {
+            currentUser = (User) getArguments().getSerializable("UserObj");
+            //Event event = new Event();
+            //event.setName("It works");
+            //event.setCompletionDate(new Date());
+            //currentUser.addEvent(0, event);
+            habitArrayList = currentUser.getHabits();
+            for ( Habit h : habitArrayList) {
+                ArrayList<Event> eventArrayList = h.getEvents();
+                for (Event e: eventArrayList) {
+                    // Using Calendar to compare days, month, year
+                    eventDay.setTime(e.getCompletionDate());
+                    today.setTime(todayDate);
+                    if (eventDay.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                            eventDay.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+                            eventDay.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)) {
+                        todayEventList.add(e);
+                        displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName());
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
         return v;
     }
 
@@ -87,8 +109,5 @@ public class EventsTodayFragment extends Fragment {
             //int position = getAdapter
     }*/
 
-    public ArrayList<Habit> getHabitArrayList() {
-        return habitArrayList;
-    }
 }
 

@@ -43,7 +43,7 @@ public class UserTest {
     public void testAddEvent() {
         user.addHabit(habit);
         user.addEvent(0, event);
-        assertEquals(user.getHabits().get(0).getAllEvents().size(), 1);
+        assertEquals(user.getHabits().get(0).getEvents().size(), 1);
     }
 
 
@@ -54,9 +54,9 @@ public class UserTest {
         event.setName("Hello");
         event.setStatus("In Progress");
         user.addEvent(0, event);
-        assertTrue(user.getHabits().get(0).getAllEvents().get(0).getName().equals("Hello"));
+        assertTrue(user.getHabits().get(0).getEvents().get(0).getName().equals("Hello"));
         user.editEvent(0,0,"NewName", "NewStatus");
-        assertFalse(user.getHabits().get(0).getAllEvents().get(0).getName().equals("PlaceHolder"));
+        assertFalse(user.getHabits().get(0).getEvents().get(0).getName().equals("PlaceHolder"));
     }
 
     // Test for deleting events
