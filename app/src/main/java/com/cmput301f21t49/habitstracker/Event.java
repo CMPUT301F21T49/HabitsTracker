@@ -41,6 +41,10 @@ public class Event implements Serializable {
 
     public Event(){
     }
+    public Event(String name, Date d){
+        this.name = name;
+        this.completionDate = d;
+    }
 
     /**
      * Event constructor, on creation has a status of in progress (temporary)
