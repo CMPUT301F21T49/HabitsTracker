@@ -14,7 +14,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -32,12 +31,9 @@ public class EditHabitEventFragment extends DialogFragment {
     private int hI;
     private int eI;
     private EditHabitEventFragment.OnFragmentInteractionListener listener;
-    private FragmentManager fm;
-    private EventsTodayFragment frag;
 
     public interface OnFragmentInteractionListener {
         void onEdit(Event e, int hI, int eI, int index);
-        void onComplete(Event e, int hI, int eI, int index);
     }
 
     @Override
@@ -46,19 +42,10 @@ public class EditHabitEventFragment extends DialogFragment {
         if (context instanceof EditHabitEventFragment.OnFragmentInteractionListener){
             listener = (EditHabitEventFragment.OnFragmentInteractionListener) context;
         } else{
-            if (getParentFragment() != null && getParentFragment() instanceof EditHabitEventFragment.OnFragmentInteractionListener) {
-                listener = (EditHabitEventFragment.OnFragmentInteractionListener) getParentFragment();
-            }
-            else {
-                throw new RuntimeException(context.toString()
-                        + "must implement OnFragmentListener");
-            }
-
+            throw new RuntimeException(context.toString()
+                    + "must implement OnFragmentListener");
         }
     }
-
-
-
 
     static EditHabitEventFragment newInstance(Event e, int hI, int eI, int index){
         Bundle args = new Bundle();
@@ -103,20 +90,6 @@ public class EditHabitEventFragment extends DialogFragment {
                             }
                         }
                 )
-                .setNeutralButton("Complete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String eName = name.getText().toString();
-                        String eComment = comment.getText().toString();
-                        if (event!=null){
-                            event.setName(eName);
-                            event.setComment(eComment);
-                            event.setStatus(true);
-                            event.setCompletionDate(new Date());
-                            listener.onComplete(event, hI, eI, index);
-                        }
-                    }
-                })
                 .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -125,7 +98,6 @@ public class EditHabitEventFragment extends DialogFragment {
                         if (event!=null){
                             event.setName(eName);
                             event.setComment(eComment);
-                            event.setStatus(false);
                             listener.onEdit(event, hI, eI, index);
                         }
 
