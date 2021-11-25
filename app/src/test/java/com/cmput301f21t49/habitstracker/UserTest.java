@@ -64,9 +64,9 @@ public class UserTest {
     public void deleteEventTest() {
         user.addHabit(habit);
         user.addEvent(0, event);
-        assertEquals(user.getHabits().get(0).getAllEvents().size(), 1);
+        assertEquals(user.getHabits().get(0).getEvents().size(), 1);
         user.deleteEvent(0,0);
-        assertEquals(user.getHabits().get(0).getAllEvents().size(), 0);
+        assertEquals(user.getHabits().get(0).getEvents().size(), 0);
     }
 
     @Test
