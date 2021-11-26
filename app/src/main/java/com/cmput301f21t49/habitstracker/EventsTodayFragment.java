@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -55,6 +56,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
     private ArrayAdapter<String> adapter;
     private ArrayList<Pair<Integer, Integer>> indices = new ArrayList<>();
     private ManageUser manageUser = ManageUser.getInstance();
+    private Button get_events;
 
 
 
@@ -65,6 +67,8 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        currentUser = (User) getArguments().getSerializable("UserObj");
+        habitArrayList = currentUser.getHabits();
 
 
 
@@ -75,6 +79,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.todays_events, container, false);
+        get_events = (Button) v.findViewById(R.id.button6);
         listview = v.findViewById(R.id.today_events);
         displays = new ArrayList<>();
         adapter = new ArrayAdapter<>(getActivity(), R.layout.today_events_item, R.id.todayEventText, displays);
@@ -83,55 +88,46 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
         eventDay = Calendar.getInstance();
         today = Calendar.getInstance();
         todayDate = new Date();
-        if (getArguments() != null) {
-            currentUser = (User) getArguments().getSerializable("UserObj");
-            habitArrayList = currentUser.getHabits();
-//            Event test = new Event();
-//            test.setName("Hello");
-//            test.setStatus(false);
-//            currentUser.addEvent(0, test);
-            int hIndex = 0;
+        updateList(currentUser);
 
-            for ( Habit h : habitArrayList) {
-                ArrayList<String> days = h.getDays();
-                habitStartDate.setTime(h.getStartDate());
-                today.setTime(todayDate);
-                // Check if after habit start date
-                if (today.get(Calendar.YEAR) >= habitStartDate.get(Calendar.YEAR) &&
-                        today.get(Calendar.MONTH) >= habitStartDate.get(Calendar.MONTH) &&
-                        today.get(Calendar.DAY_OF_MONTH) >= habitStartDate.get(Calendar.DAY_OF_MONTH)) {
-                    // Now check if day = a day in habit
-                    String day = getDay(today.get(Calendar.DAY_OF_WEEK));
-                    for (int i = 0; i < days.size(); i++) {
-                        if (day.equals(days.get(i))) {
-                            eventList = currentUser.getHabits().get(hIndex).getEvents();
-                            int eIndex = 0;
-                            for (Event e: eventList) {
-                                // Add one event from each habit until event is complete
-                                if (e.getStatus() == false) {
-                                    displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName());
-                                    indices.add(new Pair<Integer, Integer>(hIndex, eIndex));
-                                    adapter.notifyDataSetChanged();
-                                    break;
-                                }
-                                eIndex++;
+
+        get_events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int hIndex = 0;
+                for ( Habit h : habitArrayList) {
+                    ArrayList<String> days = h.getDays();
+                    habitStartDate.setTime(h.getStartDate());
+                    today.setTime(todayDate);
+                    // Check if after habit start date
+                    if (today.get(Calendar.YEAR) >= habitStartDate.get(Calendar.YEAR) &&
+                            today.get(Calendar.MONTH) >= habitStartDate.get(Calendar.MONTH) &&
+                            today.get(Calendar.DAY_OF_MONTH) >= habitStartDate.get(Calendar.DAY_OF_MONTH)) {
+                        // Now check if day = a day in habit
+                        String day = getDay(today.get(Calendar.DAY_OF_WEEK));
+                        for (int i = 0; i < days.size(); i++) {
+                            System.out.println(days.get(i));
+                            if (day.equals(days.get(i))) {
+                                eventList = currentUser.getHabits().get(hIndex).getEvents();
+                                Event e = new Event();
+                                e.setName("New Event");
+                                e.setStatus(false);
+                                System.out.println(h.getName());
+                                currentUser.addEvent(hIndex, e);
+                                System.out.println(currentUser.getHabits().get(hIndex).getEvent(0).getName());
                             }
-//                            Event e = new Event();
-//                            e.setName("New Event");
-//                            e.setStatus(false);
-//                            currentUser.addEvent(hIndex, e);
-//                            System.out.println(currentUser.getHabits().get(hIndex).getEvents().size());
-//                            displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName());
-//                            adapter.notifyDataSetChanged();
                         }
                     }
+                    hIndex++;
                 }
-                hIndex++;
+                updateList(currentUser);
             }
-        }
+        });
 
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+       listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 int hIndex = indices.get(i).first;
@@ -166,10 +162,64 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
     public void onEdit(Event e, int hI, int eI, int index) {
         currentUser.getHabits().get(hI).updateEvent(eI, e);
         updateDatabase();
-        updateUser();
+        //updateUser();
         Habit h = currentUser.getHabits().get(hI);
         displays.set(index, e.getName() + "\n" + "Associated Habit: " + h.getName());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onComplete(Event e, int hI, int eI, int index) {
+        currentUser.getHabits().get(hI).updateEvent(eI, e);
+        updateDatabase();
+        //updateUser();
+        displays.remove(index);
+        indices.remove(index);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void updateList(User currentUser) {
+        habitArrayList = currentUser.getHabits();
+        int hIndex = 0;
+        for ( Habit h : habitArrayList) {
+            ArrayList<String> days = h.getDays();
+            habitStartDate.setTime(h.getStartDate());
+            today.setTime(todayDate);
+            // Check if after habit start date
+            if (today.get(Calendar.YEAR) >= habitStartDate.get(Calendar.YEAR) &&
+                    today.get(Calendar.MONTH) >= habitStartDate.get(Calendar.MONTH) &&
+                    today.get(Calendar.DAY_OF_MONTH) >= habitStartDate.get(Calendar.DAY_OF_MONTH)) {
+                // Now check if day = a day in habit
+                String day = getDay(today.get(Calendar.DAY_OF_WEEK));
+                for (int i = 0; i < days.size(); i++) {
+                    if (day.equals(days.get(i))) {
+                        eventList = currentUser.getHabits().get(hIndex).getEvents();
+                        int eIndex = 0;
+                        for (Event e: eventList) {
+                            // Add one event from each habit until event is complete
+                            if (e.getStatus() == false) {
+                                displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName());
+                                indices.add(new Pair<Integer, Integer>(hIndex, eIndex));
+                                adapter.notifyDataSetChanged();
+
+                            }
+                            eIndex++;
+                        }
+//                            Event e = new Event();
+//                            e.setName("New Event");
+//                            e.setStatus(false);
+//                            currentUser.addEvent(hIndex, e);
+//                            System.out.println(currentUser.getHabits().get(hIndex).getEvents().size());
+//                            displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName());
+//                            adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+            hIndex++;
+        }
+        updateDatabase();
+        //updateUser();
+
     }
 
 
@@ -196,6 +246,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
             return "Sat";
         }
     }
+
 
 
 
