@@ -70,15 +70,6 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
                 habitNameList.add(h.getName());
             }
 
-        }else{
-            System.out.println(currentUser.getId());
-            habitNameList.add("testing1");
-            habitNameList.add("testing2");
-            habitNameList.add("testing3");
-            habitNameList.add("testing4");
-            habitNameList.add("testing5");
-            habitNameList.add("testing6");
-
         }
 
         recyclerView = findViewById(R.id.recyclerView);
