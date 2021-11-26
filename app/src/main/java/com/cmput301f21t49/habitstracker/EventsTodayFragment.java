@@ -106,20 +106,19 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
                         // Now check if day = a day in habit
                         String day = getDay(today.get(Calendar.DAY_OF_WEEK));
                         for (int i = 0; i < days.size(); i++) {
-                            System.out.println(days.get(i));
                             if (day.equals(days.get(i))) {
-                                eventList = currentUser.getHabits().get(hIndex).getEvents();
                                 Event e = new Event();
                                 e.setName("New Event");
                                 e.setStatus(false);
-                                System.out.println(h.getName());
                                 currentUser.addEvent(hIndex, e);
-                                System.out.println(currentUser.getHabits().get(hIndex).getEvent(0).getName());
+                                break;
+
                             }
                         }
                     }
                     hIndex++;
                 }
+                adapter.clear();
                 updateList(currentUser);
             }
         });
@@ -133,7 +132,6 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
                 int hIndex = indices.get(i).first;
                 int eIndex = indices.get(i).second;
                 Event event = currentUser.getHabits().get(hIndex).getEvent(eIndex);
-                System.out.println(event.getName());
                 new EditHabitEventFragment().newInstance(event, hIndex, eIndex, i).show(getChildFragmentManager(), "Update");
             }
         });
@@ -142,6 +140,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
 
 
     public void updateDatabase() {
+        System.out.println(currentUser.getHabits().get(0).getEvents());
         manageUser.createOrUpdate(currentUser, new VoidCallback() {
             @Override
             public void onCallback() {

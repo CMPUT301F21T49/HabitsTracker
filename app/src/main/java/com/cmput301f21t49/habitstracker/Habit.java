@@ -203,7 +203,7 @@ public class Habit implements Serializable {
      *      ArrayList of Events
      */
     public void setEvents(ArrayList<Event> events) {
-        events = events;
+        this.events = events;
     }
 
     /**
