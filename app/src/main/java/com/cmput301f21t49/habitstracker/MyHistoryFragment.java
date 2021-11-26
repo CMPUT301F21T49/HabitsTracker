@@ -69,20 +69,15 @@ public class MyHistoryFragment extends Fragment {
         }
 
 
-        /*for(Habit h: currentUser.getHabits()){
+        for(Habit h: currentUser.getHabits()){
             for(Event e: h.getEvents()){
                 if(e.getStatus() == Boolean.TRUE){
                     historyEventList.add(e);
                 }
 
             }
-        }*/
-        try {
-            historyEventList.add(new Event("Test",new SimpleDateFormat("dd/MM/yyyy").parse("04/05/2000")));
-            historyEventList.add(new Event("Testing",new SimpleDateFormat("dd/MM/yyyy").parse("04/05/2000")));
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
+
 
         listView = (ListView) v.findViewById(R.id.history_events);
         myHistoryAdapter = new MyHistoryAdapter(getActivity(),R.layout.my_history_item,historyEventList);
