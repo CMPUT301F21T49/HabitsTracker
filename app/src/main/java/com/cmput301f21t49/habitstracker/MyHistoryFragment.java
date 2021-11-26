@@ -6,11 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 /*
@@ -42,6 +46,9 @@ public class MyHistoryFragment extends Fragment {
     public ArrayList<Event> historyEventList = new ArrayList<Event>();
     private ListView listView;
     private MyHistoryAdapter myHistoryAdapter;
+    ManageUser manageUser = ManageUser.getInstance();
+    private Event selectedEvent;
+    private int index;
 
 
     public MyHistoryFragment() {
@@ -56,6 +63,7 @@ public class MyHistoryFragment extends Fragment {
 
         if (getArguments() != null) {
             currentUser = (User) this.getArguments().getSerializable("UserObj");
+            updateUser();
         }else{
             System.out.println(currentUser.getId());
         }
@@ -70,6 +78,7 @@ public class MyHistoryFragment extends Fragment {
             }
         }
 
+
         listView = (ListView) v.findViewById(R.id.history_events);
         myHistoryAdapter = new MyHistoryAdapter(getActivity(),R.layout.my_history_item,historyEventList);
         listView.setAdapter(myHistoryAdapter);
@@ -77,11 +86,52 @@ public class MyHistoryFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedEvent = (Event) listView.getItemAtPosition(i);
+                index = i;
+            }
+        });
+
+        final ImageButton deleteButton = v.findViewById(R.id.deleteActionButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                historyEventList.remove(selectedEvent);
+                for(Habit h: currentUser.getHabits()){
+                    for(int j =0; j< h.getEvents().size(); j++){
+                        if(h.getEvent(j).getName() == selectedEvent.getName()){
+                            h.deleteEvent(j);
+                        }
+                    }
+                }
+                updateDatabase();
+                selectedEvent = null;
+                myHistoryAdapter.notifyDataSetChanged();
 
             }
         });
 
+
+
+
         return v;
+    }
+
+    public void updateDatabase() {
+        manageUser.createOrUpdate(currentUser, new VoidCallback() {
+            @Override
+            public void onCallback() {
+
+            }
+        });
+    }
+
+    public void updateUser() {
+        manageUser.get(currentUser.getId(), new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                currentUser = user;
+            }
+        });
     }
 
 
