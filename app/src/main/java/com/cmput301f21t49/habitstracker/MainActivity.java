@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView nv;
+    private ManageUser manageUser = ManageUser.getInstance();
 
     FrameLayout simpleFrameLayout;
     TabLayout tabLayout;
@@ -184,7 +185,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        manageUser.get(currentUser.getId(), new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                currentUser = user;
+                System.out.println("Updated Main User");
+            }
+        });
+    }
 
     // override the onOptionsItemSelected()
     // function to implement

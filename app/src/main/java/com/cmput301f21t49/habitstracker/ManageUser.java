@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 /*
  * ManageUser
  *
@@ -124,6 +125,44 @@ public class ManageUser {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                             if (onFail != null) {
                                 onFail.onCallback();
+                            }
+                        }
+                    }
+                });
+    }
+
+
+    public void getByEmail(String email, UserCallback onSuccess) {
+        getByEmail(email, onSuccess, null);
+    }
+    public void getByEmail(String email, UserCallback onSuccess, VoidCallback onFailure) {
+        db.collection(COLLECTION_NAME)
+                .whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot doc = task.getResult();
+                            if (doc == null || doc.isEmpty()) {
+                                Log.d(TAG, "No documents found");
+                                if (onFailure != null) {
+                                    onFailure.onCallback();
+                                }
+                                return;
+                            }
+
+                            // Assumes only one document will be returned
+                            User current = doc.getDocuments().get(0).toObject(User.class);
+                            System.out.println(current.getId());
+                            if(current.getHabits() != null){
+                                System.out.println(current.getHabits().size());
+                            }
+                            onSuccess.onCallback(current);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            if (onFailure != null) {
+                                onFailure.onCallback();
                             }
                         }
                     }
