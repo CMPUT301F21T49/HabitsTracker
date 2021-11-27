@@ -60,6 +60,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
 
 
 
+
     public EventsTodayFragment() {
    // Required empty public constructor
     }
@@ -131,6 +132,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 int hIndex = indices.get(i).first;
                 int eIndex = indices.get(i).second;
+
                 Event event = currentUser.getHabits().get(hIndex).getEvent(eIndex);
                 new EditHabitEventFragment().newInstance(event, hIndex, eIndex, i).show(getChildFragmentManager(), "Update");
             }
@@ -157,6 +159,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
             }
         });
     }
+
 
     public void onEdit(Event e, int hI, int eI, int index) {
         currentUser.getHabits().get(hI).updateEvent(eI, e);
@@ -245,8 +248,6 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
             return "Sat";
         }
     }
-
-
 
 
 

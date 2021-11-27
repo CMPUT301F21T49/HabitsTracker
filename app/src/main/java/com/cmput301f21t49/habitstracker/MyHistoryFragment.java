@@ -76,6 +76,7 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
         updateList();
 
 
+
         listView = (ListView) v.findViewById(R.id.history_events);
         myHistoryAdapter = new MyHistoryAdapter(getActivity(),R.layout.my_history_item,historyEventList);
         listView.setAdapter(myHistoryAdapter);

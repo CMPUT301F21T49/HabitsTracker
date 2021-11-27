@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Users/Mr. Tree/Documents/CMPUT 301/HabitsTracker/HabitsTracker/app/src/main/res/layout/fragment_my_followers.xml" value="0.20697463768115942" />
-        <entry key="..\:/Users/Mr. Tree/Documents/CMPUT 301/HabitsTracker/HabitsTracker/app/src/main/res/layout/fragment_my_requests.xml" value="0.3383152173913043" />
-        <entry key="..\:/Users/Mr. Tree/Documents/CMPUT 301/HabitsTracker/HabitsTracker/app/src/main/res/layout/fragment_user_habits.xml" value="0.22083333333333333" />
-        <entry key="..\:/Users/Mr. Tree/Documents/CMPUT 301/HabitsTracker/HabitsTracker/app/src/main/res/layout/user_habit_item.xml" value="0.5" />
-        <entry key="..\:/Users/Mr. Tree/Documents/CMPUT 301/HabitsTracker/HabitsTracker/app/src/main/res/layout/user_item.xml" value="0.33" />
-        <entry key="..\:/Users/Mr. Tree/Documents/CMPUT 301/HabitsTracker/HabitsTracker/app/src/main/res/layout/user_item_switch.xml" value="0.33" />
-        <entry key="..\:/Users/saifh/Desktop/School/CMPUT 301/HabitsTracker/app/src/main/res/layout/add_habits.xml" value="0.5016146393972013" />
-        <entry key="..\:/Users/saifh/Desktop/School/CMPUT 301/HabitsTracker/app/src/main/res/layout/edit_habit_events.xml" value="0.6" />
-        <entry key="..\:/Users/saifh/Desktop/School/CMPUT 301/HabitsTracker/app/src/main/res/layout/my_history_events.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/saifh/Desktop/School/CMPUT 301/HabitsTracker/app/src/main/res/layout/todays_events.xml" value="0.16" />
-      </map>
-    </option>
-  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/JavaDoc" />
   </component>
