@@ -62,7 +62,7 @@ public class MyHabitsActivity extends AppCompatActivity implements AddHabitFragm
 
 
         currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
-        updateUser();
+        //updateUser();
         if (currentUser != null && currentUser.getHabits() != null && currentUser.getHabits().size() > 0){
             System.out.println("Retrieve Habits");
             System.out.println(currentUser.getHabits().size());

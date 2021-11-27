@@ -88,12 +88,6 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onSuccess(AuthResult authResult) {
                                 user.setId(fAuth.getUid());
                                 user.setEmail(email);
-                                Habit habit = new Habit();
-                                habit.setName("Test");
-                                Habit habit2 = new Habit();
-                                habit2.setName("Test2");
-                                user.addHabit(habit);
-                                user.addHabit(habit2);
                                 System.out.println(user.getId());
                                 //Create a document of the use in the database
                                 manageUser.createOrUpdate(user, new VoidCallback() {

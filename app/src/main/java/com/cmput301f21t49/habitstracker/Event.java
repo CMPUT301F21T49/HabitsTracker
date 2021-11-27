@@ -29,7 +29,7 @@ import java.util.Date;
 public class Event implements Serializable {
 
     private String name;
-    private Boolean status;
+    private boolean status;
     private String location;
     private String comment;
     private String image_url;

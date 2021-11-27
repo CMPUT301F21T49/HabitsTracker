@@ -2,6 +2,7 @@ package com.cmput301f21t49.habitstracker;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,14 +42,17 @@ import java.util.ArrayList;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class MyHistoryFragment extends Fragment {
+public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFragment.OnFragmentInteractionListener{
     private User currentUser;
     public ArrayList<Event> historyEventList = new ArrayList<Event>();
     private ListView listView;
     private MyHistoryAdapter myHistoryAdapter;
     ManageUser manageUser = ManageUser.getInstance();
     private Event selectedEvent;
+    private ArrayList<Pair<Integer, Integer>> indices = new ArrayList<>();
     private int index;
+    private int habitIndex;
+    private int eventIndex;
 
 
     public MyHistoryFragment() {
@@ -63,20 +67,14 @@ public class MyHistoryFragment extends Fragment {
 
         if (getArguments() != null) {
             currentUser = (User) this.getArguments().getSerializable("UserObj");
-            updateUser();
+            //updateUser();
         }else{
             System.out.println(currentUser.getId());
         }
 
 
-        for(Habit h: currentUser.getHabits()){
-            for(Event e: h.getEvents()){
-                if(e.getStatus() == Boolean.TRUE){
-                    historyEventList.add(e);
-                }
+        updateList();
 
-            }
-        }
 
 
         listView = (ListView) v.findViewById(R.id.history_events);
@@ -87,7 +85,10 @@ public class MyHistoryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedEvent = (Event) listView.getItemAtPosition(i);
+                habitIndex = indices.get(i).first;
+                eventIndex = indices.get(i).second;
                 index = i;
+                new EditEventOnHistoryFragment().newInstance(selectedEvent, habitIndex, eventIndex, index).show(getChildFragmentManager(), "Update");
             }
         });
 
@@ -96,13 +97,8 @@ public class MyHistoryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 historyEventList.remove(selectedEvent);
-                for(Habit h: currentUser.getHabits()){
-                    for(int j =0; j< h.getEvents().size(); j++){
-                        if(h.getEvent(j).getName() == selectedEvent.getName()){
-                            h.deleteEvent(j);
-                        }
-                    }
-                }
+                indices.remove(index);
+                currentUser.getHabits().get(habitIndex).deleteEvent(eventIndex);
                 updateDatabase();
                 selectedEvent = null;
                 myHistoryAdapter.notifyDataSetChanged();
@@ -134,5 +130,29 @@ public class MyHistoryFragment extends Fragment {
         });
     }
 
+    public void updateList() {
+        int hIndex = 0;
+        for(Habit h: currentUser.getHabits()){
+            int eIndex = 0;
+            for(Event e: h.getEvents()){
+                if(e.getStatus() == Boolean.TRUE){
+                    historyEventList.add(e);
+                    indices.add(new Pair<Integer, Integer>(hIndex, eIndex));
+                }
+                eIndex++;
+            }
+            hIndex++;
+        }
+    }
 
+
+    @Override
+    public void onEdit(Event e, int hI, int eI, int index) {
+        currentUser.getHabits().get(hI).updateEvent(eI, e);
+        updateDatabase();
+        historyEventList.set(index, e);
+        myHistoryAdapter.notifyDataSetChanged();
+
+
+    }
 }
