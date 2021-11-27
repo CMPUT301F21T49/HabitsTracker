@@ -142,7 +142,6 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
 
 
     public void updateDatabase() {
-        System.out.println(currentUser.getHabits().get(0).getEvents());
         manageUser.createOrUpdate(currentUser, new VoidCallback() {
             @Override
             public void onCallback() {
