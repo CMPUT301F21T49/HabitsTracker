@@ -30,9 +30,7 @@ public class Event implements Serializable {
 
     private String name;
     private boolean status;
-    private String location;
     private String comment;
-    private String image_url;
     private Date completionDate;
 
     /**
@@ -46,25 +44,7 @@ public class Event implements Serializable {
         this.completionDate = d;
     }
 
-    /**
-     * Event constructor, on creation has a status of in progress (temporary)
-     * @param name
-     *      Name of Event
-     * @param location
-     *      Location of Event
-     * @param comment
-     *      Comment under event
-     * @param completionDate
-     *      Date at which event is meant to occur
-     */
-    public Event(String name, Boolean status, String location, String comment, String image_url, Date completionDate) {
-        this.name = name;
-        this.status = status;
-        this.location = location;
-        this.comment = comment;
-        this.image_url = image_url;
-        this.completionDate = completionDate;
-    }
+
     /**
      * Get date
      * @return
@@ -83,22 +63,9 @@ public class Event implements Serializable {
         this.completionDate = completionDate;
     }
 
-    /**
-     * Gets image url
-     * @return
-     *      The event image's url as a string
-     */
-    public String getImage_url() {
-        return image_url;
-    }
 
-    /**
-     * Set the image url, leads to event image
-     * @param image_url
-     */
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
+
+
     /**
      * Get name of the Event
      * @return
@@ -109,12 +76,7 @@ public class Event implements Serializable {
     }
 
 
-    /**
-     * Get location of Event
-     * @return
-     *      Location
-     */
-    public String getLocation() {return this.location;}
+
 
     /**
      * Get comment of event
@@ -151,12 +113,7 @@ public class Event implements Serializable {
         this.status = newStatus;
     }
 
-    /**
-     * Update Location
-     * @param newLocation
-     *      New Location
-     */
-    public void setLocation(String newLocation) {this.location = newLocation;}
+
 
     /**
      * Update Comment
