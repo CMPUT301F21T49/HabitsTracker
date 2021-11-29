@@ -27,6 +27,10 @@ public class LoginActivityTest {
     public ActivityTestRule<LoginActivity> rule =
             new ActivityTestRule<>(LoginActivity.class, true, true);
 
+    /**
+     * Before each test, set up solo
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());

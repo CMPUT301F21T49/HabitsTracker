@@ -132,7 +132,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         fAuth = FirebaseAuth.getInstance();
-
         FirebaseUser currentUser = fAuth.getCurrentUser();
         // If user is logged in, send to MainActivity
         if (currentUser != null) {
