@@ -130,18 +130,6 @@ public class User implements Serializable {
     }
 
     /**
-     * Method to edit event
-     * @param habitIndex
-     *      Habit Index
-     * @param eventIndex
-     *      Event index to access event from Habit
-     * @param newName
-     *      Updated name of Event
-     * @param newStatus
-     *      Updated Status of Event
-     */
-
-    /**
      * Method to remove a Habit
      * @param index
      *      Index of Habit
