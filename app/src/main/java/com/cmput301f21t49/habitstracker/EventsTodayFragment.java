@@ -102,9 +102,9 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
                     habitStartDate.setTime(h.getStartDate());
                     today.setTime(todayDate);
                     // Check if after habit start date
-                    if (today.get(Calendar.YEAR) >= habitStartDate.get(Calendar.YEAR) &&
-                            today.get(Calendar.MONTH) >= habitStartDate.get(Calendar.MONTH) &&
-                            today.get(Calendar.DAY_OF_MONTH) >= habitStartDate.get(Calendar.DAY_OF_MONTH)) {
+                    if (today.get(Calendar.YEAR) > habitStartDate.get(Calendar.YEAR) ||
+                            (today.get(Calendar.YEAR) == habitStartDate.get(Calendar.YEAR) && today.get(Calendar.MONTH) > habitStartDate.get(Calendar.MONTH)) ||
+                            (today.get(Calendar.YEAR) == habitStartDate.get(Calendar.YEAR) && today.get(Calendar.MONTH) == habitStartDate.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) >= habitStartDate.get(Calendar.DAY_OF_MONTH))) {
                         // Now check if day = a day in habit
                         String day = getDay(today.get(Calendar.DAY_OF_WEEK));
                         for (int i = 0; i < days.size(); i++) {
