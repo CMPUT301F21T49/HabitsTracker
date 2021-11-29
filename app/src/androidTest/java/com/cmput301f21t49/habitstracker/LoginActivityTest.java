@@ -34,8 +34,6 @@ public class LoginActivityTest {
 
     //Note: "Login" is used as R.id.loginButton method failed.
 
-    //TODO: Change credentials to environment variables
-
     /**
      * Follows User Case 14 Normal Case
      */
