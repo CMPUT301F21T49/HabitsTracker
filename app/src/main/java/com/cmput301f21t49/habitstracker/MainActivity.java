@@ -116,29 +116,38 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                Intent intent;
-                switch(id)
-                {
-                    case R.id.habits:
-                        drawerLayout.closeDrawers();
-                        intent = new Intent(MainActivity.this, MyHabitsActivity.class);
-                        intent.putExtra(User.SERIALIZED, currentUser);
-                        startActivity(intent);
-                        return true;
 
-                    case R.id.following:
-                        drawerLayout.closeDrawers();
-                        intent = new Intent(MainActivity.this, UserActivity.class);
-                        intent.putExtra(User.SERIALIZED, currentUser);
-                        startActivity(intent);
-                        return true;
+                manageUser.get(currentUser.getId(), new UserCallback() {
+                    @Override
+                    public void onCallback(User user) {
+                        currentUser = user;
+                        Intent intent;
+                        switch(id)
+                        {
+                            case R.id.habits:
+                                drawerLayout.closeDrawers();
+                                intent = new Intent(MainActivity.this, MyHabitsActivity.class);
+                                intent.putExtra(User.SERIALIZED, currentUser);
+                                startActivity(intent);
+                                break;
 
-                    case R.id.signout:
-                        fAuth.signOut();
+                            case R.id.following:
+                                drawerLayout.closeDrawers();
+                                intent = new Intent(MainActivity.this, UserActivity.class);
+                                intent.putExtra(User.SERIALIZED, currentUser);
+                                startActivity(intent);
+                                break;
 
-                    default:
-                        return true;
-                }
+                            case R.id.signout:
+                                fAuth.signOut();
+
+                            default:
+                                break;
+                        }
+
+                    }
+                });
+                return true;
             }
         });
 
