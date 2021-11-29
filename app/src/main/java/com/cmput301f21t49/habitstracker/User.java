@@ -156,7 +156,6 @@ public class User implements Serializable {
     /**
      * Add a follower if follow request accepted
      * @param userEmail
-     *      Following user email
      */
     public void addFollower(String userEmail) {
         followers.add(userEmail);
@@ -166,7 +165,6 @@ public class User implements Serializable {
     /**
      * Remove a follower
      * @param userEmail
-     *      Follower to remove, found by email
      */
     public void removeFollower(String userEmail) {followers.remove(userEmail);}
 
@@ -199,8 +197,6 @@ public class User implements Serializable {
 
     /**
      * Remove Following
-     * @param userEmail
-     *      User to unfollow
      */
     public void removeFollowing(String userEmail) {
         following.remove(userEmail);
