@@ -18,11 +18,11 @@ import android.widget.ListView;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 /*
- * SignUpActivity
+ * MyFollowingFragment
  *
- * version 1.0
+ * version 1.1
  *
- * November 3, 2021
+ * November 28, 2021
  *
  *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
 
@@ -34,24 +34,16 @@ import java.util.ArrayList;
  *
  */
 /**
- * A simple {@link Fragment} subclass.
+ * A {@link Fragment} subclass. Shows user's following list.
  * Use the {@link MyFollowingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class MyFollowingFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private User user;
-    private ArrayList<String> userList;
-
     private ListView listView;
     private FollowerAdapter adapter;
-    //Temporary List for prototype
 
     public MyFollowingFragment() {
         // Required empty public constructor
@@ -60,15 +52,15 @@ public class MyFollowingFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     * @param user User currently logged in
      *
      * @return A new instance of fragment MyFollowingFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static MyFollowingFragment newInstance(User user) {
         MyFollowingFragment fragment = new MyFollowingFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM2, user);
+        args.putSerializable(User.SERIALIZED, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,8 +69,7 @@ public class MyFollowingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user = (User)getArguments().getSerializable(ARG_PARAM2);
-            userList = user.getFollowing();
+            user = (User)getArguments().getSerializable(User.SERIALIZED);
         }
     }
 
@@ -88,7 +79,19 @@ public class MyFollowingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_following, container, false);
         listView = v.findViewById(R.id.following_list);
-        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getFollowing(), FollowerAdapter.BUTTON);
+
+        // Set adapter
+        adapter = new FollowerAdapter(getContext(), user.getEmail(), user.getFollowing());
+        // Button 1 allows to view that user's public habit list
+        adapter.toggleButton1();
+        adapter.setButton1Text("VIEW");
+        adapter.setButton1OnClickListener(new FollowerAdapter.ItemButtonOnClickListener() {
+            @Override
+            public void onClick(User mainUser, User user) {
+                UserHabitsFragment.newInstance(mainUser.getEmail(), user.getEmail()).show(getChildFragmentManager(), "FOLLOWING_HABITS");
+            }
+        });
+        // Button 2 unfollows that user
         adapter.toggleButton2();
         adapter.setButton2Color(Color.RED);
         adapter.setButton2Text("Unfollow");
@@ -100,14 +103,7 @@ public class MyFollowingFragment extends Fragment {
                 adapter.remove(user.getEmail());
             }
         });
-        adapter.toggleButton1();
-        adapter.setButton1Text("VIEW");
-        adapter.setButton1OnClickListener(new FollowerAdapter.ItemButtonOnClickListener() {
-            @Override
-            public void onClick(User mainUser, User user) {
-                UserHabitsFragment.newInstance(mainUser.getEmail(), user.getEmail()).show(getChildFragmentManager(), "FOLLOWING_HABITS");
-            }
-        });
+
         listView.setAdapter(adapter);
         return v;
     }

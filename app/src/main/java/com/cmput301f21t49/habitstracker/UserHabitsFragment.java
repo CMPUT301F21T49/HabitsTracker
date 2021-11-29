@@ -16,23 +16,34 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+/*
+ * UserHabitsFragment
+ *
+ * version 1.1
+ *
+ * November 28, 2021
+ *
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
 /**
- * A simple {@link Fragment} subclass.
+ * A {@link DialogFragment} subclass. Show followed user's habit lists.
  * Use the {@link UserHabitsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class UserHabitsFragment extends DialogFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String CURRENTUSER = "current_user";
+    private static final String OTHERUSER = "other_user";
 
-    // TODO: Rename and change types of parameters
     private String userEmail;
     private String currentUserEmail;
-    private User user;
     private ManageUser manageUser = ManageUser.getInstance();
 
     public UserHabitsFragment() {
@@ -42,16 +53,16 @@ public class UserHabitsFragment extends DialogFragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
+     * @param currentUserEmail String of current user email
+     * @param userEmail String of the user requested
      *
      * @return A new instance of fragment UserHabitsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static UserHabitsFragment newInstance(String currentUserEmail, String userEmail) {
         UserHabitsFragment fragment = new UserHabitsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, userEmail);
-        args.putString(ARG_PARAM2, currentUserEmail);
+        args.putString(CURRENTUSER, currentUserEmail);
+        args.putString(OTHERUSER, userEmail);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,19 +72,21 @@ public class UserHabitsFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
-            userEmail = getArguments().getString(ARG_PARAM1);
-            currentUserEmail = getArguments().getString(ARG_PARAM2);
+            currentUserEmail = getArguments().getString(CURRENTUSER);
+            userEmail = getArguments().getString(OTHERUSER);
         }
 
         Dialog d = new Dialog(getContext());
         d.setContentView(R.layout.fragment_user_habits);
-
+        // Set layout to fill screen
         d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
         ListView listView = (ListView) d.findViewById(R.id.habits_list);
         TextView textViewEmail = (TextView) d.findViewById(R.id.user_email);
         Button button = (Button) d.findViewById(R.id.button);
 
         textViewEmail.setText(userEmail);
+        //On Click, dismiss fragment
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,10 +98,9 @@ public class UserHabitsFragment extends DialogFragment {
             @Override
             public void onCallback(User user) {
                 ArrayList<Habit> publicHabits = new ArrayList<>();
-                System.out.println(user.getAllowPrivate());
-                System.out.println(currentUserEmail);
+                // Get all public habits
                 for (Habit h : user.getHabits()) {
-                    if (!h.getPrivateHabit() || user.getAllowPrivate().contains(currentUserEmail)) {
+                    if (!h.getPrivateHabit()) {
                         publicHabits.add(h);
                     }
                 }
