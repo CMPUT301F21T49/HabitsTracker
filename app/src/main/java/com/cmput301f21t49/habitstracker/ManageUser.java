@@ -65,7 +65,6 @@ public class ManageUser {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-                        System.out.println(user.getHabits().size());
                         onSuccess.onCallback();
                     }
                 })

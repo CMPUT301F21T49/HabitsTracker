@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * November 3, 2021
  *
- *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
+ *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin, Saif, Fan Zhu
 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -65,6 +65,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
    // Required empty public constructor
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +113,8 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
                                 e.setName("New Event");
                                 e.setStatus(false);
                                 currentUser.addEvent(hIndex, e);
+                                updateDatabase();
+                                updateUser();
                                 break;
 
                             }
@@ -161,9 +164,11 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
 
 
     public void onEdit(Event e, int hI, int eI, int index) {
+        System.out.println(hI);
+        System.out.println(eI);
         currentUser.getHabits().get(hI).updateEvent(eI, e);
         updateDatabase();
-        //updateUser();
+        updateUser();
         Habit h = currentUser.getHabits().get(hI);
         displays.set(index, e.getName() + "\n" + "Associated Habit: " + h.getName());
         adapter.notifyDataSetChanged();
@@ -173,18 +178,19 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
     public void onComplete(Event e, int hI, int eI, int index) {
         currentUser.getHabits().get(hI).updateEvent(eI, e);
         updateDatabase();
-        //updateUser();
+        updateUser();
         displays.remove(index);
         indices.remove(index);
         adapter.notifyDataSetChanged();
     }
 
     private void updateList(User currentUser) {
+        indices.clear();
         habitArrayList = currentUser.getHabits();
         int hIndex = 0;
         for ( Habit h : habitArrayList) {
             ArrayList<String> days = h.getDays();
-            habitStartDate.setTime(h.getStartDate());
+            habitStartDate. setTime(h.getStartDate());
             today.setTime(todayDate);
             // Check if after habit start date
             if (today.get(Calendar.YEAR) >= habitStartDate.get(Calendar.YEAR) &&
@@ -218,7 +224,7 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
             }
             hIndex++;
         }
-        updateDatabase();
+        //updateDatabase();
         //updateUser();
 
     }

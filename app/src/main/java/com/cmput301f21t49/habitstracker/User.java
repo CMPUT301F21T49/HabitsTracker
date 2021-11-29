@@ -112,6 +112,7 @@ public class User implements Serializable {
      * @param index
      *      The index of Habit being accessed
      * @param editedHabit
+     *      Updated Habit
      */
     public void editHabit(int index, Habit editedHabit) {
         this.habits.set(index, editedHabit);
@@ -165,8 +166,8 @@ public class User implements Serializable {
 
     /**
      * Add a follower if follow request accepted
-     * @param user
-     *      User that is following current user
+     * @param userEmail
+     *      Following user email
      */
     public void addFollower(String userEmail) {
         followers.add(userEmail);
@@ -175,8 +176,8 @@ public class User implements Serializable {
 
     /**
      * Remove a follower
-     * @param user
-     *      Follower to remove
+     * @param userEmail
+     *      Follower to remove, found by email
      */
     public void removeFollower(String userEmail) {followers.remove(userEmail);}
 
@@ -191,7 +192,7 @@ public class User implements Serializable {
 
     /**
      * Add following if a user accepts sent follow request
-     * @param user
+     * @param userEmail
      *      User current user is following
      */
     public void addFollowing(String userEmail) {
@@ -209,14 +210,15 @@ public class User implements Serializable {
 
     /**
      * Remove Following
-     * @param user User to unfollow
+     * @param userEmail
+     *      User to unfollow
      */
     public void removeFollowing(String userEmail) {
         following.remove(userEmail);
     }
     /**
      * Method that adds a request if another user sends
-     * @param user
+     * @param userEmail
      *      User that sent the request
      */
     public void addRequest(String userEmail) {
@@ -225,7 +227,7 @@ public class User implements Serializable {
 
     /**
      * Method that removes a request
-     * @param user
+     * @param userEmail
      *      User to be removed
      */
     public void removeRequest(String userEmail) {
@@ -241,15 +243,29 @@ public class User implements Serializable {
         return requests;
     }
 
-
+    /**
+     * Method to allow user to see private info
+     * @param userEmail
+     *      Designated user by email
+     */
     public void addAllowPrivate(String userEmail) {
         allowPrivate.add(userEmail);
     }
 
+    /**
+     * Method to remove a user from seeing private info
+     * @param userEmail
+     *      User to be removed by email
+     */
     public void removeAllowPrivate(String userEmail) {
         allowPrivate.remove(userEmail);
     }
 
+    /**
+     * Return list of users with private access privileges
+     * @return
+     *      List of users
+     */
     public ArrayList<String> getAllowPrivate() {
         return allowPrivate;
     }

@@ -25,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /*
  *MainActivity
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +86,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
+//        manageUser.get(currentUser.getId(), new UserCallback() {
+//            @Override
+//            public void onCallback(User user) {
+//                currentUser = user;
+//                System.out.println("Updated Main User");
+//            }
+//        });
+        System.out.println("CALL TO USER");
         if(currentUser.getHabits() != null){
             System.out.println(currentUser.getHabits().size());
         }
@@ -184,11 +195,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("UserObj", currentUser);
+        Fragment startFragment = new EventsTodayFragment();
+        startFragment.setArguments(bundle);
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.simpleFrameLayout, startFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
         manageUser.get(currentUser.getId(), new UserCallback() {
             @Override
             public void onCallback(User user) {

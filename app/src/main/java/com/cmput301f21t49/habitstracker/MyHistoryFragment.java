@@ -84,6 +84,7 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                System.out.println(indices.get(i));
                 selectedEvent = (Event) listView.getItemAtPosition(i);
                 habitIndex = indices.get(i).first;
                 eventIndex = indices.get(i).second;
@@ -92,19 +93,19 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
             }
         });
 
-        final ImageButton deleteButton = v.findViewById(R.id.deleteActionButton);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                historyEventList.remove(selectedEvent);
-                indices.remove(index);
-                currentUser.getHabits().get(habitIndex).deleteEvent(eventIndex);
-                updateDatabase();
-                selectedEvent = null;
-                myHistoryAdapter.notifyDataSetChanged();
-
-            }
-        });
+//        final ImageButton deleteButton = v.findViewById(R.id.deleteActionButton);
+//        deleteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                historyEventList.remove(selectedEvent);
+//                indices.remove(index);
+//                currentUser.getHabits().get(habitIndex).deleteEvent(eventIndex);
+//                updateDatabase();
+//                selectedEvent = null;
+//                myHistoryAdapter.notifyDataSetChanged();
+//
+//            }
+//        });
 
 
 
@@ -131,6 +132,8 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
     }
 
     public void updateList() {
+        indices.clear();
+        historyEventList.clear();
         int hIndex = 0;
         for(Habit h: currentUser.getHabits()){
             int eIndex = 0;
@@ -148,11 +151,28 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
 
     @Override
     public void onEdit(Event e, int hI, int eI, int index) {
+        System.out.println(hI);
+        System.out.println(eI);
         currentUser.getHabits().get(hI).updateEvent(eI, e);
         updateDatabase();
+        updateUser();
         historyEventList.set(index, e);
         myHistoryAdapter.notifyDataSetChanged();
 
 
     }
+
+    @Override
+    public void onDelete(Event e, int hI, int eI, int index) {
+        currentUser.getHabits().get(hI).deleteEvent(eI);
+        updateDatabase();
+        updateUser();
+        //selectedEvent = (Event) listView.getItemAtPosition(index);
+        //myHistoryAdapter.remove(selectedEvent);
+        updateList();
+        myHistoryAdapter.notifyDataSetChanged();
+
+
+    }
+
 }

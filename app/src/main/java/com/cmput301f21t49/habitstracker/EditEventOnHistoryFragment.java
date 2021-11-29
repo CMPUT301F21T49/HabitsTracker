@@ -29,6 +29,7 @@ public class EditEventOnHistoryFragment extends DialogFragment {
 
     public interface OnFragmentInteractionListener {
         void onEdit(Event e, int hI, int eI, int index);
+        void onDelete(Event e, int hI, int eI, int index);
     }
 
     @Override
@@ -94,6 +95,14 @@ public class EditEventOnHistoryFragment extends DialogFragment {
                             }
                         }
                 )
+                .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (event!=null) {
+                            listener.onDelete(event, hI, eI, index);
+                        }
+                    }
+                })
                 .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
