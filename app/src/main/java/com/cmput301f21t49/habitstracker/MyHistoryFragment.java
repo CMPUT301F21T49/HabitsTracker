@@ -93,26 +93,12 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
             }
         });
 
-//        final ImageButton deleteButton = v.findViewById(R.id.deleteActionButton);
-//        deleteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                historyEventList.remove(selectedEvent);
-//                indices.remove(index);
-//                currentUser.getHabits().get(habitIndex).deleteEvent(eventIndex);
-//                updateDatabase();
-//                selectedEvent = null;
-//                myHistoryAdapter.notifyDataSetChanged();
-//
-//            }
-//        });
-
-
-
-
         return v;
     }
 
+    /**
+     * Function that updates database
+     */
     public void updateDatabase() {
         manageUser.createOrUpdate(currentUser, new VoidCallback() {
             @Override
@@ -122,6 +108,9 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
         });
     }
 
+    /**
+     * Function that updates the user
+     */
     public void updateUser() {
         manageUser.get(currentUser.getId(), new UserCallback() {
             @Override
@@ -131,6 +120,9 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
         });
     }
 
+    /**
+     * Function which updates the list
+     */
     public void updateList() {
         indices.clear();
         historyEventList.clear();
@@ -149,6 +141,13 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
     }
 
 
+    /**
+     * Function to be called by listener once event is edited
+     * @param e Event being edited
+     * @param hI Habit index
+     * @param eI Event Index
+     * @param index Index on listview
+     */
     @Override
     public void onEdit(Event e, int hI, int eI, int index) {
         System.out.println(hI);
@@ -162,13 +161,18 @@ public class MyHistoryFragment extends Fragment implements EditEventOnHistoryFra
 
     }
 
+    /**
+     * Function to be called by listener once event is deleted
+     * @param e Event being edited
+     * @param hI Habit index
+     * @param eI Event Index
+     * @param index Index on listview
+     */
     @Override
     public void onDelete(Event e, int hI, int eI, int index) {
         currentUser.getHabits().get(hI).deleteEvent(eI);
         updateDatabase();
         updateUser();
-        //selectedEvent = (Event) listView.getItemAtPosition(index);
-        //myHistoryAdapter.remove(selectedEvent);
         updateList();
         myHistoryAdapter.notifyDataSetChanged();
 

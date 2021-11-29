@@ -144,6 +144,9 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
     }
 
 
+    /**
+     * Function to update database
+     */
     public void updateDatabase() {
         manageUser.createOrUpdate(currentUser, new VoidCallback() {
             @Override
@@ -153,6 +156,9 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
         });
     }
 
+    /**
+     * Function which updates the currentuser
+     */
     public void updateUser() {
         manageUser.get(currentUser.getId(), new UserCallback() {
             @Override
@@ -163,6 +169,13 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
     }
 
 
+    /**
+     * Function to be called by listener once event is edited
+     * @param e Event being edited
+     * @param hI Habit index
+     * @param eI Event Index
+     * @param index Index on listview
+     */
     public void onEdit(Event e, int hI, int eI, int index) {
         System.out.println(hI);
         System.out.println(eI);
@@ -174,6 +187,13 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Function to be called by listener once event is completed
+     * @param e Event being edited
+     * @param hI Habit index
+     * @param eI Event Index
+     * @param index Index on listview
+     */
     @Override
     public void onComplete(Event e, int hI, int eI, int index) {
         currentUser.getHabits().get(hI).updateEvent(eI, e);
@@ -184,6 +204,10 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Function that updates list view
+     * @param currentUser current user
+     */
     private void updateList(User currentUser) {
         indices.clear();
         habitArrayList = currentUser.getHabits();
@@ -212,24 +236,20 @@ public class EventsTodayFragment extends Fragment implements EditHabitEventFragm
                             }
                             eIndex++;
                         }
-//                            Event e = new Event();
-//                            e.setName("New Event");
-//                            e.setStatus(false);
-//                            currentUser.addEvent(hIndex, e);
-//                            System.out.println(currentUser.getHabits().get(hIndex).getEvents().size());
-//                            displays.add(e.getName() + "\n" + "Associated Habit: " + h.getName());
-//                            adapter.notifyDataSetChanged();
                     }
                 }
             }
             hIndex++;
         }
-        //updateDatabase();
-        //updateUser();
 
     }
 
 
+    /**
+     * Function that converts number returned by calendar into a day
+     * @param num The number to be converted (1-7)
+     * @return Strimg of day
+     */
     private String getDay(int num) {
         if (num == 1) {
             return "Sun";

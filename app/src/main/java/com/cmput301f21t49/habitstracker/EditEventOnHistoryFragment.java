@@ -27,6 +27,7 @@ public class EditEventOnHistoryFragment extends DialogFragment {
     private int eI;
     private EditEventOnHistoryFragment.OnFragmentInteractionListener listener;
 
+    // Interface for listener, can call these functions in parent fragment
     public interface OnFragmentInteractionListener {
         void onEdit(Event e, int hI, int eI, int index);
         void onDelete(Event e, int hI, int eI, int index);
@@ -51,7 +52,7 @@ public class EditEventOnHistoryFragment extends DialogFragment {
 
 
 
-
+    // New instance of fragment to call
     static EditEventOnHistoryFragment newInstance(Event e, int hI, int eI, int index){
         Bundle args = new Bundle();
         args.putSerializable("event",e);
