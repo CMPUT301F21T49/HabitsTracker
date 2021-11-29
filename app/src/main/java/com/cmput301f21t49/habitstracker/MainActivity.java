@@ -25,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /*
  *MainActivity
@@ -61,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
     public ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView nv;
     private ManageUser manageUser = ManageUser.getInstance();
+    private Fragment fragment;
 
     FrameLayout simpleFrameLayout;
     TabLayout tabLayout;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
+//        manageUser.get(currentUser.getId(), new UserCallback() {
+//            @Override
+//            public void onCallback(User user) {
+//                currentUser = user;
+//                System.out.println("Updated Main User");
+//            }
+//        });
+        System.out.println("CALL TO USER");
         if(currentUser.getHabits() != null){
             System.out.println(currentUser.getHabits().size());
         }
@@ -150,27 +162,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
             // get the current selected tab's position and replace the fragment accordingly
-                Fragment fragment = null;
-                switch (tab.getPosition()) {
-                    case 0:
-                        Bundle etoday = new Bundle();
-                        etoday.putSerializable("UserObj", currentUser);
-                        fragment = new EventsTodayFragment();
-                        fragment.setArguments(etoday);
-                        break;
-                    case 1:
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("UserObj", currentUser);
-                        // Set Fragmentclass Arguments
-                        fragment = new MyHistoryFragment();
-                        fragment.setArguments(bundle);
-                        break;
-                }
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.simpleFrameLayout, fragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
+                fragment = null;
+                manageUser.get(currentUser.getId(), new UserCallback() {
+                    @Override
+                    public void onCallback(User user) {
+                        switch (tab.getPosition()) {
+                            case 0:
+                                Bundle etoday = new Bundle();
+                                etoday.putSerializable("UserObj", user);
+                                fragment = new EventsTodayFragment();
+                                fragment.setArguments(etoday);
+                                break;
+                            case 1:
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("UserObj", user);
+                                // Set Fragment class Arguments
+                                fragment = new MyHistoryFragment();
+                                fragment.setArguments(bundle);
+                                break;
+                        }
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ft.replace(R.id.simpleFrameLayout, fragment);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft.commit();
+                    }
+                });
             }
 
             @Override
@@ -183,8 +200,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
+
+    // On resume method to be called when program returns to main activity
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
         super.onResume();
@@ -192,9 +213,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCallback(User user) {
                 currentUser = user;
-                System.out.println("Updated Main User");
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("UserObj", currentUser);
+                Fragment startFragment = new EventsTodayFragment();
+                startFragment.setArguments(bundle);
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.simpleFrameLayout, startFragment);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
             }
         });
+
     }
 
     // override the onOptionsItemSelected()
@@ -209,6 +239,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateUser() {
+        manageUser.get(currentUser.getId(), new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                currentUser = user;
+            }
+        });
     }
 
 

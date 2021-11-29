@@ -16,16 +16,32 @@ public class HabitTest {
         event = new Event();
     }
 
+    // Test adding Habit Event
     @Test
-    public void testUpdateCompletion() {
-        event.setStatus("In progress");
+    public void addHabitEventTest() {
         habit.addEvent(event);
-        habit.updateCompletion();
-        assertEquals(0, (long) habit.getPct());
-        Event event2 = new Event();
-        event2.setStatus("Completed");
-        habit.addEvent(event2);
-        habit.updateCompletion();
-        assertEquals(0.5, habit.getPct(), 0);
+        assertEquals(habit.getEvents().size(), 1);
     }
+
+    // Test removing Habit Event
+    @Test
+    public void removeHabitEventTest() {
+        habit.addEvent(event);
+        assertEquals(habit.getEvents().size(), 1);
+        habit.deleteEvent(0);
+        assertEquals(habit.getEvents().size(), 0);
+    }
+
+    // Test editing event
+    @Test
+    public void editEventTest() {
+        event.setName("Hello");
+        habit.addEvent(event);
+        assertEquals(habit.getEvent(0).getName(), "Hello");
+        event.setName("Yo");
+        assertEquals(habit.getEvent(0).getName(), "Yo");
+    }
+
+
+
 }

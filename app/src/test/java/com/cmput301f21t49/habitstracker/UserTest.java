@@ -47,18 +47,6 @@ public class UserTest {
     }
 
 
-    // Test ability to edit Events
-    @Test
-    public void editEventTest() {
-        user.addHabit(habit);
-        event.setName("Hello");
-        event.setStatus("In Progress");
-        user.addEvent(0, event);
-        assertTrue(user.getHabits().get(0).getEvents().get(0).getName().equals("Hello"));
-        user.editEvent(0,0,"NewName", "NewStatus");
-        assertFalse(user.getHabits().get(0).getEvents().get(0).getName().equals("PlaceHolder"));
-    }
-
     // Test for deleting events
     @Test
     public void deleteEventTest() {
@@ -76,4 +64,53 @@ public class UserTest {
         user.deleteHabit(0);
         assertEquals(user.getHabits().size(), 0);
     }
+
+    // Test Following
+    @Test
+    public void followingTest() {
+        user.addFollowing("Email.com");
+        assertEquals(user.getFollowing().size(), 1);
+    }
+
+    // test removing following
+    @Test
+    public void deleteFollowingTest() {
+        user.addFollowing("Email.com");
+        assertEquals(user.getFollowing().size(), 1);
+        user.removeFollowing("Email.com");
+        assertEquals(user.getFollowing().size(), 0);
+    }
+
+    // Add follower Test
+    @Test
+    public void followerTest() {
+        user.addFollower("Email.com");
+        assertEquals(user.getFollowers().size(), 1);
+    }
+
+    // Remove follower Test
+    @Test
+    public void deleteFollowerTest() {
+        user.addFollower("Email.com");
+        assertEquals(user.getFollowers().size(), 1);
+        user.removeFollower("Email.com");
+        assertEquals(user.getFollowers().size(), 0);
+    }
+
+    // Test Adding requests
+    @Test
+    public void addRequestTest() {
+        user.addRequest("Email.com");
+        assertEquals(user.getRequests().size(), 1);
+    }
+
+    // Test removing requests
+    @Test
+    public void removeRequestTest() {
+        user.addRequest("Email.com");
+        assertEquals(user.getRequests().size(), 1);
+        user.removeRequest("Email.com");
+        assertEquals(user.getRequests().size(), 0);
+    }
+
 }

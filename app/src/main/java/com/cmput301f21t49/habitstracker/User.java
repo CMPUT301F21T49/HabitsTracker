@@ -130,18 +130,6 @@ public class User implements Serializable {
     }
 
     /**
-     * Method to edit event
-     * @param habitIndex
-     *      Habit Index
-     * @param eventIndex
-     *      Event index to access event from Habit
-     * @param newName
-     *      Updated name of Event
-     * @param newStatus
-     *      Updated Status of Event
-     */
-
-    /**
      * Method to remove a Habit
      * @param index
      *      Index of Habit
@@ -165,7 +153,7 @@ public class User implements Serializable {
 
     /**
      * Add a follower if follow request accepted
-     * @param user
+     * @param userEmail
      *      User that is following current user
      */
     public void addFollower(String userEmail) {
@@ -175,7 +163,7 @@ public class User implements Serializable {
 
     /**
      * Remove a follower
-     * @param user
+     * @param userEmail
      *      Follower to remove
      */
     public void removeFollower(String userEmail) {followers.remove(userEmail);}
@@ -191,7 +179,7 @@ public class User implements Serializable {
 
     /**
      * Add following if a user accepts sent follow request
-     * @param user
+     * @param userEmail
      *      User current user is following
      */
     public void addFollowing(String userEmail) {
@@ -209,14 +197,14 @@ public class User implements Serializable {
 
     /**
      * Remove Following
-     * @param user User to unfollow
+     * @param userEmail User to unfollow
      */
     public void removeFollowing(String userEmail) {
         following.remove(userEmail);
     }
     /**
      * Method that adds a request if another user sends
-     * @param user
+     * @param userEmail
      *      User that sent the request
      */
     public void addRequest(String userEmail) {
@@ -225,7 +213,7 @@ public class User implements Serializable {
 
     /**
      * Method that removes a request
-     * @param user
+     * @param userEmail
      *      User to be removed
      */
     public void removeRequest(String userEmail) {

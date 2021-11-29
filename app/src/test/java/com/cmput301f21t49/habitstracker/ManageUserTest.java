@@ -1,4 +1,9 @@
 package com.cmput301f21t49.habitstracker;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.fail;
+
+import android.util.Log;
+
 import org.junit.Test;
 //import org.junit.jupiter.api.Test;
 //import org.junit.runner.RunWith;
@@ -31,6 +36,30 @@ public class ManageUserTest {
             }
         });
 
+        signal.await();
+    }
+
+    /**
+     * Retrieve an existing User object
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    public void getUserObject() throws InterruptedException {
+        final CountDownLatch signal = new CountDownLatch(1);
+        manageUser.get("AZc5GIbBL5MiHN5zuQJMffAsLOl1", new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                assertEquals(user.getId(), "AZc5GIbBL5MiHN5zuQJMffAsLOl1");
+                signal.countDown();
+            }
+        }, new VoidCallback() {
+            @Override
+            public void onCallback() {
+                fail();
+                signal.countDown();
+            }
+        });
         signal.await();
     }
 }

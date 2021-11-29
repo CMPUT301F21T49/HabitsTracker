@@ -203,7 +203,7 @@ public class Habit implements Serializable {
      *      ArrayList of Events
      */
     public void setEvents(ArrayList<Event> events) {
-        events = events;
+        this.events = events;
     }
 
     /**
@@ -233,26 +233,56 @@ public class Habit implements Serializable {
         this.pct = pct;
     }
 
+    /**
+     * Getter for start day
+     * @return
+     *      Start Date
+     */
     public Date getStartDate() {
         return StartDate;
     }
 
+    /**
+     * Set a start date
+     * @param startDate
+     *      Start date of Habit
+     */
     public void setStartDate(Date startDate) {
         StartDate = startDate;
     }
 
+    /**
+     * Getter for private habit
+     * @return
+     *      If the habit is private
+     */
     public Boolean getPrivateHabit() {
         return privateHabit;
     }
 
+    /**
+     * Set if habit is private
+     * @param privateHabit
+     *      True or false boolean
+     */
     public void setPrivateHabit(Boolean privateHabit) {
         this.privateHabit = privateHabit;
     }
 
+    /**
+     * Return reason for habit
+     * @return
+     *      Reason as string
+     */
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Set reason for habit
+     * @param reason
+     *      Reason as string
+     */
     public void setReason(String reason) {
         this.reason = reason;
     }
