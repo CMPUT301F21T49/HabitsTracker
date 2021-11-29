@@ -130,17 +130,6 @@ public class User implements Serializable {
         habit.addEvent(event);
     }
 
-    /**
-     * Method to edit event
-     * @param habitIndex
-     *      Habit Index
-     * @param eventIndex
-     *      Event index to access event from Habit
-     * @param newName
-     *      Updated name of Event
-     * @param newStatus
-     *      Updated Status of Event
-     */
 
     /**
      * Method to remove a Habit
@@ -246,7 +235,6 @@ public class User implements Serializable {
     /**
      * Method to allow user to see private info
      * @param userEmail
-     *      Designated user by email
      */
     public void addAllowPrivate(String userEmail) {
         allowPrivate.add(userEmail);
@@ -255,7 +243,6 @@ public class User implements Serializable {
     /**
      * Method to remove a user from seeing private info
      * @param userEmail
-     *      User to be removed by email
      */
     public void removeAllowPrivate(String userEmail) {
         allowPrivate.remove(userEmail);
