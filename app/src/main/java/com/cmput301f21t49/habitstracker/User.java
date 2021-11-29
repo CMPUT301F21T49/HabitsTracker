@@ -112,7 +112,6 @@ public class User implements Serializable {
      * @param index
      *      The index of Habit being accessed
      * @param editedHabit
-     *      Updated Habit
      */
     public void editHabit(int index, Habit editedHabit) {
         this.habits.set(index, editedHabit);
@@ -130,6 +129,17 @@ public class User implements Serializable {
         habit.addEvent(event);
     }
 
+    /**
+     * Method to edit event
+     * @param habitIndex
+     *      Habit Index
+     * @param eventIndex
+     *      Event index to access event from Habit
+     * @param newName
+     *      Updated name of Event
+     * @param newStatus
+     *      Updated Status of Event
+     */
 
     /**
      * Method to remove a Habit
@@ -156,6 +166,7 @@ public class User implements Serializable {
     /**
      * Add a follower if follow request accepted
      * @param userEmail
+     *      User that is following current user
      */
     public void addFollower(String userEmail) {
         followers.add(userEmail);
@@ -165,6 +176,7 @@ public class User implements Serializable {
     /**
      * Remove a follower
      * @param userEmail
+     *      Follower to remove
      */
     public void removeFollower(String userEmail) {followers.remove(userEmail);}
 
@@ -197,6 +209,7 @@ public class User implements Serializable {
 
     /**
      * Remove Following
+     * @param userEmail User to unfollow
      */
     public void removeFollowing(String userEmail) {
         following.remove(userEmail);
@@ -228,27 +241,15 @@ public class User implements Serializable {
         return requests;
     }
 
-    /**
-     * Method to allow user to see private info
-     * @param userEmail
-     */
+
     public void addAllowPrivate(String userEmail) {
         allowPrivate.add(userEmail);
     }
 
-    /**
-     * Method to remove a user from seeing private info
-     * @param userEmail
-     */
     public void removeAllowPrivate(String userEmail) {
         allowPrivate.remove(userEmail);
     }
 
-    /**
-     * Return list of users with private access privileges
-     * @return
-     *      List of users
-     */
     public ArrayList<String> getAllowPrivate() {
         return allowPrivate;
     }
