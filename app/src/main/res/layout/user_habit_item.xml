@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="30"
         android:text="Reason"
@@ -46,7 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,4 +70,12 @@
         android:text="(private)"
         app:layout_constraintBottom_toBottomOf="@+id/habit_title"
         app:layout_constraintStart_toEndOf="@+id/habit_title" />
+
+    <TextView
+        android:id="@+id/textViewDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="N/A"
+        app:layout_constraintStart_toStartOf="@+id/habit_title"
+        app:layout_constraintTop_toBottomOf="@+id/habit_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

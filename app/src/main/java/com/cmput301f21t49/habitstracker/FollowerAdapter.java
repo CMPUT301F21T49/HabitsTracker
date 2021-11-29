@@ -1,27 +1,25 @@
 package com.cmput301f21t49.habitstracker;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 
 import java.util.ArrayList;
 
 /*
  * FollowerAdapter
  *
- * version 1.0
+ * version 1.1
  *
- * November 3, 2021
+ * November 28, 2021
  *
  *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
 
@@ -37,13 +35,28 @@ import java.util.ArrayList;
  * Follower Adapter, extends {@link ArrayAdapter} for Users
  */
 public class FollowerAdapter extends ArrayAdapter<String> {
-    public static final int BUTTON = 1;
-    public static final int SWITCH = 2;
+
+    /**
+     * Interface for clicking a list item button
+     */
     interface ItemButtonOnClickListener {
+        /**
+         * Callback when button is clicked
+         * @param mainUser Currently logged in user
+         * @param user User in the list
+         */
         void onClick(User mainUser, User user);
     }
 
+    /**
+     * Interface for clicking a list item
+     */
     interface ItemOnClickListener {
+        /**
+         * Callback when list item is clicked
+         * @param position Position in list
+         * @param userEmailList List of user emails
+         */
         void onClick(int position, ArrayList<String> userEmailList);
     }
 
@@ -60,35 +73,34 @@ public class FollowerAdapter extends ArrayAdapter<String> {
     private int button1Color = 0;
     private int button2Color = 0;
 
-    private int type = 0;
-
     /**
      * Follower Adapter Constructor
      * @param context Context of the adapter
      */
-    public FollowerAdapter(Context context, String currentUserEmail, ArrayList<String> userEmailList, int type) {
+    public FollowerAdapter(Context context, String currentUserEmail, ArrayList<String> userEmailList) {
         super(context, 0, userEmailList);
         this.currentUserEmail = currentUserEmail;
         this.userEmailList = userEmailList;
-        this.type = type;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //super.getView(position, convertView, parent);
         String listUserEmail = userEmailList.get(position);
         View v = convertView;
-        if (type == BUTTON) {
             if (v == null) {
                 v = LayoutInflater.from(getContext()).inflate(R.layout.user_item, parent, false);
             }
 
+            //Get UI
             TextView userName = v.findViewById(R.id.textViewUsername);
             Button button1 = v.findViewById(R.id.button1);
             Button button2 = v.findViewById(R.id.button2);
 
+            //Set user email
             userName.setText(listUserEmail);
+
+            //Set button properties
 
             if (!showButton1) {
                 button1.setClickable(false);
@@ -117,6 +129,7 @@ public class FollowerAdapter extends ArrayAdapter<String> {
             }
 
             if (listener1 != null) {
+                //call listener and update users
                 button1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -129,9 +142,6 @@ public class FollowerAdapter extends ArrayAdapter<String> {
                                     public void onCallback(User user) {
                                         User listUser = user;
                                         listener1.onClick(currentUser, listUser);
-                                        System.out.println(currentUser.getFollowers());
-                                        System.out.println(currentUser.getFollowing());
-                                        System.out.println(currentUser.getRequests());
 
                                         manageUser.createOrUpdate(currentUser, new VoidCallback() {
                                             @Override
@@ -154,6 +164,7 @@ public class FollowerAdapter extends ArrayAdapter<String> {
             }
 
             if (listener2 != null) {
+                //call listener and update users
                 button2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -161,27 +172,21 @@ public class FollowerAdapter extends ArrayAdapter<String> {
                             @Override
                             public void onCallback(User user) {
                                 final User currentUser = user;
-                                System.out.println(user);
                                 manageUser.getByEmail(listUserEmail, new UserCallback() {
                                     @Override
                                     public void onCallback(User user) {
                                         User listUser = user;
-//                                    System.out.println(currentUser);
                                         listener2.onClick(currentUser, listUser);
-//                                    System.out.println(currentUser);
-//                                    System.out.println(currentUser.getFollowers());
-//                                    System.out.println(currentUser.getFollowing());
-//                                    System.out.println(currentUser.getRequests());
                                         manageUser.createOrUpdate(currentUser, new VoidCallback() {
                                             @Override
                                             public void onCallback() {
-                                                System.out.println("UPDATED MAIN USER");
+                                                Log.i("FIREBASE UPDATE", "UPDATED MAIN USER");
                                             }
                                         });
                                         manageUser.createOrUpdate(listUser, new VoidCallback() {
                                             @Override
                                             public void onCallback() {
-                                                System.out.println("UPDATED LIST USER");
+                                                Log.i("FIREBASE UPDATE", "UPDATED LIST USER");
                                             }
                                         });
                                     }
@@ -193,6 +198,7 @@ public class FollowerAdapter extends ArrayAdapter<String> {
             }
 
             if (itemClickListener != null) {
+                //call listener on item click
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -201,84 +207,83 @@ public class FollowerAdapter extends ArrayAdapter<String> {
                 });
             }
 
-        } else if (type == SWITCH) {
-            if (v == null) {
-                v = LayoutInflater.from(getContext()).inflate(R.layout.user_item_switch, parent, false);
-            }
-            TextView userName = v.findViewById(R.id.textViewUsername);
-            SwitchCompat switchCompat = v.findViewById(R.id.privateSwitch);
-
-            userName.setText(listUserEmail);
-            manageUser.getByEmail(currentUserEmail, new UserCallback() {
-                @Override
-                public void onCallback(User user) {
-                    switchCompat.setChecked(user.getAllowPrivate().contains(listUserEmail));
-                    switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            if (b) {
-                                user.addAllowPrivate(listUserEmail);
-                            } else  {
-                                user.removeAllowPrivate(listUserEmail);
-                            }
-                            manageUser.createOrUpdate(user, new VoidCallback() {
-                                @Override
-                                public void onCallback() {
-
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-
-
-
-
-
-        }
-
-
         return v;
     }
 
+    /**
+     * Toggle buttons 1 and 2, invisible by default
+     */
     public void toggleButtons() {
         showButton1 = !showButton1;
         showButton2 = !showButton2;
     }
 
+    /**
+     * Toggle Button 1, invisible by default
+     */
     public void toggleButton1() {
         showButton1 = !showButton1;
     }
 
+    /**
+     * Toggle Button 2, invisible by default
+     */
     public void toggleButton2() {
         showButton2 = !showButton2;
     }
 
+    /**
+     * Set text for Button 1, "Accept" by default
+     * @param text Text for Button 1
+     */
     public void setButton1Text(String text) {
         buttonText1 = text;
     }
 
+    /**
+     * Set text for Button 2 "Decline" by default
+     * @param text Text for Button 2
+     */
     public void setButton2Text(String text) {
         buttonText2 = text;
     }
 
+    /**
+     * Set color for Button 1, Blue by default
+     * @param color Color for Button 1
+     */
     public void setButton1Color(int color) {
         button1Color = color;
     }
 
+    /**
+     * Set color for Button 2, Blue by default
+     * @param color Color for Button 2
+     */
     public void setButton2Color(int color) {
         button2Color = color;
     }
 
+    /**
+     * Set {@see ItemButtonOnClickListener} for Button 1
+     * @param listener Listener for Button 1
+     */
     public void setButton1OnClickListener(ItemButtonOnClickListener listener) {
         listener1 = listener;
     }
 
+    /**
+     * Set {@see ItemButtonOnClickListener} for Button 2
+     * @param listener Listener for Button 2
+     */
     public void setButton2OnClickListener(ItemButtonOnClickListener listener) {
         listener2 = listener;
     }
 
+    /**
+     * Set {@see ItemOnClickListener} for list item
+     * @param itemClickListener Listener for list item
+     */
     public void setOnItemClickListener(ItemOnClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }

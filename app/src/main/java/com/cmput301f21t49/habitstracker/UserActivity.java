@@ -22,9 +22,9 @@ import java.util.ArrayList;
 /*
  * UserActivity
  *
- * version 1.0
+ * version 1.1
  *
- * November 3, 2021
+ * November 28, 2021
  *
  *Copyright [2021] CMPUT301F21T49: Purvi Singh, Justin. Saif, Fan Zhu
 
@@ -48,7 +48,6 @@ public class UserActivity extends AppCompatActivity {
     private EditText editFollowName;
     private Button sendButton;
 
-    private ArrayList<User> tempList = new ArrayList<User>(); //temporary list of users
     private User currentUser;
     private ManageUser manageUser = ManageUser.getInstance();
 
@@ -63,6 +62,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        // Retrieve User
         currentUser = (User) getIntent().getSerializableExtra(User.SERIALIZED);
 
         userImageView = findViewById(R.id.userImageView);
@@ -73,14 +73,17 @@ public class UserActivity extends AppCompatActivity {
         editFollowName = findViewById(R.id.editTextFollowName);
         sendButton = findViewById(R.id.sendButton);
 
-        //TODO: Set username and uid
+        // Set user email and uid
         usernameTextView.setText(currentUser.getEmail());
         uidTextView.setText(currentUser.getId());
 
+        // Create fragments
         followersFragment = MyFollowersFragment.newInstance(currentUser);
         followingFragment = MyFollowingFragment.newInstance(currentUser);
         requestsFragment = MyRequestsFragment.newInstance(currentUser);
 
+        // Set new tabs. First tab is followers. Second Tab is for Following.
+        // Third Tab is for Requests.
         TabLayout.Tab followingTab = tabLayout.newTab();
         TabLayout.Tab followersTab = tabLayout.newTab();
         TabLayout.Tab requestsTabs = tabLayout.newTab();
@@ -92,10 +95,10 @@ public class UserActivity extends AppCompatActivity {
         tabLayout.addTab(followingTab);
         tabLayout.addTab(requestsTabs);
 
+        // On tab change, change fragment.
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println("TAB SELECTED");
                 manageUser.get(currentUser.getId(), new UserCallback() {
                     @Override
                     public void onCallback(User user) {
@@ -123,28 +126,31 @@ public class UserActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                // Nothing to implement
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                // Nothing to implement
             }
         });
 
+        // Send Request to a user
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String followName = editFollowName.getText().toString();
+                // user cannot follow self
                 if (followName.equals(currentUser.getEmail())) {
                     Toast.makeText(getApplicationContext(), "Cannot follow self!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                // clear text box
                 editFollowName.setText("");
                 manageUser.getByEmail(followName, new UserCallback() {
                     @Override
                     public void onCallback(User user) {
-                        if (user.getFollowers().contains(user)) {
+                        if (user.getFollowers().contains(currentUser.getEmail())) {
                             Toast.makeText(getApplicationContext(), "Cannot follow someone you are already following!", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -155,6 +161,11 @@ public class UserActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Request sent!", Toast.LENGTH_SHORT).show();
                             }
                         });
+                    }
+                }, new VoidCallback() {
+                    @Override
+                    public void onCallback() {
+                        Toast.makeText(getApplicationContext(), "Request could not be send. Double-Check user email!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
